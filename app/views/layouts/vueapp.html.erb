@@ -28,7 +28,13 @@
       <link class="favicon" rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
       <link rel="manifest" href="/manifest.json">
     <% end %>
+
+    <!-- Use installation logo as tab icon (already in your code) -->
     <link rel="icon" type="image/png" sizes="512x512" href="<%= @global_config['LOGO_THUMBNAIL'] %>">
+
+    <!-- ✅ Boster Light Modern Skin -->
+    <link rel="stylesheet" href="/brand.css">
+
     <%= csrf_meta_tags %>
     <script>
       window.chatwootConfig = {
@@ -70,9 +76,11 @@
       }
     </script>
     <% end %>
+
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
   </head>
+
   <body class="text-slate-600">
     <div id="app"></div>
     <noscript id="noscript">This app works best with JavaScript enabled.</noscript>
