@@ -3,7 +3,9 @@ name: Build and push Chatwoot image to GHCR
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches:
+      - develop
+      - main
 
 permissions:
   contents: read
