@@ -81,7 +81,7 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
 
-    <!-- ✅ CSP-safe branding overrides (nonce is critical) -->
+    <!-- ✅ Boster Chat — CSP-safe branding overrides -->
     <style nonce="<%= content_security_policy_nonce %>">
       /* Light modern background */
       body {
@@ -129,57 +129,163 @@
       }
     </style>
 
-    <!-- ✅ CSP-safe JS fallback (guarantees text replace + hides logo if selectors differ) -->
-   <script nonce="<%= content_security_policy_nonce %>">
-  document.addEventListener('DOMContentLoaded', () => {
-    // =========================
-    // 1) FORCE replace "Login to Chatwoot" (strong + safe)
-    // =========================
+    <!-- ✅ Boster Chat — robust white-label JS (MutationObserver + deep text nodes) -->
+    <script nonce="<%= content_security_policy_nonce %>">
+    (function() {
+      const BRAND_OLD       = 'Chatwoot';
+      const BRAND_NEW       = 'Boster Chat';
+      const BRAND_OLD_LOWER = 'chatwoot';
 
-    // Pass A: exact match (fast)
-    const exactTargets = document.querySelectorAll('#app h1, #app h2, #app p, #app div, #app span, #app label, #app a, #app button');
-    for (const el of exactTargets) {
-      const t = (el.textContent || '').trim();
-      if (t === 'Login to Chatwoot') {
-        el.textContent = 'Login to Boster Chat';
-        break;
+      // ── Util: replace all case variants ──────────────────────────────────
+      function replaceBrandText(text) {
+        if (!text) return text;
+        return text
+          .replace(/Chatwoot/g, BRAND_NEW)
+          .replace(/chatwoot/g, 'bosterchat')
+          .replace(/CHATWOOT/g, BRAND_NEW.toUpperCase());
       }
-    }
 
-    // Pass B: nested/extra spaces match (very common in Vue)
-    const allEls = Array.from(document.querySelectorAll('#app *'));
-    for (const el of allEls) {
-      const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
-      if (t.includes('Login to Chatwoot')) {
-        el.textContent = t.replace('Login to Chatwoot', 'Login to Boster Chat');
-        break;
+      // ── 1) Deep text-node walk (catches all Vue-rendered strings) ────────
+      function replaceTextNodes(root) {
+        const walker = document.createTreeWalker(
+          root,
+          NodeFilter.SHOW_TEXT,
+          null,
+          false
+        );
+        let node;
+        while ((node = walker.nextNode())) {
+          if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+            node.nodeValue = replaceBrandText(node.nodeValue);
+          }
+        }
       }
-    }
 
-    // =========================
-    // 2) Hide logo images that look like Chatwoot
-    // =========================
-    document.querySelectorAll('#app img').forEach(img => {
-      const alt = (img.getAttribute('alt') || '').toLowerCase();
-      const src = (img.getAttribute('src') || '').toLowerCase();
-      if (alt.includes('chatwoot') || src.includes('chatwoot')) {
-        img.style.display = 'none';
-        img.style.visibility = 'hidden';
+      // ── 2) Attribute replacement (title, alt, placeholder, aria-label…) ──
+      function replaceAttributes(root) {
+        const attrs = ['title', 'alt', 'placeholder', 'aria-label', 'content', 'value'];
+        root.querySelectorAll('*').forEach(el => {
+          attrs.forEach(attr => {
+            const val = el.getAttribute(attr);
+            if (val && val.toLowerCase().includes(BRAND_OLD_LOWER)) {
+              el.setAttribute(attr, replaceBrandText(val));
+            }
+          });
+          // Input / textarea live values
+          if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') &&
+              el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER)) {
+            el.value = replaceBrandText(el.value);
+          }
+        });
       }
-    });
 
-    // =========================
-    // 3) Hide top logo/brand containers if they contain "chatwoot"
-    // =========================
-    document.querySelectorAll('#app header, #app [class*="logo"], #app [class*="brand"]').forEach(el => {
-      const text = (el.textContent || '').toLowerCase();
-      if (text.includes('chatwoot')) {
-        el.style.display = 'none';
-        el.style.visibility = 'hidden';
+      // ── 3) Hide Chatwoot logos (img / svg / picture / source) ────────────
+      function hideLogos(root) {
+        root.querySelectorAll('img, svg, picture, source').forEach(el => {
+          const checks = [
+            el.getAttribute('alt')                  || '',
+            el.getAttribute('src')                  || '',
+            el.getAttribute('srcset')               || '',
+            el.getAttribute('data-original-title')  || ''
+          ];
+          if (checks.some(v => v.toLowerCase().includes(BRAND_OLD_LOWER))) {
+            el.style.setProperty('display',     'none',   'important');
+            el.style.setProperty('visibility',  'hidden', 'important');
+          }
+        });
       }
-    });
-  });
-</script>
+
+      // ── 4) Hide brand containers only if they directly reference Chatwoot ─
+      function hideBrandContainers(root) {
+        const selectors = [
+          'header', 'nav',
+          '[class*="logo"]', '[class*="brand"]',
+          '[class*="Logo"]', '[class*="Brand"]',
+          '[id*="logo"]',    '[id*="brand"]'
+        ];
+        root.querySelectorAll(selectors.join(',')).forEach(el => {
+          const ownText = Array.from(el.childNodes)
+            .filter(n => n.nodeType === Node.TEXT_NODE)
+            .map(n => n.nodeValue || '')
+            .join('').toLowerCase();
+          const imgAlt = (el.querySelector('img')?.getAttribute('alt') || '').toLowerCase();
+          const imgSrc = (el.querySelector('img')?.getAttribute('src') || '').toLowerCase();
+          if (
+            ownText.includes(BRAND_OLD_LOWER) ||
+            imgAlt.includes(BRAND_OLD_LOWER)  ||
+            imgSrc.includes(BRAND_OLD_LOWER)
+          ) {
+            el.style.setProperty('display', 'none', 'important');
+          }
+        });
+      }
+
+      // ── 5) Page <title> + meta tags ──────────────────────────────────────
+      function replaceMetaTags() {
+        if (document.title.toLowerCase().includes(BRAND_OLD_LOWER)) {
+          document.title = replaceBrandText(document.title);
+        }
+        document.querySelectorAll(
+          'meta[name="application-name"], meta[property="og:site_name"], meta[name="description"]'
+        ).forEach(meta => {
+          const content = meta.getAttribute('content') || '';
+          if (content.toLowerCase().includes(BRAND_OLD_LOWER)) {
+            meta.setAttribute('content', replaceBrandText(content));
+          }
+        });
+      }
+
+      // ── 6) MutationObserver — survives Vue/React re-renders ──────────────
+      function observeChanges(root) {
+        const observer = new MutationObserver(mutations => {
+          for (const mutation of mutations) {
+            if (mutation.type === 'childList') {
+              mutation.addedNodes.forEach(node => {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                  replaceTextNodes(node);
+                  replaceAttributes(node);
+                  hideLogos(node);
+                } else if (node.nodeType === Node.TEXT_NODE) {
+                  if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+                    node.nodeValue = replaceBrandText(node.nodeValue);
+                  }
+                }
+              });
+            } else if (mutation.type === 'characterData') {
+              if (mutation.target.nodeValue &&
+                  mutation.target.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+                mutation.target.nodeValue = replaceBrandText(mutation.target.nodeValue);
+              }
+            }
+          }
+        });
+
+        observer.observe(root, {
+          childList:     true,
+          subtree:       true,
+          characterData: true
+        });
+      }
+
+      // ── Run everything ───────────────────────────────────────────────────
+      function runAll() {
+        const root = document.getElementById('app') || document.body;
+        replaceTextNodes(root);
+        replaceAttributes(root);
+        hideLogos(root);
+        hideBrandContainers(root);
+        replaceMetaTags();
+        observeChanges(root);  // keeps watching for Vue dynamic updates
+      }
+
+      // Fire immediately if DOM is ready, otherwise wait
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', runAll);
+      } else {
+        runAll();
+      }
+    })();
+    </script>
   </head>
 
   <body class="text-slate-600">
