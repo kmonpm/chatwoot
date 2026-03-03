@@ -29,11 +29,55 @@
       <link rel="manifest" href="/manifest.json">
     <% end %>
 
-    <!-- Use installation logo as tab icon (already in your code) -->
     <link rel="icon" type="image/png" sizes="512x512" href="<%= @global_config['LOGO_THUMBNAIL'] %>">
 
-    <!-- ✅ Boster Light Modern Skin -->
-    <link rel="stylesheet" href="/assets/brand.css">
+    <!-- ✅ Boster Light Modern Skin (INLINE — always works) -->
+    <style>
+      :root{
+        --boster-accent:#2563eb;
+        --boster-accent-2:#0ea5e9;
+        --boster-bg:#f6f8fc;
+        --boster-card:#ffffff;
+        --boster-text:#0f172a;
+        --boster-muted:#64748b;
+        --boster-border:rgba(15,23,42,.10);
+        --boster-shadow:0 10px 30px rgba(2,6,23,.08);
+        --boster-radius:16px;
+      }
+      html,body{
+        font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans","Apple Color Emoji","Segoe UI Emoji";
+        background:var(--boster-bg)!important;
+        color:var(--boster-text)!important;
+      }
+      body::before{
+        content:"";
+        position:fixed; inset:0;
+        pointer-events:none;
+        background:
+          radial-gradient(900px 420px at 15% 0%, rgba(37,99,235,.18), transparent 60%),
+          radial-gradient(700px 380px at 85% 10%, rgba(14,165,233,.14), transparent 55%);
+        z-index:0;
+      }
+      #app{position:relative; z-index:1;}
+      *{border-color:var(--boster-border)!important;}
+      .bg-white,.bg-slate-50,.bg-slate-100,[class*="card"],[class*="panel"]{
+        background:var(--boster-card)!important;
+        border-radius:var(--boster-radius)!important;
+        box-shadow:var(--boster-shadow)!important;
+      }
+      input,textarea,select{
+        border-radius:12px!important;
+        background:#fff!important;
+      }
+      input:focus,textarea:focus,select:focus{
+        outline:2px solid rgba(37,99,235,.35)!important;
+        outline-offset:2px!important;
+      }
+      button,[role="button"],.btn{border-radius:12px!important;}
+      a,.text-blue-600,.text-indigo-600,.text-sky-600{color:var(--boster-accent)!important;}
+      .bg-indigo-600,.bg-blue-600,.bg-sky-600,.bg-primary{background:var(--boster-accent)!important;}
+      #app,#app *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+    </style>
 
     <%= csrf_meta_tags %>
     <script>
@@ -64,16 +108,13 @@
         selectedLocale: '<%= I18n.locale %>'
       }
       window.globalConfig = <%= raw @global_config.to_json %>
-      window.browserConfig = {
-        browser_name: '<%= browser.name %>',
-      }
+      window.browserConfig = { browser_name: '<%= browser.name %>' }
       window.errorLoggingConfig = '<%= ENV.fetch('SENTRY_FRONTEND_DSN', '') || ENV.fetch('SENTRY_DSN', '') %>'
     </script>
+
     <% if @global_config['CLOUD_ANALYTICS_TOKEN'].present? %>
     <script>
-      window.analyticsConfig = {
-        token: '<%= @global_config['CLOUD_ANALYTICS_TOKEN'] %>',
-      }
+      window.analyticsConfig = { token: '<%= @global_config['CLOUD_ANALYTICS_TOKEN'] %>' }
     </script>
     <% end %>
 
