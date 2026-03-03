@@ -130,37 +130,56 @@
     </style>
 
     <!-- ✅ CSP-safe JS fallback (guarantees text replace + hides logo if selectors differ) -->
-    <script nonce="<%= content_security_policy_nonce %>">
-      document.addEventListener('DOMContentLoaded', () => {
-        // Replace heading text if found
-        const targets = document.querySelectorAll('#app h1, #app h2, #app p, #app div, #app span');
-        targets.forEach(el => {
-          const t = (el.textContent || '').trim();
-          if (t === 'Login to Chatwoot') {
-            el.textContent = 'Login to Boster Chat';
-          }
-        });
+   <script nonce="<%= content_security_policy_nonce %>">
+  document.addEventListener('DOMContentLoaded', () => {
+    // =========================
+    // 1) FORCE replace "Login to Chatwoot" (strong + safe)
+    // =========================
 
-        // Hide logo images that look like Chatwoot
-        document.querySelectorAll('#app img').forEach(img => {
-          const alt = (img.getAttribute('alt') || '').toLowerCase();
-          const src = (img.getAttribute('src') || '').toLowerCase();
-          if (alt.includes('chatwoot') || src.includes('chatwoot')) {
-            img.style.display = 'none';
-            img.style.visibility = 'hidden';
-          }
-        });
+    // Pass A: exact match (fast)
+    const exactTargets = document.querySelectorAll('#app h1, #app h2, #app p, #app div, #app span, #app label, #app a, #app button');
+    for (const el of exactTargets) {
+      const t = (el.textContent || '').trim();
+      if (t === 'Login to Chatwoot') {
+        el.textContent = 'Login to Boster Chat';
+        break;
+      }
+    }
 
-        // Also hide the top logo container if it exists
-        document.querySelectorAll('#app header, #app [class*="logo"], #app [class*="brand"]').forEach(el => {
-          const text = (el.textContent || '').toLowerCase();
-          if (text.includes('chatwoot')) {
-            el.style.display = 'none';
-            el.style.visibility = 'hidden';
-          }
-        });
-      });
-    </script>
+    // Pass B: nested/extra spaces match (very common in Vue)
+    const allEls = Array.from(document.querySelectorAll('#app *'));
+    for (const el of allEls) {
+      const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+      if (t.includes('Login to Chatwoot')) {
+        el.textContent = t.replace('Login to Chatwoot', 'Login to Boster Chat');
+        break;
+      }
+    }
+
+    // =========================
+    // 2) Hide logo images that look like Chatwoot
+    // =========================
+    document.querySelectorAll('#app img').forEach(img => {
+      const alt = (img.getAttribute('alt') || '').toLowerCase();
+      const src = (img.getAttribute('src') || '').toLowerCase();
+      if (alt.includes('chatwoot') || src.includes('chatwoot')) {
+        img.style.display = 'none';
+        img.style.visibility = 'hidden';
+      }
+    });
+
+    // =========================
+    // 3) Hide top logo/brand containers if they contain "chatwoot"
+    // =========================
+    document.querySelectorAll('#app header, #app [class*="logo"], #app [class*="brand"]').forEach(el => {
+      const text = (el.textContent || '').toLowerCase();
+      if (text.includes('chatwoot')) {
+        el.style.display = 'none';
+        el.style.visibility = 'hidden';
+      }
+    });
+  });
+</script>
   </head>
 
   <body class="text-slate-600">
