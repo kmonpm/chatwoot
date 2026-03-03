@@ -35,11 +35,12 @@
       <link rel="manifest" href="/manifest.json">
     <% end %>
 
+    <!-- Use installation logo thumbnail as favicon -->
     <link rel="icon" type="image/png" sizes="512x512" href="<%= @global_config['LOGO_THUMBNAIL'] %>">
 
     <%= csrf_meta_tags %>
 
-    <script>
+    <script nonce="<%= content_security_policy_nonce %>">
       window.chatwootConfig = {
         hostURL: '<%= ENV.fetch('FRONTEND_URL', '') %>',
         helpCenterURL: '<%= ENV.fetch('HELPCENTER_URL', '') %>',
@@ -72,7 +73,7 @@
     </script>
 
     <% if @global_config['CLOUD_ANALYTICS_TOKEN'].present? %>
-      <script>
+      <script nonce="<%= content_security_policy_nonce %>">
         window.analyticsConfig = { token: '<%= @global_config['CLOUD_ANALYTICS_TOKEN'] %>' }
       </script>
     <% end %>
@@ -80,32 +81,8 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
 
-    <!-- ✅ Custom branding CSS (after Vite so it overrides) -->
-    <style>
-      /* Hide Chatwoot logo + brand on login page */
-      #app header img,
-      #app [class*="logo"] img,
-      #app img[alt*="chatwoot" i] {
-        display: none !important;
-        visibility: hidden !important;
-      }
-
-      /* Replace “Login to Chatwoot” heading with our text */
-      #app h1 {
-        font-size: 28px !important;
-        font-weight: 800 !important;
-        position: relative !important;
-        color: transparent !important; /* hide original text */
-      }
-      #app h1::after {
-        content: "Login to Boster Chat";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        color: #0f172a;
-      }
-
+    <!-- ✅ CSP-safe branding overrides (nonce is critical) -->
+    <style nonce="<%= content_security_policy_nonce %>">
       /* Light modern background */
       body {
         background:
@@ -114,7 +91,7 @@
           #f6f8fc !important;
       }
 
-      /* Make login card more modern */
+      /* Login card polish */
       #app .bg-white,
       #app [class*="bg-white"] {
         border-radius: 16px !important;
@@ -127,7 +104,63 @@
       #app .btn {
         border-radius: 12px !important;
       }
+
+      /* Hide Chatwoot logo images (best effort) */
+      #app header img,
+      #app [class*="logo"] img,
+      #app img[alt*="chatwoot" i] {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      /* Replace heading text visually (CSS overlay) */
+      #app h1 {
+        color: transparent !important;
+        position: relative !important;
+        font-weight: 800 !important;
+      }
+      #app h1::after {
+        content: "Login to Boster Chat";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        color: #0f172a;
+      }
     </style>
+
+    <!-- ✅ CSP-safe JS fallback (guarantees text replace + hides logo if selectors differ) -->
+    <script nonce="<%= content_security_policy_nonce %>">
+      document.addEventListener('DOMContentLoaded', () => {
+        // Replace heading text if found
+        const targets = document.querySelectorAll('#app h1, #app h2, #app p, #app div, #app span');
+        targets.forEach(el => {
+          const t = (el.textContent || '').trim();
+          if (t === 'Login to Chatwoot') {
+            el.textContent = 'Login to Boster Chat';
+          }
+        });
+
+        // Hide logo images that look like Chatwoot
+        document.querySelectorAll('#app img').forEach(img => {
+          const alt = (img.getAttribute('alt') || '').toLowerCase();
+          const src = (img.getAttribute('src') || '').toLowerCase();
+          if (alt.includes('chatwoot') || src.includes('chatwoot')) {
+            img.style.display = 'none';
+            img.style.visibility = 'hidden';
+          }
+        });
+
+        // Also hide the top logo container if it exists
+        document.querySelectorAll('#app header, #app [class*="logo"], #app [class*="brand"]').forEach(el => {
+          const text = (el.textContent || '').toLowerCase();
+          if (text.includes('chatwoot')) {
+            el.style.display = 'none';
+            el.style.visibility = 'hidden';
+          }
+        });
+      });
+    </script>
   </head>
 
   <body class="text-slate-600">
