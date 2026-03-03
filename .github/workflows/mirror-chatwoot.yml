@@ -1,0 +1,31 @@
+name: Mirror official Chatwoot image to GHCR
+
+on:
+  workflow_dispatch:
+
+permissions:
+  packages: write
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull official image
+        run: docker pull chatwoot/chatwoot:v4.11.1-ce
+
+      - name: Tag image
+        run: |
+          docker tag chatwoot/chatwoot:v4.11.1-ce ghcr.io/kmonpm/chatwoot:v4.11.1-ce
+          docker tag chatwoot/chatwoot:v4.11.1-ce ghcr.io/kmonpm/chatwoot:latest
+
+      - name: Push to GHCR
+        run: |
+          docker push ghcr.io/kmonpm/chatwoot:v4.11.1-ce
+          docker push ghcr.io/kmonpm/chatwoot:latest
