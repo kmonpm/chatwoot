@@ -143,30 +143,44 @@
 
       #app aside.bg-n-background,
       #app aside[class*="bg-n-background"] {
-        background: var(--b-blue-navy) !important;
-        border-right: 1px solid rgba(255,255,255,0.08) !important;
+        background: #1a3a7a !important;
+        border-right: 1px solid rgba(255,255,255,0.10) !important;
       }
 
-      /* All text inside sidebar */
+      /* ALL text inside sidebar — bright white, high contrast */
       #app aside.bg-n-background *,
       #app aside[class*="bg-n-background"] * {
-        color: #C8DEFF !important;
+        color: #FFFFFF !important;
       }
 
-      /* Icons inside sidebar */
+      /* Muted secondary text — slightly dimmer but still readable */
+      #app aside.bg-n-background span,
+      #app aside[class*="bg-n-background"] span {
+        color: #E0ECFF !important;
+      }
+
+      /* Icons — bright and visible */
       #app aside.bg-n-background svg,
       #app aside[class*="bg-n-background"] svg {
-        color: var(--b-sidebar-icon) !important;
-        stroke: var(--b-sidebar-icon) !important;
+        color: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        opacity: 0.9;
       }
 
-      /* Active nav item */
+      /* Active nav item — solid blue pill */
       #app aside.bg-n-background .active,
       #app aside[class*="bg-n-background"] .active,
       #app aside.bg-n-background [aria-current="page"],
       #app aside[class*="bg-n-background"] [aria-current="page"] {
-        background: rgba(29,110,245,0.35) !important;
+        background: var(--b-blue) !important;
         border-radius: var(--b-radius) !important;
+      }
+
+      /* Active item text — keep white */
+      #app aside.bg-n-background .active *,
+      #app aside[class*="bg-n-background"] .active * {
+        color: #FFFFFF !important;
+        opacity: 1 !important;
       }
 
       /* Hover */
@@ -174,7 +188,7 @@
       #app aside[class*="bg-n-background"] a:hover,
       #app aside.bg-n-background button:hover,
       #app aside[class*="bg-n-background"] button:hover {
-        background: rgba(127,179,255,0.15) !important;
+        background: rgba(255,255,255,0.12) !important;
         border-radius: var(--b-radius) !important;
       }
 
