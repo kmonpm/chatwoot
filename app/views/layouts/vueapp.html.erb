@@ -86,32 +86,208 @@
     ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
 
-      /* ── Login page background ────────────────────────────── */
-      body {
-        background:
-          radial-gradient(900px 420px at 15% 0%,  rgba(37, 99, 235, 0.18), transparent 60%),
-          radial-gradient(700px 380px at 85% 10%, rgba(14, 165, 233, 0.14), transparent 55%),
-          #f6f8fc !important;
+      /* ══════════════════════════════════════════════════════
+         BOSTER CHAT — BLUE BRANDED THEME
+         Targets Chatwoot's Tailwind class structure precisely.
+         Uses CSS variables for easy future tweaks.
+      ══════════════════════════════════════════════════════ */
+
+      :root {
+        --boster-primary:       #1D6EF5;
+        --boster-primary-dark:  #0F2A6E;
+        --boster-primary-light: #EFF6FF;
+        --boster-accent:        #3B82F6;
+        --boster-hover:         #1558CC;
+        --boster-sidebar-bg:    #0F2A6E;
+        --boster-sidebar-text:  #C8DEFF;
+        --boster-sidebar-icon:  #93BBFF;
+        --boster-sidebar-active:#1D6EF5;
       }
 
-      /* ── Login card ───────────────────────────────────────── */
+      /* ── LOGIN PAGE background ───────────────────────────── */
+      body {
+        background:
+          radial-gradient(900px 420px at 15% 0%,  rgba(29, 110, 245, 0.15), transparent 60%),
+          radial-gradient(700px 380px at 85% 10%, rgba(14, 165, 233, 0.10), transparent 55%),
+          #f0f4ff !important;
+      }
+
+      /* ── LOGIN CARD ──────────────────────────────────────── */
       #app .bg-white,
       #app [class*="bg-white"] {
         border-radius: 16px !important;
-        box-shadow: 0 18px 45px rgba(2, 6, 23, 0.10) !important;
+        box-shadow: 0 18px 45px rgba(15, 42, 110, 0.12) !important;
       }
 
-      /* ── Buttons ──────────────────────────────────────────── */
+      /* ══════════════════════════════════════════════════════
+         DASHBOARD SIDEBAR
+         Chatwoot renders the primary nav as:
+         .flex.h-full + .primary-sidebar / .secondary-sidebar
+      ══════════════════════════════════════════════════════ */
+
+      /* Narrow icon rail (primary sidebar) */
+      #app .primary-sidebar,
+      #app [class*="primary-sidebar"],
+      #app aside:first-of-type,
+      #app .flex.h-full > nav:first-child {
+        background: var(--boster-primary-dark) !important;
+        border-right: 1px solid rgba(255,255,255,0.08) !important;
+      }
+
+      /* Wider secondary sidebar (conversations list) */
+      #app .secondary-sidebar,
+      #app [class*="secondary-sidebar"] {
+        background: #f8faff !important;
+        border-right: 1px solid #dbeafe !important;
+      }
+
+      /* Sidebar nav icons */
+      #app .primary-sidebar svg,
+      #app [class*="primary-sidebar"] svg {
+        color: var(--boster-sidebar-icon) !important;
+      }
+
+      /* Active sidebar item */
+      #app .primary-sidebar .active,
+      #app [class*="primary-sidebar"] .active,
+      #app .primary-sidebar [aria-current="page"],
+      #app [class*="primary-sidebar"] [aria-current="page"] {
+        background: var(--boster-primary) !important;
+        border-radius: 10px !important;
+      }
+
+      /* Sidebar item hover */
+      #app .primary-sidebar a:hover,
+      #app [class*="primary-sidebar"] a:hover,
+      #app .primary-sidebar button:hover,
+      #app [class*="primary-sidebar"] button:hover {
+        background: rgba(29, 110, 245, 0.25) !important;
+        border-radius: 10px !important;
+      }
+
+      /* Sidebar text links in secondary panel */
+      #app .secondary-sidebar a.active,
+      #app [class*="secondary-sidebar"] a.active {
+        color: var(--boster-primary) !important;
+        background: var(--boster-primary-light) !important;
+        border-radius: 8px !important;
+        font-weight: 600 !important;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         TOP HEADER BAR
+      ══════════════════════════════════════════════════════ */
+      #app header,
+      #app .view-header,
+      #app [class*="view-header"] {
+        background: #ffffff !important;
+        border-bottom: 2px solid #dbeafe !important;
+      }
+
+      /* Header title text */
+      #app header h1,
+      #app .view-header h1,
+      #app [class*="view-header"] h1 {
+        color: var(--boster-primary-dark) !important;
+        font-weight: 700 !important;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         BUTTONS — Primary accent color
+      ══════════════════════════════════════════════════════ */
+
+      /* Primary buttons (bg-brand, bg-woot-500 etc) */
+      #app .bg-woot-500,
+      #app [class*="bg-woot-500"],
+      #app [class*="bg-brand"],
+      #app [class*="bg-n-brand"],
+      #app button[data-testid="submit_button"],
+      #app button[type="submit"] {
+        background: var(--boster-primary) !important;
+        border-color: var(--boster-primary) !important;
+      }
+
+      #app .bg-woot-500:hover,
+      #app [class*="bg-woot-500"]:hover,
+      #app [class*="bg-brand"]:hover,
+      #app button[type="submit"]:hover {
+        background: var(--boster-hover) !important;
+        border-color: var(--boster-hover) !important;
+      }
+
+      /* Text accent colors */
+      #app .text-woot-500,
+      #app [class*="text-woot-500"],
+      #app [class*="text-brand"],
+      #app a[class*="text-brand"] {
+        color: var(--boster-primary) !important;
+      }
+
+      /* Border accent */
+      #app .border-woot-500,
+      #app [class*="border-woot-500"],
+      #app [class*="border-brand"] {
+        border-color: var(--boster-primary) !important;
+      }
+
+      /* Active tab underline / indicator */
+      #app [class*="border-b-woot"],
+      #app [class*="border-b-brand"],
+      #app .active-tab {
+        border-bottom-color: var(--boster-primary) !important;
+        color: var(--boster-primary) !important;
+      }
+
+      /* All buttons — consistent border radius */
       #app button,
       #app [role="button"],
       #app .btn {
-        border-radius: 12px !important;
+        border-radius: 10px !important;
       }
 
-      /* ── Hide any leftover "Chatwoot" text that Vue may render
-            before JS replacement fires (flash prevention) ───── */
-      #app h2:not(:empty) {
-        visibility: visible;
+      /* ══════════════════════════════════════════════════════
+         INPUTS & FOCUS RINGS
+      ══════════════════════════════════════════════════════ */
+      #app input:focus,
+      #app textarea:focus,
+      #app select:focus {
+        border-color: var(--boster-primary) !important;
+        box-shadow: 0 0 0 3px rgba(29, 110, 245, 0.15) !important;
+        outline: none !important;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         BADGES / NOTIFICATION COUNTS
+      ══════════════════════════════════════════════════════ */
+      #app .badge,
+      #app [class*="badge"],
+      #app .unread-badge {
+        background: var(--boster-primary) !important;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         FONT — cleaner, more modern feel
+      ══════════════════════════════════════════════════════ */
+      #app {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      }
+
+      /* ══════════════════════════════════════════════════════
+         SCROLLBAR — subtle blue tint
+      ══════════════════════════════════════════════════════ */
+      #app *::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      #app *::-webkit-scrollbar-track {
+        background: #f0f4ff;
+      }
+      #app *::-webkit-scrollbar-thumb {
+        background: #bfdbfe;
+        border-radius: 99px;
+      }
+      #app *::-webkit-scrollbar-thumb:hover {
+        background: var(--boster-primary);
       }
 
     </style>
