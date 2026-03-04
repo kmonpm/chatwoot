@@ -79,9 +79,11 @@
     <%= vite_javascript_tag @application_pack %>
 
     <!-- ═══════════════════════════════════════════════════
-         Boster Chat — Modern Blue Theme v5
-         CSS selectors verified from DevTools.
-         Glassmorphism cards, gradient sidebar, smooth hovers.
+         Boster Chat — Modern Blue Theme v6 (Sidebar text FIX)
+         - Sidebar text forced high-contrast + higher font weight
+         - Sidebar selector made more robust (in case class changes)
+         - Global link color no longer breaks sidebar readability
+         - Added subtle spacing / polish without changing structure
     ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
 
@@ -104,6 +106,13 @@
 
         --b-text:         #0F172A;
         --b-text-muted:   #475569;
+
+        /* Sidebar specifics */
+        --b-sidebar-bg-1: #17356F;
+        --b-sidebar-bg-2: #152E61;
+        --b-sidebar-bg-3: #122552;
+        --b-sidebar-text: #FFFFFF;
+        --b-sidebar-muted:#EAF2FF;
       }
 
       /* ── Global background + typography ─────────────────── */
@@ -118,10 +127,11 @@
         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        text-rendering: geometricPrecision;
       }
 
       #app h1, #app h2, #app h3, #app h4 {
-        letter-spacing: -0.2px;
+        letter-spacing: -0.25px;
         color: var(--b-text);
       }
 
@@ -144,73 +154,116 @@
         backdrop-filter: blur(6px);
       }
 
-      /* ── Sidebar — verified: aside.bg-n-background ───────── */
+      /* ══════════════════════════════════════
+         SIDEBAR (ROBUST SELECTOR)
+         Your screenshot shows sidebar became light/washed.
+         So we target multiple possible sidebar containers.
+      ══════════════════════════════════════ */
+
+      /* 1) Primary known selector */
       #app aside.bg-n-background,
-      #app aside[class*="bg-n-background"] {
+      #app aside[class*="bg-n-background"],
+      /* 2) Fallbacks (Chatwoot versions vary) */
+      #app aside,
+      #app [data-testid="app-sidebar"],
+      #app [data-testid="sidebar"],
+      #app [class*="sidebar"],
+      #app nav[class*="sidebar"],
+      #app nav[aria-label*="sidebar"],
+      #app nav[aria-label*="Sidebar"] {
         background:
           radial-gradient(900px 600px at 15% 0%, rgba(255,255,255,0.10), transparent 55%),
-          linear-gradient(180deg, #17356F 0%, #152E61 45%, #122552 100%) !important;
+          linear-gradient(180deg, var(--b-sidebar-bg-1) 0%, var(--b-sidebar-bg-2) 45%, var(--b-sidebar-bg-3) 100%) !important;
         border-right: 1px solid rgba(255,255,255,0.10) !important;
       }
 
-      /* All text inside sidebar — full white */
+      /* Force text visibility inside sidebar */
       #app aside.bg-n-background *,
-      #app aside[class*="bg-n-background"] * {
-        color: #FFFFFF !important;
+      #app aside[class*="bg-n-background"] *,
+      #app aside *,
+      #app [data-testid="app-sidebar"] *,
+      #app [data-testid="sidebar"] *,
+      #app [class*="sidebar"] * {
+        color: var(--b-sidebar-text) !important;
+        opacity: 1 !important;                 /* FIX: removes washed/transparent text */
+        font-weight: 600 !important;           /* FIX: stronger letters */
+        text-shadow: 0 1px 1px rgba(0,0,0,0.22); /* FIX: readable on gradients */
       }
 
-      /* Secondary/muted sidebar text */
-      #app aside.bg-n-background span,
-      #app aside[class*="bg-n-background"] span {
-        color: rgba(224,236,255,0.92) !important;
+      /* Secondary/muted text inside sidebar (still readable) */
+      #app aside.bg-n-background .text-slate-400,
+      #app aside.bg-n-background .text-slate-500,
+      #app aside.bg-n-background .text-n-slate-11,
+      #app aside[class*="bg-n-background"] .text-slate-400,
+      #app aside[class*="bg-n-background"] .text-slate-500,
+      #app aside[class*="bg-n-background"] .text-n-slate-11,
+      #app aside .text-slate-400,
+      #app aside .text-slate-500,
+      #app aside .text-n-slate-11 {
+        color: var(--b-sidebar-muted) !important;
+        font-weight: 600 !important;
+        opacity: 1 !important;
       }
 
-      /* Sidebar icons */
+      /* Sidebar icons (strong visibility) */
       #app aside.bg-n-background svg,
-      #app aside[class*="bg-n-background"] svg {
-        color: rgba(255,255,255,0.95) !important;
-        stroke: rgba(255,255,255,0.95) !important;
-        opacity: 0.95;
+      #app aside[class*="bg-n-background"] svg,
+      #app aside svg,
+      #app [data-testid="app-sidebar"] svg,
+      #app [data-testid="sidebar"] svg,
+      #app [class*="sidebar"] svg {
+        color: rgba(255,255,255,0.98) !important;
+        stroke: rgba(255,255,255,0.98) !important;
+        opacity: 0.98 !important;
+        filter: drop-shadow(0 1px 1px rgba(0,0,0,0.18));
       }
 
       /* Sidebar links/buttons base */
       #app aside.bg-n-background a,
       #app aside[class*="bg-n-background"] a,
       #app aside.bg-n-background button,
-      #app aside[class*="bg-n-background"] button {
+      #app aside[class*="bg-n-background"] button,
+      #app aside a,
+      #app aside button {
         border-radius: var(--b-radius) !important;
-        transition: background 140ms ease, transform 140ms ease;
+        transition: background 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+        text-decoration: none !important;
       }
 
       /* Hover */
       #app aside.bg-n-background a:hover,
       #app aside[class*="bg-n-background"] a:hover,
       #app aside.bg-n-background button:hover,
-      #app aside[class*="bg-n-background"] button:hover {
-        background: rgba(255,255,255,0.12) !important;
+      #app aside[class*="bg-n-background"] button:hover,
+      #app aside a:hover,
+      #app aside button:hover {
+        background: rgba(255,255,255,0.14) !important;
         transform: translateY(-1px);
-        text-decoration: none !important;
+        box-shadow: 0 10px 24px rgba(0,0,0,0.14);
       }
 
       /* Active nav item */
       #app aside.bg-n-background .active,
       #app aside[class*="bg-n-background"] .active,
       #app aside.bg-n-background [aria-current="page"],
-      #app aside[class*="bg-n-background"] [aria-current="page"] {
+      #app aside[class*="bg-n-background"] [aria-current="page"],
+      #app aside .active,
+      #app aside [aria-current="page"] {
         background: rgba(29,110,245,0.96) !important;
         border-radius: var(--b-radius) !important;
-        box-shadow: 0 10px 24px rgba(29,110,245,0.22) !important;
+        box-shadow: 0 12px 28px rgba(29,110,245,0.28) !important;
       }
 
-      /* Active item children — keep white */
+      /* Ensure active item children are bright */
       #app aside.bg-n-background .active *,
-      #app aside[class*="bg-n-background"] .active * {
+      #app aside[class*="bg-n-background"] .active *,
+      #app aside .active * {
         color: #FFFFFF !important;
         opacity: 1 !important;
+        text-shadow: 0 1px 1px rgba(0,0,0,0.18);
       }
 
       /* ── Logo — hide img, show "B" badge ─────────────────── */
-      /* Exact selectors from DevTools: img.size-4 inside div.size-6 */
       #app img.size-4,
       #app div.size-6 img,
       #app div.size-6 > img,
@@ -317,16 +370,18 @@
         border-radius: var(--b-radius) !important;
       }
 
-      /* ── Links / accent text ─────────────────────────────── */
-      #app [class*="text-woot"],
-      #app [class*="text-n-brand"],
-      #app [class*="text-brand"],
-      #app a[class*="text-brand"],
-      #app a {
+      /* ── Links / accent text ───────────────────────────────
+         IMPORTANT: Don't apply to sidebar (it made links “wash out”).
+      ─────────────────────────────────────────────────────── */
+      #app main a,
+      #app [class*="view"] a,
+      #app [class*="content"] a {
         color: var(--b-blue) !important;
       }
 
-      #app a:hover {
+      #app main a:hover,
+      #app [class*="view"] a:hover,
+      #app [class*="content"] a:hover {
         text-decoration: underline;
         text-underline-offset: 3px;
       }
