@@ -383,6 +383,107 @@
       #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 999px; }
       #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
 
+      /* ════════════════════════════════════════════════════
+         DARK MODE FIXES
+         Chatwoot toggles dark mode via class="dark" on <html>
+         We override card/bg colors to deep blue-grey instead
+         of the near-black that Chatwoot defaults to.
+      ════════════════════════════════════════════════════ */
+
+      /* Dark body background — deep navy, not pure black */
+      html.dark body,
+      html.dark html {
+        background:
+          radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.10), transparent 58%),
+          radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.07), transparent 60%),
+          linear-gradient(180deg, #0E1929 0%, #0B1520 55%, #0E1929 100%) !important;
+      }
+
+      /* Dark mode cards — deep blue-grey, NOT pure black */
+      html.dark #app [class*="bg-white"],
+      html.dark #app [class*="bg-n-surface"],
+      html.dark #app [class*="bg-n-strong"] {
+        background: #182A42 !important;
+        border-color: rgba(29,110,245,0.18) !important;
+      }
+
+      /* Dark mode card text — soft white-blue, easy to read */
+      html.dark #app [class*="bg-white"] h1,
+      html.dark #app [class*="bg-white"] h2,
+      html.dark #app [class*="bg-white"] h3,
+      html.dark #app [class*="bg-white"] p,
+      html.dark #app [class*="bg-n-surface"] p,
+      html.dark #app [class*="bg-n-surface"] h1,
+      html.dark #app [class*="bg-n-surface"] h2,
+      html.dark #app [class*="bg-n-surface"] h3 {
+        color: #D8EAFF !important;
+      }
+
+      html.dark #app [class*="bg-white"] span,
+      html.dark #app [class*="bg-n-surface"] span {
+        color: #A8C4E8 !important;
+      }
+
+      /* Dark mode card hover */
+      html.dark #app [class*="bg-white"][class*="rounded"]:hover,
+      html.dark #app [class*="bg-n-surface"][class*="rounded"]:hover {
+        background: #1E3352 !important;
+        border-color: rgba(29,110,245,0.32) !important;
+      }
+
+      /* Dark mode header */
+      html.dark #app header,
+      html.dark #app .view-header,
+      html.dark #app [class*="view-header"] {
+        background: rgba(12,22,40,0.92) !important;
+        border-bottom: 1px solid rgba(29,110,245,0.18) !important;
+        backdrop-filter: blur(12px);
+      }
+
+      /* Dark mode conversation list panel */
+      html.dark #app .flex.flex-col.h-full.bg-n-background {
+        background: rgba(11,20,34,0.88) !important;
+        border-right: 1px solid rgba(29,110,245,0.15) !important;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Dark mode main content area */
+      html.dark #app main {
+        background:
+          radial-gradient(700px 500px at 20% 10%, rgba(29,110,245,0.07), transparent 55%),
+          #0E1929 !important;
+      }
+
+      /* Dark mode dropdown / popup menus */
+      html.dark #app [class*="dropdown"],
+      html.dark #app [class*="popup"],
+      html.dark #app [class*="modal"] {
+        background: #182A42 !important;
+        border: 1px solid rgba(29,110,245,0.20) !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.50) !important;
+      }
+
+      /* Dark mode inputs */
+      html.dark #app input,
+      html.dark #app textarea,
+      html.dark #app select {
+        background: #0F1E32 !important;
+        border-color: rgba(29,110,245,0.25) !important;
+        color: #D8EAFF !important;
+      }
+
+      html.dark #app input:focus,
+      html.dark #app textarea:focus,
+      html.dark #app select:focus {
+        border-color: rgba(29,110,245,0.80) !important;
+        box-shadow: 0 0 0 4px rgba(29,110,245,0.18) !important;
+      }
+
+      /* Dark mode scrollbar */
+      html.dark #app *::-webkit-scrollbar-track { background: rgba(10,18,30,0.9); }
+      html.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.30); }
+      html.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.60); }
+
     </style>
 
     <script nonce="<%= content_security_policy_nonce %>">
