@@ -1,29 +1,55 @@
-<p>Hi <%= @resource.name %>,</p>
+<% content_for :title do %>Confirm your Boster Chat account<% end %>
 
-<% account_user = @resource&.account_users&.first %>
+<table width="100%" cellpadding="0" cellspacing="0" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background:#f6f8fc; padding: 40px 0;">
+  <tr>
+    <td align="center">
+      <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff; border-radius:16px; box-shadow:0 4px 24px rgba(2,6,23,0.08); overflow:hidden;">
 
-<% if account_user&.inviter.present? && @resource.unconfirmed_email.blank? %>
-  <p><%= account_user.inviter.name %>, with <%= account_user.account.name %>, has invited you to try out <%= global_config['BRAND_NAME'] || 'Chatwoot' %>.</p>
-<% end %>
+        <!-- Header -->
+        <tr>
+          <td style="background: linear-gradient(135deg, #0F2A6E 0%, #1D6EF5 100%); padding: 36px 40px; text-align:center;">
+            <table cellpadding="0" cellspacing="0" style="margin:0 auto;">
+              <tr>
+                <td style="background:white; border-radius:12px; padding:10px 20px;">
+                  <span style="font-size:20px; font-weight:800; color:#1D6EF5; letter-spacing:-0.5px;">Boster</span><span style="font-size:20px; font-weight:400; color:#0F2A6E; letter-spacing:-0.5px;"> Chat</span>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
 
-<% if @resource.confirmed? %>
-  <p>You can login to your <%= global_config['BRAND_NAME'] || 'Chatwoot' %> account through the link below:</p>
-<% else %>
-  <% if account_user&.inviter.blank? %>
-  <p>
-    Welcome to <%= global_config['BRAND_NAME'] || 'Chatwoot' %>! We have a suite of powerful tools ready for you to explore. Before that we quickly need to verify your email address to know it's really you.
-  </p>
-  <% end %>
-  <p>Please take a moment and click the link below and activate your account.</p>
-<% end %>
+        <!-- Body -->
+        <tr>
+          <td style="padding: 40px 40px 32px;">
+            <h1 style="font-size:22px; font-weight:700; color:#0f172a; margin:0 0 16px;">Confirm your email address</h1>
+            <p style="font-size:15px; color:#475569; line-height:1.7; margin:0 0 24px;">
+              Welcome to <strong>Boster Chat</strong>! Please confirm your email address by clicking the button below.
+            </p>
+            <table cellpadding="0" cellspacing="0" style="margin: 0 0 24px;">
+              <tr>
+                <td style="background: linear-gradient(135deg, #1D6EF5, #0F2A6E); border-radius:10px; padding:14px 28px;">
+                  <a href="<%= confirmation_url(@resource, confirmation_token: @token) %>" style="color:#ffffff; font-size:15px; font-weight:600; text-decoration:none; display:block;">
+                    Confirm my account →
+                  </a>
+                </td>
+              </tr>
+            </table>
+            <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0;">
+              If you didn't create a Boster Chat account, you can safely ignore this email.
+            </p>
+          </td>
+        </tr>
 
+        <!-- Footer -->
+        <tr>
+          <td style="background:#f8fafc; border-top:1px solid #e2e8f0; padding:24px 40px; text-align:center;">
+            <p style="font-size:12px; color:#94a3b8; margin:0;">
+              © <%= Time.current.year %> Boster Chat. All rights reserved.
+            </p>
+          </td>
+        </tr>
 
-<% if @resource.unconfirmed_email.present? %>
-  <p><%= link_to 'Confirm my account', frontend_url('auth/confirmation', confirmation_token: @token) %></p>
-<% elsif @resource.confirmed? %>
-  <p><%= link_to 'Login to my account', frontend_url('auth/sign_in') %></p>
-<% elsif account_user&.inviter.present? %>
-  <p><%= link_to 'Confirm my account', frontend_url('auth/password/edit', reset_password_token: @resource.send(:set_reset_password_token)) %></p>
-<% else %>
-  <p><%= link_to 'Confirm my account', frontend_url('auth/confirmation', confirmation_token: @token) %></p>
-<% end %>
+      </table>
+    </td>
+  </tr>
+</table>
