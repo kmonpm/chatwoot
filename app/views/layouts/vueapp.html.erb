@@ -455,12 +455,44 @@
         box-shadow: 0 0 0 4px rgba(29,110,245,0.18) !important;
       }
 
-      /* Text colors in dark mode */
+      /* Text colors in dark mode — make ALL text visible */
       body.dark #app main p,
       body.dark #app main span,
       body.dark #app main h1,
       body.dark #app main h2,
-      body.dark #app main h3 {
+      body.dark #app main h3,
+      body.dark #app main div,
+      body.dark #app main label,
+      body.dark #app main a {
+        color: #D0E4FF !important;
+      }
+
+      /* Welcome message heading specifically */
+      body.dark #app main [class*="welcome"],
+      body.dark #app main [class*="greeting"],
+      body.dark #app main > section > div {
+        color: #E8F0FF !important;
+      }
+
+      /* Agent status popup — bottom left black panel */
+      body.dark #app [class*="availability"],
+      body.dark #app [class*="status-menu"],
+      body.dark #app [class*="agent-details"],
+      body.dark #app button.rounded-lg,
+      body.dark #app [class*="dropdown-pane"],
+      body.dark #app [class*="popover"],
+      body.dark #app .dropdown-pane,
+      body.dark #app [data-popover],
+      body.dark #app [class*="bg-n-alpha"] {
+        background: #1B2F48 !important;
+        border: 1px solid rgba(29,110,245,0.22) !important;
+        box-shadow: 0 12px 40px rgba(0,0,0,0.35) !important;
+        color: #D0E4FF !important;
+      }
+
+      body.dark #app [class*="availability"] *,
+      body.dark #app [class*="dropdown-pane"] *,
+      body.dark #app [class*="popover"] * {
         color: #D0E4FF !important;
       }
 
