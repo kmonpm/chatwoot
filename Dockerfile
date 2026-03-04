@@ -14,7 +14,7 @@ COPY app/views/devise/mailer/reset_password_instructions.html.erb /app/app/views
 COPY app/views/devise/mailer/invitation_instructions.html.erb     /app/app/views/devise/mailer/invitation_instructions.html.erb
 
 # ── 4) (Optional) Favicons — uncomment after adding PNG files to repo ────────
- COPY public/favicon.ico                  /app/public/favicon.ico
+ #COPY public/favicon.ico                  /app/public/favicon.ico
  COPY public/favicon-16x16.png           /app/public/favicon-16x16.png
  COPY public/favicon-32x32.png           /app/public/favicon-32x32.png
  COPY public/favicon-96x96.png           /app/public/favicon-96x96.png
