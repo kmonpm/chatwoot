@@ -79,251 +79,278 @@
     <%= vite_javascript_tag @application_pack %>
 
     <!-- ═══════════════════════════════════════════════════
-         Boster Chat — Modern Blue Theme v6 (Sidebar text FIX)
-         - Sidebar text forced high-contrast + higher font weight
-         - Sidebar selector made more robust (in case class changes)
-         - Global link color no longer breaks sidebar readability
-         - Added subtle spacing / polish without changing structure
+         Boster Chat — Modern Blue Theme v4
+         CSS selectors verified directly from DevTools:
+           aside.bg-n-background   = sidebar
+           div.size-6              = logo wrapper
+           img.size-4              = logo image
+           main.bg-n-surface-1     = content area
     ════════════════════════════════════════════════════ -->
-
+    <style nonce="<%= content_security_policy_nonce %>">
 
       /* ── Design tokens ───────────────────────────────────── */
+      :root {
+        --b-blue:         #1D6EF5;
+        --b-blue-dark:    #1450C8;
+        --b-blue-navy:    #162F6A;
+        --b-blue-light:   #EFF6FF;
+        --b-blue-pale:    #F3F7FF;
+        --b-blue-border:  #DBEAFE;
+        --b-sidebar-icon: #7FB3FF;
+        --b-white:        #FFFFFF;
+        --b-radius:       10px;
+      }
 
-<style nonce="<%= content_security_policy_nonce %>">
-  :root {
-    --b-blue:         #1D6EF5;
-    --b-blue-dark:    #1450C8;
-    --b-blue-light:   #EFF6FF;
-    --b-blue-pale:    #F3F7FF;
-    --b-blue-border:  #DBEAFE;
+      /* ══════════════════════════════════════
+         GLOBAL — font + body background
+      ══════════════════════════════════════ */
 
-    --b-radius:       12px;
-    --b-radius-lg:    18px;
+      body, html {
+        background: var(--b-blue-pale) !important;
+      }
 
-    --b-shadow-sm:    0 1px 2px rgba(16, 24, 40, 0.06);
-    --b-shadow:       0 10px 30px rgba(29,110,245,0.10), 0 2px 6px rgba(16,24,40,0.06);
-    --b-shadow-lg:    0 18px 60px rgba(29,110,245,0.14), 0 4px 14px rgba(16,24,40,0.10);
+      #app {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+      }
 
-    --b-text:         #0F172A;
-    --b-text-muted:   #475569;
+      /* ══════════════════════════════════════
+         LOGIN PAGE
+      ══════════════════════════════════════ */
 
-    /* Light sidebar like your screenshots */
-    --b-side-bg:      rgba(255,255,255,0.92);
-    --b-side-border:  rgba(219,234,254,0.95);
-    --b-side-text:    #0F172A;
-    --b-side-muted:   #334155;
-  }
+      /* Outer wrapper on login — Chatwoot uses flex min-h-screen */
+      #app .flex.flex-col.w-full.h-screen,
+      #app .flex.min-h-screen,
+      #app [class*="min-h-screen"] {
+        background:
+          radial-gradient(ellipse 700px 500px at 15% 10%, rgba(29,110,245,0.12), transparent 60%),
+          radial-gradient(ellipse 500px 400px at 85% 90%, rgba(29,110,245,0.08), transparent 55%),
+          var(--b-blue-pale) !important;
+      }
 
-  /* ── Global background ───────────────────────────────── */
-  html, body {
-    background:
-      radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.14), transparent 58%),
-      radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.10), transparent 60%),
-      linear-gradient(180deg, #F7FAFF 0%, #F3F7FF 55%, #F7FAFF 100%) !important;
-  }
+      /* Login card */
+      #app section.bg-white,
+      #app .bg-white.shadow,
+      #app [class*="shadow"][class*="bg-white"] {
+        border-radius: 20px !important;
+        box-shadow: 0 8px 48px rgba(29,110,245,0.13), 0 1px 4px rgba(0,0,0,0.04) !important;
+        border: 1px solid var(--b-blue-border) !important;
+      }
 
-  #app {
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: geometricPrecision;
-  }
+      /* ══════════════════════════════════════
+         SIDEBAR — exact class from DevTools:
+         aside.bg-n-background (the left panel)
+      ══════════════════════════════════════ */
 
-  /* ── Cards / general panels ──────────────────────────── */
-  #app section.bg-white,
-  #app .bg-white.shadow,
-  #app [class*="shadow"][class*="bg-white"] {
-    border-radius: 22px !important;
-    box-shadow: var(--b-shadow-lg) !important;
-    border: 1px solid rgba(219,234,254,0.85) !important;
-    backdrop-filter: blur(6px);
-  }
+      #app aside.bg-n-background,
+      #app aside[class*="bg-n-background"] {
+        background: var(--b-blue-navy) !important;
+        border-right: 1px solid rgba(255,255,255,0.08) !important;
+      }
 
-  #app .bg-white.rounded-lg,
-  #app [class*="bg-white"][class*="rounded"],
-  #app [class*="bg-white"][class*="shadow"] {
-    border: 1px solid rgba(219,234,254,0.92) !important;
-    border-radius: var(--b-radius-lg) !important;
-    box-shadow: var(--b-shadow) !important;
-    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-  }
+      /* All text inside sidebar */
+      #app aside.bg-n-background *,
+      #app aside[class*="bg-n-background"] * {
+        color: #C8DEFF !important;
+      }
 
-  #app .bg-white.rounded-lg:hover,
-  #app [class*="bg-white"][class*="rounded"]:hover,
-  #app [class*="bg-white"][class*="shadow"]:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--b-shadow-lg) !important;
-    border-color: rgba(29,110,245,0.22) !important;
-  }
+      /* Icons inside sidebar */
+      #app aside.bg-n-background svg,
+      #app aside[class*="bg-n-background"] svg {
+        color: var(--b-sidebar-icon) !important;
+        stroke: var(--b-sidebar-icon) !important;
+      }
 
-  /* ──────────────────────────────────────────────────────
-     IMPORTANT FIX #1:
-     Restore DEFAULT Chatwoot button styles (LOGIN button)
-     -> So we DO NOT override submit/primary buttons at all.
-     (Removed all previous button gradient rules)
-  ────────────────────────────────────────────────────── */
+      /* Active nav item */
+      #app aside.bg-n-background .active,
+      #app aside[class*="bg-n-background"] .active,
+      #app aside.bg-n-background [aria-current="page"],
+      #app aside[class*="bg-n-background"] [aria-current="page"] {
+        background: rgba(29,110,245,0.35) !important;
+        border-radius: var(--b-radius) !important;
+      }
 
-  /* ── Left main sidebar container (light) ─────────────── */
-  #app aside.bg-n-background,
-  #app aside[class*="bg-n-background"] {
-    background: var(--b-side-bg) !important;
-    border-right: 1px solid var(--b-side-border) !important;
-    backdrop-filter: blur(10px);
-  }
+      /* Hover */
+      #app aside.bg-n-background a:hover,
+      #app aside[class*="bg-n-background"] a:hover,
+      #app aside.bg-n-background button:hover,
+      #app aside[class*="bg-n-background"] button:hover {
+        background: rgba(127,179,255,0.15) !important;
+        border-radius: var(--b-radius) !important;
+      }
 
-  /* Sidebar menu text/icons should be dark (not white) */
-  #app aside.bg-n-background *,
-  #app aside[class*="bg-n-background"] * {
-    color: var(--b-side-text) !important;
-    opacity: 1 !important;
-    font-weight: 600 !important;
-    text-shadow: none !important;
-  }
+      /* ── LOGO — exact selectors from DevTools ──────────────
+         div.grid.flex-shrink-0.place-content-center.size-6
+         img.size-4 (the actual logo image)
+      ──────────────────────────────────────────────────── */
 
-  #app aside.bg-n-background svg,
-  #app aside[class*="bg-n-background"] svg {
-    color: var(--b-side-muted) !important;
-    stroke: var(--b-side-muted) !important;
-    opacity: 1 !important;
-    filter: none !important;
-  }
+      /* Hide the logo image precisely */
+      #app img.size-4,
+      #app div.size-6 img,
+      #app div.size-6 > img,
+      #app [class*="place-content-center"] img {
+        display: none !important;
+        visibility: hidden !important;
+      }
 
-  /* Hover */
-  #app aside.bg-n-background a:hover,
-  #app aside[class*="bg-n-background"] a:hover,
-  #app aside.bg-n-background button:hover,
-  #app aside[class*="bg-n-background"] button:hover {
-    background: rgba(29,110,245,0.08) !important;
-    border-radius: var(--b-radius) !important;
-    text-decoration: none !important;
-  }
+      /* Show "B" badge in the logo container */
+      #app div.size-6::after,
+      #app [class*="place-content-center"][class*="size-6"]::after {
+        content: "B";
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: var(--b-blue);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 800;
+        border-radius: 7px;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        letter-spacing: -0.3px;
+        flex-shrink: 0;
+      }
 
-  /* Active item = blue pill with white text */
-  #app aside.bg-n-background .active,
-  #app aside[class*="bg-n-background"] .active,
-  #app aside.bg-n-background [aria-current="page"],
-  #app aside[class*="bg-n-background"] [aria-current="page"] {
-    background: rgba(29,110,245,0.96) !important;
-    border-radius: var(--b-radius) !important;
-    box-shadow: 0 12px 28px rgba(29,110,245,0.18) !important;
-  }
+      /* ══════════════════════════════════════
+         MAIN CONTENT AREA
+         exact class from DevTools: main.bg-n-surface-1
+      ══════════════════════════════════════ */
 
-  #app aside.bg-n-background .active *,
-  #app aside[class*="bg-n-background"] .active *,
-  #app aside.bg-n-background [aria-current="page"] *,
-  #app aside[class*="bg-n-background"] [aria-current="page"] * {
-    color: #FFFFFF !important;
-  }
+      #app main.bg-n-surface-1,
+      #app main[class*="bg-n-surface-1"],
+      #app [class*="bg-n-surface-1"] {
+        background: var(--b-blue-pale) !important;
+      }
 
-  #app aside.bg-n-background .active svg,
-  #app aside[class*="bg-n-background"] .active svg,
-  #app aside.bg-n-background [aria-current="page"] svg,
-  #app aside[class*="bg-n-background"] [aria-current="page"] svg {
-    color: #FFFFFF !important;
-    stroke: #FFFFFF !important;
-  }
+      /* Conversation list panel */
+      #app .flex.flex-col.h-full.bg-n-background,
+      #app [class*="conversations-list"] {
+        background: #F8FAFF !important;
+        border-right: 1px solid var(--b-blue-border) !important;
+      }
 
-  /* ──────────────────────────────────────────────────────
-     IMPORTANT FIX #2:
-     Top-left EMAIL + “Mine 0” area were faded/white.
-     These often have opacity/text utility classes.
-     Force them dark + fully visible.
-  ────────────────────────────────────────────────────── */
+      /* Active conversation highlight */
+      #app .active.conversation,
+      #app [class*="conversation-item"].active,
+      #app [class*="active"][class*="conversation"] {
+        background: var(--b-blue-light) !important;
+        border-left: 3px solid var(--b-blue) !important;
+      }
 
-  /* Email/header block inside left sidebar (top area) */
-  #app aside.bg-n-background [class*="opacity"],
-  #app aside[class*="bg-n-background"] [class*="opacity"],
-  #app aside.bg-n-background [class*="text-white"],
-  #app aside[class*="bg-n-background"] [class*="text-white"] {
-    opacity: 1 !important;
-    color: var(--b-side-text) !important;
-  }
+      /* ══════════════════════════════════════
+         HEADER / TOP BAR
+      ══════════════════════════════════════ */
 
-  /* Conversation list panel (2nd column) */
-  #app .flex.flex-col.h-full.bg-n-background {
-    background: rgba(255,255,255,0.72) !important;
-    backdrop-filter: blur(10px);
-    border-right: 1px solid rgba(219,234,254,0.9) !important;
-  }
+      #app header,
+      #app .view-header,
+      #app [class*="view-header"],
+      #app [class*="page-header"] {
+        background: var(--b-white) !important;
+        border-bottom: 1px solid var(--b-blue-border) !important;
+        box-shadow: 0 1px 6px rgba(29,110,245,0.06) !important;
+      }
 
-  /* ✅ Force “Mine / Unassigned / All” to be readable */
-  #app .flex.flex-col.h-full.bg-n-background *,
-  #app .flex.flex-col.h-full.bg-n-background [class*="opacity"],
-  #app .flex.flex-col.h-full.bg-n-background [class*="text-white"] {
-    color: var(--b-text) !important;
-    opacity: 1 !important;
-    font-weight: 600 !important;
-    text-shadow: none !important;
-  }
+      /* ══════════════════════════════════════
+         BUTTONS — brand blue
+      ══════════════════════════════════════ */
 
-  /* Tabs hover */
-  #app .flex.flex-col.h-full.bg-n-background a:hover,
-  #app .flex.flex-col.h-full.bg-n-background button:hover {
-    background: rgba(29,110,245,0.06) !important;
-    border-radius: var(--b-radius) !important;
-  }
+      /* Chatwoot uses bg-woot-500 and bg-n-brand for primary buttons */
+      #app [class*="bg-woot-500"],
+      #app [class*="bg-n-brand"],
+      #app [class*="bg-brand"],
+      #app button[data-testid="submit_button"],
+      #app button[type="submit"] {
+        background: var(--b-blue) !important;
+        border-color: var(--b-blue) !important;
+        color: #fff !important;
+      }
 
-  /* Active “Mine” tab highlight should stay visible */
-  #app .flex.flex-col.h-full.bg-n-background .active,
-  #app .flex.flex-col.h-full.bg-n-background [aria-current="page"] {
-    background: rgba(29,110,245,0.10) !important;
-    border-left: 3px solid rgba(29,110,245,0.95) !important;
-  }
+      #app [class*="bg-woot-500"]:hover,
+      #app [class*="bg-n-brand"]:hover,
+      #app button[type="submit"]:hover {
+        background: var(--b-blue-dark) !important;
+        border-color: var(--b-blue-dark) !important;
+      }
 
-  /* ── Top bar ─────────────────────────────────────────── */
-  #app header,
-  #app .view-header,
-  #app [class*="view-header"],
-  #app [class*="page-header"] {
-    background: rgba(255,255,255,0.82) !important;
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(219,234,254,0.9) !important;
-    box-shadow: 0 1px 10px rgba(29,110,245,0.07) !important;
-  }
+      /* Outlined / ghost buttons with brand border */
+      #app [class*="border-woot"],
+      #app [class*="border-n-brand"],
+      #app [class*="border-brand"] {
+        border-color: var(--b-blue) !important;
+        color: var(--b-blue) !important;
+      }
 
-  /* ── Links (main content only) ───────────────────────── */
-  #app main a,
-  #app [class*="view"] a,
-  #app [class*="content"] a {
-    color: var(--b-blue) !important;
-  }
+      /* All buttons radius */
+      #app button,
+      #app [role="button"] {
+        border-radius: var(--b-radius) !important;
+      }
 
-  #app main a:hover,
-  #app [class*="view"] a:hover,
-  #app [class*="content"] a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
+      /* ══════════════════════════════════════
+         TEXT ACCENTS
+      ══════════════════════════════════════ */
 
-  /* ── Inputs ──────────────────────────────────────────── */
-  #app input,
-  #app textarea,
-  #app select {
-    border-radius: 12px !important;
-  }
+      #app [class*="text-woot"],
+      #app [class*="text-n-brand"],
+      #app [class*="text-brand"],
+      #app a[class*="text-brand"] {
+        color: var(--b-blue) !important;
+      }
 
-  #app input:focus,
-  #app textarea:focus,
-  #app select:focus {
-    border-color: rgba(29,110,245,0.95) !important;
-    box-shadow: 0 0 0 4px rgba(29,110,245,0.14) !important;
-    outline: none !important;
-  }
+      /* Active tab indicator line */
+      #app [class*="border-b-woot"],
+      #app [class*="border-b-brand"],
+      #app [class*="border-b-n-brand"] {
+        border-bottom-color: var(--b-blue) !important;
+        color: var(--b-blue) !important;
+      }
 
-  /* ── Scrollbars ──────────────────────────────────────── */
-  #app *::-webkit-scrollbar       { width: 6px; height: 6px; }
-  #app *::-webkit-scrollbar-track { background: rgba(238,243,255,0.9); }
-  #app *::-webkit-scrollbar-thumb {
-    background: rgba(191,219,254,0.95);
-    border-radius: 999px;
-  }
-  #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.85); }
-</style>
+      /* ══════════════════════════════════════
+         INPUTS
+      ══════════════════════════════════════ */
+
+      #app input:focus,
+      #app textarea:focus,
+      #app select:focus {
+        border-color: var(--b-blue) !important;
+        box-shadow: 0 0 0 3px rgba(29,110,245,0.10) !important;
+        outline: none !important;
+      }
+
+      /* ══════════════════════════════════════
+         NOTIFICATION BADGES
+      ══════════════════════════════════════ */
+
+      #app [class*="badge"],
+      #app .unread-badge,
+      #app [class*="unread-count"] {
+        background: var(--b-blue) !important;
+        color: #fff !important;
+      }
+
+      /* ══════════════════════════════════════
+         CARDS / PANELS
+      ══════════════════════════════════════ */
+
+      #app .bg-white.rounded-lg,
+      #app [class*="bg-white"][class*="rounded"] {
+        border: 1px solid var(--b-blue-border) !important;
+        box-shadow: 0 2px 12px rgba(29,110,245,0.06) !important;
+      }
+
+      /* ══════════════════════════════════════
+         SCROLLBARS
+      ══════════════════════════════════════ */
+
+      #app *::-webkit-scrollbar       { width: 5px; height: 5px; }
+      #app *::-webkit-scrollbar-track { background: #EEF3FF; }
+      #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 99px; }
+      #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
+
+    </style>
 
     <!-- ═══════════════════════════════════════════════════
          Boster Chat — JS white-label engine
-         Replaces all "Chatwoot" text + attributes + title
-         MutationObserver keeps it live across Vue re-renders
     ════════════════════════════════════════════════════ -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
