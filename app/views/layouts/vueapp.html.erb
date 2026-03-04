@@ -387,13 +387,14 @@
 
     </style>
 
-    <!-- Boster Chat — JS white-label engine -->
+    <!-- Boster Chat — JS white-label engine + dynamic UI fixes -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
       const BRAND_OLD       = 'Chatwoot';
       const BRAND_NEW       = 'Boster Chat';
       const BRAND_OLD_LOWER = 'chatwoot';
 
+      /* ── Brand text replacement ──────────────────────────── */
       function replaceBrandText(text) {
         if (!text) return text;
         return text
@@ -442,14 +443,87 @@
         });
       }
 
+      /* ── Dynamic UI fixes — runs after Vue renders ───────── */
+      function applyUIFixes() {
+        const isDark = document.body.classList.contains('dark');
+
+        // ── Fix Mine/Unassigned/All tabs ─────────────────────
+        // Find buttons whose text is Mine, Unassigned, or All
+        document.querySelectorAll('button, [role="tab"]').forEach(btn => {
+          const text = btn.textContent.trim();
+          if (/^(Mine|Unassigned|All)\b/.test(text)) {
+            // Apply pill style
+            btn.style.borderRadius = '20px';
+            btn.style.padding = '3px 14px';
+            btn.style.fontSize = '13px';
+            btn.style.fontWeight = '500';
+            btn.style.transition = 'background 130ms ease, color 130ms ease';
+            btn.style.border = 'none';
+            btn.style.cursor = 'pointer';
+
+            const isActive =
+              btn.classList.contains('active') ||
+              btn.getAttribute('aria-selected') === 'true' ||
+              btn.classList.contains('is-active') ||
+              // check for blue/brand background already applied
+              getComputedStyle(btn).backgroundColor.includes('29, 110, 245');
+
+            if (isActive) {
+              btn.style.background = '#1D6EF5';
+              btn.style.color = '#FFFFFF';
+              btn.style.boxShadow = '0 2px 10px rgba(29,110,245,0.28)';
+            } else {
+              btn.style.background = 'transparent';
+              btn.style.color = isDark ? '#94AFCF' : '#475569';
+              btn.style.boxShadow = 'none';
+            }
+
+            // Hover effect
+            btn.onmouseenter = function() {
+              if (!this.style.background.includes('29, 110, 245') && this.style.background !== 'rgb(29, 110, 245)') {
+                this.style.background = isDark ? 'rgba(29,110,245,0.15)' : '#EFF6FF';
+                this.style.color = '#1D6EF5';
+              }
+            };
+            btn.onmouseleave = function() {
+              // re-run fix to restore correct state
+              applyUIFixes();
+            };
+          }
+        });
+
+        // ── Fix search bar in conversation list ──────────────
+        document.querySelectorAll('input[placeholder*="Search"], input[placeholder*="search"]').forEach(input => {
+          if (!isDark) {
+            input.style.color = '#1E293B';
+            input.style.caretColor = '#1D6EF5';
+          }
+        });
+
+        // ── Fix any white-on-white text in light mode ────────
+        if (!isDark) {
+          // Conversation list header area (contains search + tabs)
+          document.querySelectorAll('[class*="conversations-list-wrap"] > div, [class*="conversation-header"]').forEach(el => {
+            const bg = getComputedStyle(el).backgroundColor;
+            // If background is white or very light, ensure text is dark
+            if (bg === 'rgba(0, 0, 0, 0)' || bg === 'rgb(255, 255, 255)' || bg.includes('248') || bg.includes('249')) {
+              el.style.color = '#1E293B';
+            }
+          });
+        }
+      }
+
+      /* ── MutationObserver — survives Vue re-renders ─────── */
       function observeChanges(root) {
         const observer = new MutationObserver(mutations => {
+          let needsUIFix = false;
           for (const mutation of mutations) {
             if (mutation.type === 'childList') {
               mutation.addedNodes.forEach(node => {
                 if (node.nodeType === Node.ELEMENT_NODE) {
                   replaceTextNodes(node);
                   replaceAttributes(node);
+                  needsUIFix = true;
                 } else if (node.nodeType === Node.TEXT_NODE) {
                   if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
                     node.nodeValue = replaceBrandText(node.nodeValue);
@@ -463,6 +537,11 @@
               }
             }
           }
+          if (needsUIFix) {
+            // Debounce UI fixes to avoid thrashing
+            clearTimeout(window._bosterUITimer);
+            window._bosterUITimer = setTimeout(applyUIFixes, 80);
+          }
         });
         observer.observe(root, { childList: true, subtree: true, characterData: true });
       }
@@ -472,6 +551,7 @@
         replaceTextNodes(root);
         replaceAttributes(root);
         replaceMetaTags();
+        applyUIFixes();
         observeChanges(root);
       }
 
