@@ -102,6 +102,71 @@
       }
 
       /* ══════════════════════════════════════
+         CONVERSATION LIST TOP AREA
+         Search bar + Mine/Unassigned/All tabs
+         These sit outside aside, on white bg —
+         text was invisible because of our sidebar
+         color overrides bleeding through.
+      ══════════════════════════════════════ */
+
+      /* Search bar area — force dark text in light mode */
+      #app .conversations-list-wrap input,
+      #app [class*="conversations-list-wrap"] input,
+      #app .search-wrap input,
+      #app [class*="search"] input {
+        color: #1E293B !important;
+        background: #F1F5FF !important;
+        border: 1px solid #DBEAFE !important;
+        border-radius: 10px !important;
+      }
+
+      #app .conversations-list-wrap input::placeholder,
+      #app [class*="conversations-list-wrap"] input::placeholder {
+        color: #94A3B8 !important;
+      }
+
+      /* Mine / Unassigned / All — tab pills */
+      #app [role="tab"],
+      #app [class*="conversations-tab"],
+      #app .conversations-list-wrap [class*="tab"],
+      #app [class*="tab-list"] button,
+      #app [class*="tabs-title"] {
+        border-radius: 20px !important;
+        padding: 4px 14px !important;
+        font-size: 13px !important;
+        font-weight: 500 !important;
+        transition: background 130ms ease, color 130ms ease !important;
+        color: #475569 !important;
+        background: transparent !important;
+        border: none !important;
+      }
+
+      /* Active tab — solid blue pill */
+      #app [role="tab"][aria-selected="true"],
+      #app [class*="tab"].active,
+      #app [class*="tabs-title"].is-active {
+        background: var(--b-blue) !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 2px 10px rgba(29,110,245,0.25) !important;
+      }
+
+      /* Hover on inactive tab */
+      #app [role="tab"]:not([aria-selected="true"]):hover {
+        background: var(--b-blue-light) !important;
+        color: var(--b-blue) !important;
+      }
+
+      /* Dark mode tabs — adjust for dark bg */
+      body.dark #app [role="tab"]:not([aria-selected="true"]) {
+        color: #94AFCF !important;
+      }
+
+      body.dark #app [role="tab"]:not([aria-selected="true"]):hover {
+        background: rgba(29,110,245,0.15) !important;
+        color: #A8C8F0 !important;
+      }
+
+      /* ══════════════════════════════════════
          SIDEBAR — only background + active pill
          NO text/color overrides → Chatwoot handles
          text color correctly in both light + dark
