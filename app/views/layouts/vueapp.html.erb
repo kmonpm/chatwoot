@@ -78,126 +78,145 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
 
-    <!-- ═══════════════════════════════════════════════════
-         Boster Chat — Modern Blue Theme v4
-         CSS selectors verified directly from DevTools:
-           aside.bg-n-background   = sidebar
-           div.size-6              = logo wrapper
-           img.size-4              = logo image
-           main.bg-n-surface-1     = content area
-    ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
 
-      /* ── Design tokens ───────────────────────────────────── */
       :root {
-        --b-blue:         #1D6EF5;
-        --b-blue-dark:    #1450C8;
-        --b-blue-navy:    #162F6A;
-        --b-blue-light:   #EFF6FF;
-        --b-blue-pale:    #F3F7FF;
-        --b-blue-border:  #DBEAFE;
-        --b-sidebar-icon: #7FB3FF;
-        --b-white:        #FFFFFF;
-        --b-radius:       10px;
+        --b-blue:           #1D6EF5;
+        --b-blue-dark:      #1450C8;
+        --b-blue-light:     #EFF6FF;
+        --b-blue-pale:      #F3F7FF;
+        --b-blue-border:    #DBEAFE;
+        --b-sidebar-bg:     #FFFFFF;
+        --b-sidebar-text:   #1E293B;
+        --b-sidebar-muted:  #64748B;
+        --b-sidebar-icon:   #475569;
+        --b-sidebar-hover:  #F1F5FE;
+        --b-sidebar-active: #1D6EF5;
+        --b-sidebar-border: #E8EFFE;
+        --b-page-bg:        #EEF3FC;
+        --b-card-bg:        #FFFFFF;
+        --b-text:           #0F172A;
+        --b-text-muted:     #475569;
+        --b-radius:         12px;
+        --b-radius-lg:      22px;
+        --b-shadow-sm:      0 1px 3px rgba(16,24,40,0.06), 0 1px 2px rgba(16,24,40,0.04);
+        --b-shadow:         0 4px 16px rgba(29,110,245,0.08), 0 2px 6px rgba(16,24,40,0.05);
+        --b-shadow-lg:      0 12px 40px rgba(29,110,245,0.12), 0 4px 14px rgba(16,24,40,0.08);
+        --b-shadow-float:   0 20px 60px rgba(29,110,245,0.14), 0 6px 20px rgba(16,24,40,0.08);
       }
 
-      /* ══════════════════════════════════════
-         GLOBAL — font + body background
-      ══════════════════════════════════════ */
-
-      body, html {
-        background: var(--b-blue-pale) !important;
+      html, body {
+        background: var(--b-page-bg) !important;
       }
 
       #app {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
+        background: var(--b-page-bg) !important;
       }
 
-      /* ══════════════════════════════════════
-         LOGIN PAGE
-      ══════════════════════════════════════ */
+      #app h1, #app h2, #app h3, #app h4 {
+        color: var(--b-text) !important;
+        letter-spacing: -0.2px;
+      }
 
-      /* Outer wrapper on login — Chatwoot uses flex min-h-screen */
+      /* ── LOGIN ───────────────────────────────────────────── */
       #app .flex.flex-col.w-full.h-screen,
       #app .flex.min-h-screen,
       #app [class*="min-h-screen"] {
         background:
-          radial-gradient(ellipse 700px 500px at 15% 10%, rgba(29,110,245,0.12), transparent 60%),
-          radial-gradient(ellipse 500px 400px at 85% 90%, rgba(29,110,245,0.08), transparent 55%),
-          var(--b-blue-pale) !important;
+          radial-gradient(800px 600px at 15% 10%, rgba(29,110,245,0.10), transparent 55%),
+          radial-gradient(600px 500px at 88% 88%, rgba(29,110,245,0.07), transparent 55%),
+          var(--b-page-bg) !important;
       }
 
-      /* Login card */
       #app section.bg-white,
       #app .bg-white.shadow,
       #app [class*="shadow"][class*="bg-white"] {
-        border-radius: 20px !important;
-        box-shadow: 0 8px 48px rgba(29,110,245,0.13), 0 1px 4px rgba(0,0,0,0.04) !important;
-        border: 1px solid var(--b-blue-border) !important;
+        border-radius: var(--b-radius-lg) !important;
+        box-shadow: var(--b-shadow-float) !important;
+        border: 1px solid rgba(219,234,254,0.8) !important;
       }
 
-      /* ══════════════════════════════════════
-         SIDEBAR — exact class from DevTools:
-         aside.bg-n-background (the left panel)
-      ══════════════════════════════════════ */
-
+      /* ── SIDEBAR — white, dark text ──────────────────────── */
       #app aside.bg-n-background,
       #app aside[class*="bg-n-background"] {
-        background: #1a3a7a !important;
-        border-right: 1px solid rgba(255,255,255,0.10) !important;
+        background: var(--b-sidebar-bg) !important;
+        border-right: 1px solid var(--b-sidebar-border) !important;
+        box-shadow: 2px 0 12px rgba(29,110,245,0.05) !important;
       }
 
-      /* ALL text inside sidebar — bright white, high contrast */
+      /* Every element inside sidebar gets dark text */
       #app aside.bg-n-background *,
       #app aside[class*="bg-n-background"] * {
-        color: #FFFFFF !important;
+        color: var(--b-sidebar-text) !important;
       }
 
-      /* Muted secondary text — slightly dimmer but still readable */
+      /* Muted labels: Mine, Unassigned, All, section headers */
       #app aside.bg-n-background span,
-      #app aside[class*="bg-n-background"] span {
-        color: #E0ECFF !important;
+      #app aside[class*="bg-n-background"] span,
+      #app aside.bg-n-background p,
+      #app aside[class*="bg-n-background"] p,
+      #app aside.bg-n-background label,
+      #app aside[class*="bg-n-background"] label {
+        color: var(--b-sidebar-muted) !important;
       }
 
-      /* Icons — bright and visible */
+      /* Sidebar icons — dark slate */
       #app aside.bg-n-background svg,
       #app aside[class*="bg-n-background"] svg {
-        color: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-        opacity: 0.9;
+        color: var(--b-sidebar-icon) !important;
+        stroke: var(--b-sidebar-icon) !important;
       }
 
-      /* Active nav item — solid blue pill */
-      #app aside.bg-n-background .active,
-      #app aside[class*="bg-n-background"] .active,
-      #app aside.bg-n-background [aria-current="page"],
-      #app aside[class*="bg-n-background"] [aria-current="page"] {
-        background: var(--b-blue) !important;
+      /* Nav links/buttons base */
+      #app aside.bg-n-background a,
+      #app aside[class*="bg-n-background"] a,
+      #app aside.bg-n-background button,
+      #app aside[class*="bg-n-background"] button {
+        color: var(--b-sidebar-text) !important;
+        text-decoration: none !important;
         border-radius: var(--b-radius) !important;
+        transition: background 130ms ease;
       }
 
-      /* Active item text — keep white */
-      #app aside.bg-n-background .active *,
-      #app aside[class*="bg-n-background"] .active * {
-        color: #FFFFFF !important;
-        opacity: 1 !important;
-      }
-
-      /* Hover */
+      /* Hover — very light blue */
       #app aside.bg-n-background a:hover,
       #app aside[class*="bg-n-background"] a:hover,
       #app aside.bg-n-background button:hover,
       #app aside[class*="bg-n-background"] button:hover {
-        background: rgba(255,255,255,0.12) !important;
-        border-radius: var(--b-radius) !important;
+        background: var(--b-sidebar-hover) !important;
+        text-decoration: none !important;
       }
 
-      /* ── LOGO — exact selectors from DevTools ──────────────
-         div.grid.flex-shrink-0.place-content-center.size-6
-         img.size-4 (the actual logo image)
-      ──────────────────────────────────────────────────── */
+      /* Active item — blue pill */
+      #app aside.bg-n-background .active,
+      #app aside[class*="bg-n-background"] .active,
+      #app aside.bg-n-background [aria-current="page"],
+      #app aside[class*="bg-n-background"] [aria-current="page"] {
+        background: var(--b-sidebar-active) !important;
+        border-radius: var(--b-radius) !important;
+        box-shadow: 0 4px 14px rgba(29,110,245,0.25) !important;
+      }
 
-      /* Hide the logo image precisely */
+      /* Active item children — white text + icons */
+      #app aside.bg-n-background .active *,
+      #app aside[class*="bg-n-background"] .active *,
+      #app aside.bg-n-background [aria-current="page"] *,
+      #app aside[class*="bg-n-background"] [aria-current="page"] * {
+        color: #FFFFFF !important;
+      }
+
+      #app aside.bg-n-background .active svg,
+      #app aside[class*="bg-n-background"] .active svg,
+      #app aside.bg-n-background [aria-current="page"] svg,
+      #app aside[class*="bg-n-background"] [aria-current="page"] svg {
+        color: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        opacity: 1 !important;
+      }
+
+      /* ── Logo: hide img, show "B" badge ──────────────────── */
       #app img.size-4,
       #app div.size-6 img,
       #app div.size-6 > img,
@@ -206,112 +225,131 @@
         visibility: hidden !important;
       }
 
-      /* Show "B" badge in the logo container */
       #app div.size-6::after,
       #app [class*="place-content-center"][class*="size-6"]::after {
         content: "B";
         display: flex !important;
         align-items: center;
         justify-content: center;
-        width: 28px;
-        height: 28px;
-        background: var(--b-blue);
-        color: #fff;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, var(--b-blue) 0%, #1450C8 100%);
+        color: #fff !important;
         font-size: 15px;
-        font-weight: 800;
-        border-radius: 7px;
-        font-family: 'Segoe UI', system-ui, sans-serif;
-        letter-spacing: -0.3px;
+        font-weight: 900;
+        border-radius: 9px;
+        box-shadow: 0 6px 20px rgba(29,110,245,0.30);
+        font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+        letter-spacing: -0.4px;
         flex-shrink: 0;
       }
 
-      /* ══════════════════════════════════════
-         MAIN CONTENT AREA
-         exact class from DevTools: main.bg-n-surface-1
-      ══════════════════════════════════════ */
-
-      #app main.bg-n-surface-1,
-      #app main[class*="bg-n-surface-1"],
-      #app [class*="bg-n-surface-1"] {
-        background: var(--b-blue-pale) !important;
-      }
-
-      /* Conversation list panel */
+      /* ── CONVERSATION LIST (middle column) ───────────────── */
       #app .flex.flex-col.h-full.bg-n-background,
       #app [class*="conversations-list"] {
         background: #F8FAFF !important;
         border-right: 1px solid var(--b-blue-border) !important;
       }
 
-      /* Active conversation highlight */
-      #app .active.conversation,
-      #app [class*="conversation-item"].active,
-      #app [class*="active"][class*="conversation"] {
-        background: var(--b-blue-light) !important;
-        border-left: 3px solid var(--b-blue) !important;
+      /* Mine / Unassigned / All tab labels — always dark */
+      #app [class*="conversations-list"] span,
+      #app [class*="conversations-list"] button span,
+      #app [class*="tab"] span,
+      #app [role="tab"] span {
+        color: var(--b-text) !important;
+        font-weight: 500;
       }
 
-      /* ══════════════════════════════════════
-         HEADER / TOP BAR
-      ══════════════════════════════════════ */
+      /* Active tab */
+      #app [role="tab"][aria-selected="true"] span,
+      #app [class*="active-tab"] span,
+      #app [class*="tab"].active span {
+        color: var(--b-blue) !important;
+        font-weight: 600 !important;
+      }
 
+      /* Active conversation row */
+      #app .active.conversation,
+      #app [class*="conversation-item"].active {
+        background: var(--b-blue-light) !important;
+        border-left: 3px solid var(--b-blue) !important;
+        border-radius: 8px !important;
+      }
+
+      /* ── MAIN CONTENT ─────────────────────────────────────── */
+      #app main.bg-n-surface-1,
+      #app main[class*="bg-n-surface-1"],
+      #app [class*="bg-n-surface-1"] {
+        background: var(--b-page-bg) !important;
+      }
+
+      /* ── HEADER ──────────────────────────────────────────── */
       #app header,
       #app .view-header,
       #app [class*="view-header"],
       #app [class*="page-header"] {
-        background: var(--b-white) !important;
+        background: rgba(255,255,255,0.92) !important;
+        backdrop-filter: blur(8px);
         border-bottom: 1px solid var(--b-blue-border) !important;
-        box-shadow: 0 1px 6px rgba(29,110,245,0.06) !important;
+        box-shadow: 0 1px 8px rgba(29,110,245,0.07) !important;
       }
 
-      /* ══════════════════════════════════════
-         BUTTONS — brand blue
-      ══════════════════════════════════════ */
+      /* ── FLOATING CARDS — 22px radius + layered shadows ──── */
+      #app .bg-white.rounded-lg,
+      #app [class*="bg-white"][class*="rounded"],
+      #app [class*="bg-white"][class*="shadow"] {
+        background: var(--b-card-bg) !important;
+        border-radius: var(--b-radius-lg) !important;
+        border: 1px solid rgba(219,234,254,0.80) !important;
+        box-shadow: var(--b-shadow) !important;
+        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+      }
 
-      /* Chatwoot uses bg-woot-500 and bg-n-brand for primary buttons */
+      #app .bg-white.rounded-lg:hover,
+      #app [class*="bg-white"][class*="rounded"]:hover,
+      #app [class*="bg-white"][class*="shadow"]:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--b-shadow-float) !important;
+        border-color: rgba(29,110,245,0.18) !important;
+      }
+
+      /* ── BUTTONS ─────────────────────────────────────────── */
       #app [class*="bg-woot-500"],
       #app [class*="bg-n-brand"],
       #app [class*="bg-brand"],
       #app button[data-testid="submit_button"],
       #app button[type="submit"] {
-        background: var(--b-blue) !important;
-        border-color: var(--b-blue) !important;
+        background: linear-gradient(135deg, var(--b-blue) 0%, #1450C8 100%) !important;
+        border-color: rgba(29,110,245,0.6) !important;
         color: #fff !important;
+        box-shadow: 0 4px 14px rgba(29,110,245,0.22) !important;
+        transition: transform 130ms ease, box-shadow 130ms ease;
       }
 
       #app [class*="bg-woot-500"]:hover,
       #app [class*="bg-n-brand"]:hover,
       #app button[type="submit"]:hover {
-        background: var(--b-blue-dark) !important;
-        border-color: var(--b-blue-dark) !important;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(29,110,245,0.30) !important;
       }
 
-      /* Outlined / ghost buttons with brand border */
+      #app button, #app [role="button"] {
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* ── TEXT / BORDER ACCENTS ───────────────────────────── */
+      #app [class*="text-woot"],
+      #app [class*="text-n-brand"],
+      #app [class*="text-brand"] {
+        color: var(--b-blue) !important;
+      }
+
       #app [class*="border-woot"],
       #app [class*="border-n-brand"],
       #app [class*="border-brand"] {
         border-color: var(--b-blue) !important;
-        color: var(--b-blue) !important;
       }
 
-      /* All buttons radius */
-      #app button,
-      #app [role="button"] {
-        border-radius: var(--b-radius) !important;
-      }
-
-      /* ══════════════════════════════════════
-         TEXT ACCENTS
-      ══════════════════════════════════════ */
-
-      #app [class*="text-woot"],
-      #app [class*="text-n-brand"],
-      #app [class*="text-brand"],
-      #app a[class*="text-brand"] {
-        color: var(--b-blue) !important;
-      }
-
-      /* Active tab indicator line */
       #app [class*="border-b-woot"],
       #app [class*="border-b-brand"],
       #app [class*="border-b-n-brand"] {
@@ -319,53 +357,34 @@
         color: var(--b-blue) !important;
       }
 
-      /* ══════════════════════════════════════
-         INPUTS
-      ══════════════════════════════════════ */
+      /* ── INPUTS ──────────────────────────────────────────── */
+      #app input, #app textarea, #app select {
+        border-radius: var(--b-radius) !important;
+      }
 
-      #app input:focus,
-      #app textarea:focus,
-      #app select:focus {
+      #app input:focus, #app textarea:focus, #app select:focus {
         border-color: var(--b-blue) !important;
-        box-shadow: 0 0 0 3px rgba(29,110,245,0.10) !important;
+        box-shadow: 0 0 0 4px rgba(29,110,245,0.12) !important;
         outline: none !important;
       }
 
-      /* ══════════════════════════════════════
-         NOTIFICATION BADGES
-      ══════════════════════════════════════ */
-
+      /* ── BADGES ──────────────────────────────────────────── */
       #app [class*="badge"],
       #app .unread-badge,
       #app [class*="unread-count"] {
         background: var(--b-blue) !important;
         color: #fff !important;
+        box-shadow: 0 2px 8px rgba(29,110,245,0.25) !important;
       }
 
-      /* ══════════════════════════════════════
-         CARDS / PANELS
-      ══════════════════════════════════════ */
-
-      #app .bg-white.rounded-lg,
-      #app [class*="bg-white"][class*="rounded"] {
-        border: 1px solid var(--b-blue-border) !important;
-        box-shadow: 0 2px 12px rgba(29,110,245,0.06) !important;
-      }
-
-      /* ══════════════════════════════════════
-         SCROLLBARS
-      ══════════════════════════════════════ */
-
+      /* ── SCROLLBARS ──────────────────────────────────────── */
       #app *::-webkit-scrollbar       { width: 5px; height: 5px; }
       #app *::-webkit-scrollbar-track { background: #EEF3FF; }
-      #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 99px; }
+      #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 999px; }
       #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
 
     </style>
 
-    <!-- ═══════════════════════════════════════════════════
-         Boster Chat — JS white-label engine
-    ════════════════════════════════════════════════════ -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
       const BRAND_OLD       = 'Chatwoot';
