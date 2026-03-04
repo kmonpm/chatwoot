@@ -88,352 +88,310 @@
     <style nonce="<%= content_security_policy_nonce %>">
 
       /* ── Design tokens ───────────────────────────────────── */
-      :root {
-        --b-blue:         #1D6EF5;
-        --b-blue-dark:    #1450C8;
-        --b-blue-navy:    #162F6A;
-        --b-blue-light:   #EFF6FF;
-        --b-blue-pale:    #F3F7FF;
-        --b-blue-border:  #DBEAFE;
-        --b-white:        #FFFFFF;
 
-        --b-radius:       12px;
-        --b-radius-lg:    18px;
+<style nonce="<%= content_security_policy_nonce %>">
+  :root {
+    --b-blue:         #1D6EF5;
+    --b-blue-dark:    #1450C8;
+    --b-blue-light:   #EFF6FF;
+    --b-blue-pale:    #F3F7FF;
+    --b-blue-border:  #DBEAFE;
+    --b-white:        #FFFFFF;
 
-        --b-shadow-sm:    0 1px 2px rgba(16, 24, 40, 0.06);
-        --b-shadow:       0 10px 30px rgba(29,110,245,0.10), 0 2px 6px rgba(16,24,40,0.06);
-        --b-shadow-lg:    0 18px 60px rgba(29,110,245,0.14), 0 4px 14px rgba(16,24,40,0.10);
+    --b-radius:       12px;
+    --b-radius-lg:    18px;
 
-        --b-text:         #0F172A;
-        --b-text-muted:   #475569;
+    --b-shadow-sm:    0 1px 2px rgba(16, 24, 40, 0.06);
+    --b-shadow:       0 10px 30px rgba(29,110,245,0.10), 0 2px 6px rgba(16,24,40,0.06);
+    --b-shadow-lg:    0 18px 60px rgba(29,110,245,0.14), 0 4px 14px rgba(16,24,40,0.10);
 
-        /* Sidebar specifics */
-        --b-sidebar-bg-1: #17356F;
-        --b-sidebar-bg-2: #152E61;
-        --b-sidebar-bg-3: #122552;
-        --b-sidebar-text: #FFFFFF;
-        --b-sidebar-muted:#EAF2FF;
-      }
+    --b-text:         #0F172A;
+    --b-text-muted:   #475569;
 
-      /* ── Global background + typography ─────────────────── */
-      html, body {
-        background:
-          radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.14), transparent 58%),
-          radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.10), transparent 60%),
-          linear-gradient(180deg, #F7FAFF 0%, #F3F7FF 55%, #F7FAFF 100%) !important;
-      }
+    /* ✅ Sidebar (LIGHT theme like your screenshots) */
+    --b-sidebar-bg:       rgba(255,255,255,0.90);
+    --b-sidebar-border:   rgba(219,234,254,0.95);
+    --b-sidebar-text:     #0F172A;   /* dark text */
+    --b-sidebar-muted:    #334155;   /* dark muted */
+    --b-sidebar-icon:     #334155;   /* dark icons */
+  }
 
-      #app {
-        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        text-rendering: geometricPrecision;
-      }
+  /* ── Global background + typography ─────────────────── */
+  html, body {
+    background:
+      radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.14), transparent 58%),
+      radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.10), transparent 60%),
+      linear-gradient(180deg, #F7FAFF 0%, #F3F7FF 55%, #F7FAFF 100%) !important;
+  }
 
-      #app h1, #app h2, #app h3, #app h4 {
-        letter-spacing: -0.25px;
-        color: var(--b-text);
-      }
+  #app {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: geometricPrecision;
+  }
 
-      /* ── Login page ──────────────────────────────────────── */
-      #app .flex.flex-col.w-full.h-screen,
-      #app .flex.min-h-screen,
-      #app [class*="min-h-screen"] {
-        background:
-          radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.14), transparent 58%),
-          radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.10), transparent 60%),
-          linear-gradient(180deg, #F7FAFF 0%, #F3F7FF 55%, #F7FAFF 100%) !important;
-      }
+  #app h1, #app h2, #app h3, #app h4 {
+    letter-spacing: -0.25px;
+    color: var(--b-text);
+  }
 
-      #app section.bg-white,
-      #app .bg-white.shadow,
-      #app [class*="shadow"][class*="bg-white"] {
-        border-radius: 22px !important;
-        box-shadow: var(--b-shadow-lg) !important;
-        border: 1px solid rgba(219,234,254,0.85) !important;
-        backdrop-filter: blur(6px);
-      }
+  /* ── Login page ──────────────────────────────────────── */
+  #app .flex.flex-col.w-full.h-screen,
+  #app .flex.min-h-screen,
+  #app [class*="min-h-screen"] {
+    background:
+      radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.14), transparent 58%),
+      radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.10), transparent 60%),
+      linear-gradient(180deg, #F7FAFF 0%, #F3F7FF 55%, #F7FAFF 100%) !important;
+  }
 
-      /* ══════════════════════════════════════
-         SIDEBAR (ROBUST SELECTOR)
-         Your screenshot shows sidebar became light/washed.
-         So we target multiple possible sidebar containers.
-      ══════════════════════════════════════ */
+  #app section.bg-white,
+  #app .bg-white.shadow,
+  #app [class*="shadow"][class*="bg-white"] {
+    border-radius: 22px !important;
+    box-shadow: var(--b-shadow-lg) !important;
+    border: 1px solid rgba(219,234,254,0.85) !important;
+    backdrop-filter: blur(6px);
+  }
 
-      /* 1) Primary known selector */
-      #app aside.bg-n-background,
-      #app aside[class*="bg-n-background"],
-      /* 2) Fallbacks (Chatwoot versions vary) */
-      #app aside,
-      #app [data-testid="app-sidebar"],
-      #app [data-testid="sidebar"],
-      #app [class*="sidebar"],
-      #app nav[class*="sidebar"],
-      #app nav[aria-label*="sidebar"],
-      #app nav[aria-label*="Sidebar"] {
-        background:
-          radial-gradient(900px 600px at 15% 0%, rgba(255,255,255,0.10), transparent 55%),
-          linear-gradient(180deg, var(--b-sidebar-bg-1) 0%, var(--b-sidebar-bg-2) 45%, var(--b-sidebar-bg-3) 100%) !important;
-        border-right: 1px solid rgba(255,255,255,0.10) !important;
-      }
+  /* ══════════════════════════════════════
+     ✅ SIDEBAR (LIGHT BG + DARK TEXT)
+     This matches your screenshots now.
+  ══════════════════════════════════════ */
 
-      /* Force text visibility inside sidebar */
-      #app aside.bg-n-background *,
-      #app aside[class*="bg-n-background"] *,
-      #app aside *,
-      #app [data-testid="app-sidebar"] *,
-      #app [data-testid="sidebar"] *,
-      #app [class*="sidebar"] * {
-        color: var(--b-sidebar-text) !important;
-        opacity: 1 !important;                 /* FIX: removes washed/transparent text */
-        font-weight: 600 !important;           /* FIX: stronger letters */
-        text-shadow: 0 1px 1px rgba(0,0,0,0.22); /* FIX: readable on gradients */
-      }
+  /* Sidebar container */
+  #app aside.bg-n-background,
+  #app aside[class*="bg-n-background"] {
+    background: var(--b-sidebar-bg) !important;
+    border-right: 1px solid var(--b-sidebar-border) !important;
+    backdrop-filter: blur(10px);
+  }
 
-      /* Secondary/muted text inside sidebar (still readable) */
-      #app aside.bg-n-background .text-slate-400,
-      #app aside.bg-n-background .text-slate-500,
-      #app aside.bg-n-background .text-n-slate-11,
-      #app aside[class*="bg-n-background"] .text-slate-400,
-      #app aside[class*="bg-n-background"] .text-slate-500,
-      #app aside[class*="bg-n-background"] .text-n-slate-11,
-      #app aside .text-slate-400,
-      #app aside .text-slate-500,
-      #app aside .text-n-slate-11 {
-        color: var(--b-sidebar-muted) !important;
-        font-weight: 600 !important;
-        opacity: 1 !important;
-      }
+  /* ✅ Sidebar text: FORCE dark (fix invisible white text) */
+  #app aside.bg-n-background *,
+  #app aside[class*="bg-n-background"] * {
+    color: var(--b-sidebar-text) !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+    text-shadow: none !important; /* remove glow that can wash out */
+  }
 
-      /* Sidebar icons (strong visibility) */
-      #app aside.bg-n-background svg,
-      #app aside[class*="bg-n-background"] svg,
-      #app aside svg,
-      #app [data-testid="app-sidebar"] svg,
-      #app [data-testid="sidebar"] svg,
-      #app [class*="sidebar"] svg {
-        color: rgba(255,255,255,0.98) !important;
-        stroke: rgba(255,255,255,0.98) !important;
-        opacity: 0.98 !important;
-        filter: drop-shadow(0 1px 1px rgba(0,0,0,0.18));
-      }
+  /* Muted / secondary text inside sidebar */
+  #app aside.bg-n-background span,
+  #app aside[class*="bg-n-background"] span {
+    color: var(--b-sidebar-muted) !important;
+    font-weight: 600 !important;
+  }
 
-      /* Sidebar links/buttons base */
-      #app aside.bg-n-background a,
-      #app aside[class*="bg-n-background"] a,
-      #app aside.bg-n-background button,
-      #app aside[class*="bg-n-background"] button,
-      #app aside a,
-      #app aside button {
-        border-radius: var(--b-radius) !important;
-        transition: background 140ms ease, transform 140ms ease, box-shadow 140ms ease;
-        text-decoration: none !important;
-      }
+  /* ✅ Sidebar icons dark */
+  #app aside.bg-n-background svg,
+  #app aside[class*="bg-n-background"] svg {
+    color: var(--b-sidebar-icon) !important;
+    stroke: var(--b-sidebar-icon) !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
 
-      /* Hover */
-      #app aside.bg-n-background a:hover,
-      #app aside[class*="bg-n-background"] a:hover,
-      #app aside.bg-n-background button:hover,
-      #app aside[class*="bg-n-background"] button:hover,
-      #app aside a:hover,
-      #app aside button:hover {
-        background: rgba(255,255,255,0.14) !important;
-        transform: translateY(-1px);
-        box-shadow: 0 10px 24px rgba(0,0,0,0.14);
-      }
+  /* Sidebar links/buttons base */
+  #app aside.bg-n-background a,
+  #app aside[class*="bg-n-background"] a,
+  #app aside.bg-n-background button,
+  #app aside[class*="bg-n-background"] button {
+    border-radius: var(--b-radius) !important;
+    transition: background 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+    text-decoration: none !important;
+  }
 
-      /* Active nav item */
-      #app aside.bg-n-background .active,
-      #app aside[class*="bg-n-background"] .active,
-      #app aside.bg-n-background [aria-current="page"],
-      #app aside[class*="bg-n-background"] [aria-current="page"],
-      #app aside .active,
-      #app aside [aria-current="page"] {
-        background: rgba(29,110,245,0.96) !important;
-        border-radius: var(--b-radius) !important;
-        box-shadow: 0 12px 28px rgba(29,110,245,0.28) !important;
-      }
+  /* Hover */
+  #app aside.bg-n-background a:hover,
+  #app aside[class*="bg-n-background"] a:hover,
+  #app aside.bg-n-background button:hover,
+  #app aside[class*="bg-n-background"] button:hover {
+    background: rgba(29,110,245,0.08) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(16,24,40,0.10);
+  }
 
-      /* Ensure active item children are bright */
-      #app aside.bg-n-background .active *,
-      #app aside[class*="bg-n-background"] .active *,
-      #app aside .active * {
-        color: #FFFFFF !important;
-        opacity: 1 !important;
-        text-shadow: 0 1px 1px rgba(0,0,0,0.18);
-      }
+  /* ✅ Active nav item: blue pill + WHITE text (only here) */
+  #app aside.bg-n-background .active,
+  #app aside[class*="bg-n-background"] .active,
+  #app aside.bg-n-background [aria-current="page"],
+  #app aside[class*="bg-n-background"] [aria-current="page"] {
+    background: rgba(29,110,245,0.96) !important;
+    border-radius: var(--b-radius) !important;
+    box-shadow: 0 12px 28px rgba(29,110,245,0.22) !important;
+  }
 
-      /* ── Logo — hide img, show "B" badge ─────────────────── */
-      #app img.size-4,
-      #app div.size-6 img,
-      #app div.size-6 > img,
-      #app [class*="place-content-center"] img {
-        display: none !important;
-        visibility: hidden !important;
-      }
+  #app aside.bg-n-background .active *,
+  #app aside[class*="bg-n-background"] .active *,
+  #app aside.bg-n-background [aria-current="page"] *,
+  #app aside[class*="bg-n-background"] [aria-current="page"] * {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+  }
 
-      #app div.size-6::after,
-      #app [class*="place-content-center"][class*="size-6"]::after {
-        content: "B";
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        background: linear-gradient(180deg, var(--b-blue) 0%, #145AE8 100%);
-        color: #fff;
-        font-size: 15px;
-        font-weight: 900;
-        border-radius: 9px;
-        box-shadow: 0 10px 26px rgba(29,110,245,0.35);
-        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-        letter-spacing: -0.4px;
-        flex-shrink: 0;
-      }
+  #app aside.bg-n-background .active svg,
+  #app aside[class*="bg-n-background"] .active svg,
+  #app aside.bg-n-background [aria-current="page"] svg,
+  #app aside[class*="bg-n-background"] [aria-current="page"] svg {
+    color: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+  }
 
-      /* ── Main content area ───────────────────────────────── */
-      #app main.bg-n-surface-1,
-      #app main[class*="bg-n-surface-1"],
-      #app [class*="bg-n-surface-1"] {
-        background: transparent !important;
-      }
+  /* ── Logo — hide img, show "B" badge ─────────────────── */
+  #app img.size-4,
+  #app div.size-6 img,
+  #app div.size-6 > img,
+  #app [class*="place-content-center"] img {
+    display: none !important;
+    visibility: hidden !important;
+  }
 
-      /* Conversation list panel (middle column) */
-      #app .flex.flex-col.h-full.bg-n-background,
-      #app [class*="conversations-list"] {
-        background: rgba(255,255,255,0.72) !important;
-        backdrop-filter: blur(10px);
-        border-right: 1px solid rgba(219,234,254,0.9) !important;
-      }
+  #app div.size-6::after,
+  #app [class*="place-content-center"][class*="size-6"]::after {
+    content: "B";
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background: linear-gradient(180deg, var(--b-blue) 0%, #145AE8 100%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 900;
+    border-radius: 9px;
+    box-shadow: 0 10px 26px rgba(29,110,245,0.30);
+    letter-spacing: -0.4px;
+    flex-shrink: 0;
+  }
 
-      /* Active conversation highlight */
-      #app .active.conversation,
-      #app [class*="conversation-item"].active,
-      #app [class*="active"][class*="conversation"] {
-        background: rgba(239,246,255,0.95) !important;
-        border-left: 3px solid var(--b-blue) !important;
-        box-shadow: var(--b-shadow-sm);
-      }
+  /* ── Main content area ───────────────────────────────── */
+  #app main.bg-n-surface-1,
+  #app main[class*="bg-n-surface-1"],
+  #app [class*="bg-n-surface-1"] {
+    background: transparent !important;
+  }
 
-      /* ── Header / top bar ────────────────────────────────── */
-      #app header,
-      #app .view-header,
-      #app [class*="view-header"],
-      #app [class*="page-header"] {
-        background: rgba(255,255,255,0.82) !important;
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid rgba(219,234,254,0.9) !important;
-        box-shadow: 0 1px 10px rgba(29,110,245,0.07) !important;
-      }
+  /* Conversation list panel (middle column) */
+  #app .flex.flex-col.h-full.bg-n-background,
+  #app [class*="conversations-list"] {
+    background: rgba(255,255,255,0.72) !important;
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(219,234,254,0.9) !important;
+  }
 
-      /* ── Cards / dashboard tiles ─────────────────────────── */
-      #app .bg-white.rounded-lg,
-      #app [class*="bg-white"][class*="rounded"],
-      #app [class*="bg-white"][class*="shadow"] {
-        border: 1px solid rgba(219,234,254,0.92) !important;
-        border-radius: var(--b-radius-lg) !important;
-        box-shadow: var(--b-shadow) !important;
-        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-      }
+  /* Active conversation highlight */
+  #app .active.conversation,
+  #app [class*="conversation-item"].active,
+  #app [class*="active"][class*="conversation"] {
+    background: rgba(239,246,255,0.95) !important;
+    border-left: 3px solid var(--b-blue) !important;
+    box-shadow: var(--b-shadow-sm);
+  }
 
-      #app .bg-white.rounded-lg:hover,
-      #app [class*="bg-white"][class*="rounded"]:hover,
-      #app [class*="bg-white"][class*="shadow"]:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--b-shadow-lg) !important;
-        border-color: rgba(29,110,245,0.22) !important;
-      }
+  /* ── Header / top bar ────────────────────────────────── */
+  #app header,
+  #app .view-header,
+  #app [class*="view-header"],
+  #app [class*="page-header"] {
+    background: rgba(255,255,255,0.82) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(219,234,254,0.9) !important;
+    box-shadow: 0 1px 10px rgba(29,110,245,0.07) !important;
+  }
 
-      /* ── Buttons ─────────────────────────────────────────── */
-      #app [class*="bg-woot-500"],
-      #app [class*="bg-n-brand"],
-      #app [class*="bg-brand"],
-      #app button[data-testid="submit_button"],
-      #app button[type="submit"] {
-        background: linear-gradient(180deg, var(--b-blue) 0%, #145AE8 100%) !important;
-        border-color: rgba(29,110,245,0.65) !important;
-        color: #fff !important;
-        box-shadow: 0 10px 24px rgba(29,110,245,0.18);
-        transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
-      }
+  /* ── Cards / dashboard tiles ─────────────────────────── */
+  #app .bg-white.rounded-lg,
+  #app [class*="bg-white"][class*="rounded"],
+  #app [class*="bg-white"][class*="shadow"] {
+    border: 1px solid rgba(219,234,254,0.92) !important;
+    border-radius: var(--b-radius-lg) !important;
+    box-shadow: var(--b-shadow) !important;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
 
-      #app [class*="bg-woot-500"]:hover,
-      #app [class*="bg-n-brand"]:hover,
-      #app button[type="submit"]:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 14px 34px rgba(29,110,245,0.24);
-        filter: brightness(0.98);
-      }
+  #app .bg-white.rounded-lg:hover,
+  #app [class*="bg-white"][class*="rounded"]:hover,
+  #app [class*="bg-white"][class*="shadow"]:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--b-shadow-lg) !important;
+    border-color: rgba(29,110,245,0.22) !important;
+  }
 
-      #app button,
-      #app [role="button"] {
-        border-radius: var(--b-radius) !important;
-      }
+  /* ── Buttons ─────────────────────────────────────────── */
+  #app [class*="bg-woot-500"],
+  #app [class*="bg-n-brand"],
+  #app [class*="bg-brand"],
+  #app button[data-testid="submit_button"],
+  #app button[type="submit"] {
+    background: linear-gradient(180deg, var(--b-blue) 0%, #145AE8 100%) !important;
+    border-color: rgba(29,110,245,0.65) !important;
+    color: #fff !important;
+    box-shadow: 0 10px 24px rgba(29,110,245,0.18);
+    transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+  }
 
-      /* ── Links / accent text ───────────────────────────────
-         IMPORTANT: Don't apply to sidebar (it made links “wash out”).
-      ─────────────────────────────────────────────────────── */
-      #app main a,
-      #app [class*="view"] a,
-      #app [class*="content"] a {
-        color: var(--b-blue) !important;
-      }
+  #app [class*="bg-woot-500"]:hover,
+  #app [class*="bg-n-brand"]:hover,
+  #app button[type="submit"]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 34px rgba(29,110,245,0.24);
+    filter: brightness(0.98);
+  }
 
-      #app main a:hover,
-      #app [class*="view"] a:hover,
-      #app [class*="content"] a:hover {
-        text-decoration: underline;
-        text-underline-offset: 3px;
-      }
+  #app button,
+  #app [role="button"] {
+    border-radius: var(--b-radius) !important;
+  }
 
-      /* ── Inputs ──────────────────────────────────────────── */
-      #app input,
-      #app textarea,
-      #app select {
-        border-radius: 12px !important;
-      }
+  /* ── Links / accent text (only main content) ──────────── */
+  #app main a,
+  #app [class*="view"] a,
+  #app [class*="content"] a {
+    color: var(--b-blue) !important;
+  }
 
-      #app input:focus,
-      #app textarea:focus,
-      #app select:focus {
-        border-color: rgba(29,110,245,0.95) !important;
-        box-shadow: 0 0 0 4px rgba(29,110,245,0.14) !important;
-        outline: none !important;
-      }
+  #app main a:hover,
+  #app [class*="view"] a:hover,
+  #app [class*="content"] a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 
-      /* ── Badges ──────────────────────────────────────────── */
-      #app [class*="badge"],
-      #app .unread-badge,
-      #app [class*="unread-count"] {
-        background: linear-gradient(180deg, var(--b-blue) 0%, #145AE8 100%) !important;
-        color: #fff !important;
-        box-shadow: 0 10px 20px rgba(29,110,245,0.18);
-      }
+  /* ── Inputs ──────────────────────────────────────────── */
+  #app input,
+  #app textarea,
+  #app select {
+    border-radius: 12px !important;
+  }
 
-      /* ── Active tab border indicator ─────────────────────── */
-      #app [class*="border-woot"],
-      #app [class*="border-n-brand"],
-      #app [class*="border-brand"] {
-        border-color: var(--b-blue) !important;
-      }
+  #app input:focus,
+  #app textarea:focus,
+  #app select:focus {
+    border-color: rgba(29,110,245,0.95) !important;
+    box-shadow: 0 0 0 4px rgba(29,110,245,0.14) !important;
+    outline: none !important;
+  }
 
-      #app [class*="border-b-woot"],
-      #app [class*="border-b-brand"],
-      #app [class*="border-b-n-brand"] {
-        border-bottom-color: var(--b-blue) !important;
-        color: var(--b-blue) !important;
-      }
+  /* ── Badges ──────────────────────────────────────────── */
+  #app [class*="badge"],
+  #app .unread-badge,
+  #app [class*="unread-count"] {
+    background: linear-gradient(180deg, var(--b-blue) 0%, #145AE8 100%) !important;
+    color: #fff !important;
+    box-shadow: 0 10px 20px rgba(29,110,245,0.18);
+  }
 
-      /* ── Scrollbars ──────────────────────────────────────── */
-      #app *::-webkit-scrollbar       { width: 6px; height: 6px; }
-      #app *::-webkit-scrollbar-track { background: rgba(238,243,255,0.9); }
-      #app *::-webkit-scrollbar-thumb {
-        background: rgba(191,219,254,0.95);
-        border-radius: 999px;
-      }
-      #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.85); }
-
-    </style>
+  /* ── Scrollbars ──────────────────────────────────────── */
+  #app *::-webkit-scrollbar       { width: 6px; height: 6px; }
+  #app *::-webkit-scrollbar-track { background: rgba(238,243,255,0.9); }
+  #app *::-webkit-scrollbar-thumb {
+    background: rgba(191,219,254,0.95);
+    border-radius: 999px;
+  }
+  #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.85); }
+</style>
 
     <!-- ═══════════════════════════════════════════════════
          Boster Chat — JS white-label engine
