@@ -9,7 +9,7 @@
       <meta name="msapplication-TileColor" content="#1D6EF5">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#1D6EF5">
-      <meta name="description" content="Boster Chat is a customer support solution that helps companies engage customers over Messenger, Twitter, Telegram, WeChat, Whatsapp. Simply connect your channels and converse with your customers from a single place.">
+      <meta name="description" content="Boster Chat — customer support made simple.">
 
       <% if ENV['IOS_APP_IDENTIFIER'].present? %>
         <meta name="apple-itunes-app" content='app-id=<%= ENV['IOS_APP_IDENTIFIER'] %>'>
@@ -24,17 +24,14 @@
       <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
       <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
-
       <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
       <link class="favicon" rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
       <link class="favicon" rel="icon" type="image/png" sizes="96x96"  href="/favicon-96x96.png">
       <link class="favicon" rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-
       <link rel="manifest" href="/manifest.json">
     <% end %>
 
     <link rel="icon" type="image/png" sizes="512x512" href="<%= @global_config['LOGO_THUMBNAIL'] %>">
-
     <%= csrf_meta_tags %>
 
     <script nonce="<%= content_security_policy_nonce %>">
@@ -78,128 +75,78 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
 
+    <!-- ═══════════════════════════════════════════════════
+         BOSTER CHAT — Smart Theme v6
+         Strategy: SURGICAL overrides only.
+         - Never override text color globally (breaks dark mode)
+         - Only override backgrounds, borders, shadows, accents
+         - Let Chatwoot's own CSS variables handle text in dark mode
+         - Use body.dark (confirmed from DevTools) for dark overrides
+    ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
 
       :root {
-        --b-blue:           #1D6EF5;
-        --b-blue-dark:      #1450C8;
-        --b-blue-light:     #EFF6FF;
-        --b-blue-pale:      #F3F7FF;
-        --b-blue-border:    #DBEAFE;
-        --b-sidebar-bg:     #FFFFFF;
-        --b-sidebar-text:   #1E293B;
-        --b-sidebar-muted:  #64748B;
-        --b-sidebar-icon:   #475569;
-        --b-sidebar-hover:  #F1F5FE;
-        --b-sidebar-active: #1D6EF5;
-        --b-sidebar-border: #E8EFFE;
-        --b-page-bg:        #EEF3FC;
-        --b-card-bg:        #FFFFFF;
-        --b-text:           #0F172A;
-        --b-text-muted:     #475569;
-        --b-radius:         12px;
-        --b-radius-lg:      22px;
-        --b-shadow-sm:      0 1px 3px rgba(16,24,40,0.06), 0 1px 2px rgba(16,24,40,0.04);
-        --b-shadow:         0 4px 16px rgba(29,110,245,0.08), 0 2px 6px rgba(16,24,40,0.05);
-        --b-shadow-lg:      0 12px 40px rgba(29,110,245,0.12), 0 4px 14px rgba(16,24,40,0.08);
-        --b-shadow-float:   0 20px 60px rgba(29,110,245,0.14), 0 6px 20px rgba(16,24,40,0.08);
+        --b-blue:       #1D6EF5;
+        --b-blue-dark:  #1450C8;
+        --b-blue-light: #EFF6FF;
+        --b-blue-pale:  #F3F7FF;
+        --b-border:     #DBEAFE;
+        --b-radius:     12px;
+        --b-radius-lg:  20px;
       }
 
-      html, body {
-        background: var(--b-page-bg) !important;
-      }
-
+      /* ── Font only — safe in both modes ─────────────────── */
       #app {
         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
         -webkit-font-smoothing: antialiased;
-        background: var(--b-page-bg) !important;
       }
 
-      #app h1, #app h2, #app h3, #app h4 {
-        color: var(--b-text) !important;
-        letter-spacing: -0.2px;
-      }
+      /* ══════════════════════════════════════
+         SIDEBAR — only background + active pill
+         NO text/color overrides → Chatwoot handles
+         text color correctly in both light + dark
+      ══════════════════════════════════════ */
 
-      /* ── LOGIN ───────────────────────────────────────────── */
-      #app .flex.flex-col.w-full.h-screen,
-      #app .flex.min-h-screen,
-      #app [class*="min-h-screen"] {
-        background:
-          radial-gradient(800px 600px at 15% 10%, rgba(29,110,245,0.10), transparent 55%),
-          radial-gradient(600px 500px at 88% 88%, rgba(29,110,245,0.07), transparent 55%),
-          var(--b-page-bg) !important;
-      }
-
-      #app section.bg-white,
-      #app .bg-white.shadow,
-      #app [class*="shadow"][class*="bg-white"] {
-        border-radius: var(--b-radius-lg) !important;
-        box-shadow: var(--b-shadow-float) !important;
-        border: 1px solid rgba(219,234,254,0.8) !important;
-      }
-
-      /* ── SIDEBAR — white, dark text ──────────────────────── */
+      /* Sidebar background — medium blue */
       #app aside.bg-n-background,
       #app aside[class*="bg-n-background"] {
-        background: var(--b-sidebar-bg) !important;
-        border-right: 1px solid var(--b-sidebar-border) !important;
-        box-shadow: 2px 0 12px rgba(29,110,245,0.05) !important;
+        background: linear-gradient(180deg, #1e3f85 0%, #162f6a 100%) !important;
+        border-right: 1px solid rgba(255,255,255,0.08) !important;
       }
 
-      /* Every element inside sidebar gets dark text */
-      #app aside.bg-n-background *,
-      #app aside[class*="bg-n-background"] * {
-        color: var(--b-sidebar-text) !important;
+      /* Force all sidebar text/icons white since bg is dark blue */
+      #app aside.bg-n-background,
+      #app aside[class*="bg-n-background"],
+      #app aside.bg-n-background *:not(.active):not([aria-current="page"]) {
+        color: rgba(220, 235, 255, 0.90) !important;
       }
 
-      /* Muted labels: Mine, Unassigned, All, section headers */
-      #app aside.bg-n-background span,
-      #app aside[class*="bg-n-background"] span,
-      #app aside.bg-n-background p,
-      #app aside[class*="bg-n-background"] p,
-      #app aside.bg-n-background label,
-      #app aside[class*="bg-n-background"] label {
-        color: var(--b-sidebar-muted) !important;
-      }
-
-      /* Sidebar icons — dark slate */
       #app aside.bg-n-background svg,
       #app aside[class*="bg-n-background"] svg {
-        color: var(--b-sidebar-icon) !important;
-        stroke: var(--b-sidebar-icon) !important;
+        color: rgba(180, 210, 255, 0.85) !important;
+        stroke: rgba(180, 210, 255, 0.85) !important;
       }
 
-      /* Nav links/buttons base */
-      #app aside.bg-n-background a,
-      #app aside[class*="bg-n-background"] a,
-      #app aside.bg-n-background button,
-      #app aside[class*="bg-n-background"] button {
-        color: var(--b-sidebar-text) !important;
-        text-decoration: none !important;
-        border-radius: var(--b-radius) !important;
-        transition: background 130ms ease;
-      }
-
-      /* Hover — very light blue */
+      /* Hover */
       #app aside.bg-n-background a:hover,
       #app aside[class*="bg-n-background"] a:hover,
       #app aside.bg-n-background button:hover,
       #app aside[class*="bg-n-background"] button:hover {
-        background: var(--b-sidebar-hover) !important;
-        text-decoration: none !important;
+        background: rgba(255,255,255,0.10) !important;
+        border-radius: var(--b-radius) !important;
       }
 
-      /* Active item — blue pill */
+      /* Active nav item */
       #app aside.bg-n-background .active,
       #app aside[class*="bg-n-background"] .active,
       #app aside.bg-n-background [aria-current="page"],
       #app aside[class*="bg-n-background"] [aria-current="page"] {
-        background: var(--b-sidebar-active) !important;
+        background: var(--b-blue) !important;
         border-radius: var(--b-radius) !important;
-        box-shadow: 0 4px 14px rgba(29,110,245,0.25) !important;
+        box-shadow: 0 4px 16px rgba(29,110,245,0.30) !important;
       }
 
-      /* Active item children — white text + icons */
+      /* Active item — white text + icons */
       #app aside.bg-n-background .active *,
       #app aside[class*="bg-n-background"] .active *,
       #app aside.bg-n-background [aria-current="page"] *,
@@ -216,13 +163,12 @@
         opacity: 1 !important;
       }
 
-      /* ── Logo: hide img, show "B" badge ──────────────────── */
+      /* ── Logo: hide img, show "B" badge ─────────────────── */
       #app img.size-4,
       #app div.size-6 img,
       #app div.size-6 > img,
       #app [class*="place-content-center"] img {
         display: none !important;
-        visibility: hidden !important;
       }
 
       #app div.size-6::after,
@@ -233,94 +179,29 @@
         justify-content: center;
         width: 30px;
         height: 30px;
-        background: linear-gradient(135deg, var(--b-blue) 0%, #1450C8 100%);
+        background: linear-gradient(135deg, #2979FF 0%, #1450C8 100%);
         color: #fff !important;
         font-size: 15px;
         font-weight: 900;
         border-radius: 9px;
-        box-shadow: 0 6px 20px rgba(29,110,245,0.30);
+        box-shadow: 0 4px 14px rgba(29,110,245,0.40);
         font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
         letter-spacing: -0.4px;
         flex-shrink: 0;
       }
 
-      /* ── CONVERSATION LIST (middle column) ───────────────── */
-      #app .flex.flex-col.h-full.bg-n-background,
-      #app [class*="conversations-list"] {
-        background: #F8FAFF !important;
-        border-right: 1px solid var(--b-blue-border) !important;
-      }
+      /* ══════════════════════════════════════
+         ACCENT COLORS — brand blue replaces woot
+         Only color/border overrides, not text
+      ══════════════════════════════════════ */
 
-      /* Mine / Unassigned / All tab labels — always dark */
-      #app [class*="conversations-list"] span,
-      #app [class*="conversations-list"] button span,
-      #app [class*="tab"] span,
-      #app [role="tab"] span {
-        color: var(--b-text) !important;
-        font-weight: 500;
-      }
-
-      /* Active tab */
-      #app [role="tab"][aria-selected="true"] span,
-      #app [class*="active-tab"] span,
-      #app [class*="tab"].active span {
-        color: var(--b-blue) !important;
-        font-weight: 600 !important;
-      }
-
-      /* Active conversation row */
-      #app .active.conversation,
-      #app [class*="conversation-item"].active {
-        background: var(--b-blue-light) !important;
-        border-left: 3px solid var(--b-blue) !important;
-        border-radius: 8px !important;
-      }
-
-      /* ── MAIN CONTENT ─────────────────────────────────────── */
-      #app main.bg-n-surface-1,
-      #app main[class*="bg-n-surface-1"],
-      #app [class*="bg-n-surface-1"] {
-        background: var(--b-page-bg) !important;
-      }
-
-      /* ── HEADER ──────────────────────────────────────────── */
-      #app header,
-      #app .view-header,
-      #app [class*="view-header"],
-      #app [class*="page-header"] {
-        background: rgba(255,255,255,0.92) !important;
-        backdrop-filter: blur(8px);
-        border-bottom: 1px solid var(--b-blue-border) !important;
-        box-shadow: 0 1px 8px rgba(29,110,245,0.07) !important;
-      }
-
-      /* ── FLOATING CARDS — 22px radius + layered shadows ──── */
-      #app .bg-white.rounded-lg,
-      #app [class*="bg-white"][class*="rounded"],
-      #app [class*="bg-white"][class*="shadow"] {
-        background: var(--b-card-bg) !important;
-        border-radius: var(--b-radius-lg) !important;
-        border: 1px solid rgba(219,234,254,0.80) !important;
-        box-shadow: var(--b-shadow) !important;
-        transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
-      }
-
-      #app .bg-white.rounded-lg:hover,
-      #app [class*="bg-white"][class*="rounded"]:hover,
-      #app [class*="bg-white"][class*="shadow"]:hover {
-        transform: translateY(-2px);
-        box-shadow: var(--b-shadow-float) !important;
-        border-color: rgba(29,110,245,0.18) !important;
-      }
-
-      /* ── BUTTONS ─────────────────────────────────────────── */
       #app [class*="bg-woot-500"],
       #app [class*="bg-n-brand"],
       #app [class*="bg-brand"],
       #app button[data-testid="submit_button"],
       #app button[type="submit"] {
-        background: linear-gradient(135deg, var(--b-blue) 0%, #1450C8 100%) !important;
-        border-color: rgba(29,110,245,0.6) !important;
+        background: linear-gradient(135deg, var(--b-blue) 0%, var(--b-blue-dark) 100%) !important;
+        border-color: rgba(29,110,245,0.60) !important;
         color: #fff !important;
         box-shadow: 0 4px 14px rgba(29,110,245,0.22) !important;
         transition: transform 130ms ease, box-shadow 130ms ease;
@@ -337,13 +218,14 @@
         border-radius: var(--b-radius) !important;
       }
 
-      /* ── TEXT / BORDER ACCENTS ───────────────────────────── */
+      /* Brand text */
       #app [class*="text-woot"],
       #app [class*="text-n-brand"],
       #app [class*="text-brand"] {
         color: var(--b-blue) !important;
       }
 
+      /* Brand borders */
       #app [class*="border-woot"],
       #app [class*="border-n-brand"],
       #app [class*="border-brand"] {
@@ -354,155 +236,93 @@
       #app [class*="border-b-brand"],
       #app [class*="border-b-n-brand"] {
         border-bottom-color: var(--b-blue) !important;
-        color: var(--b-blue) !important;
       }
 
-      /* ── INPUTS ──────────────────────────────────────────── */
-      #app input, #app textarea, #app select {
-        border-radius: var(--b-radius) !important;
-      }
-
-      #app input:focus, #app textarea:focus, #app select:focus {
-        border-color: var(--b-blue) !important;
-        box-shadow: 0 0 0 4px rgba(29,110,245,0.12) !important;
-        outline: none !important;
-      }
-
-      /* ── BADGES ──────────────────────────────────────────── */
+      /* Badges */
       #app [class*="badge"],
       #app .unread-badge,
       #app [class*="unread-count"] {
         background: var(--b-blue) !important;
         color: #fff !important;
-        box-shadow: 0 2px 8px rgba(29,110,245,0.25) !important;
       }
 
-      /* ── SCROLLBARS ──────────────────────────────────────── */
-      #app *::-webkit-scrollbar       { width: 5px; height: 5px; }
-      #app *::-webkit-scrollbar-track { background: #EEF3FF; }
-      #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 999px; }
-      #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
+      /* Input focus ring */
+      #app input:focus,
+      #app textarea:focus,
+      #app select:focus {
+        border-color: var(--b-blue) !important;
+        box-shadow: 0 0 0 3px rgba(29,110,245,0.15) !important;
+        outline: none !important;
+      }
 
-      /* ════════════════════════════════════════════════════
-         DARK MODE — DevTools confirmed:
-         Chatwoot puts class="dark" on <body>, NOT <html>!
-         Selector: body.dark
-         Also confirmed class names:
-           bg-n-surface-1  = main content area
-           bg-n-background = sidebar + conversation list
-           conversations-list-wrap = middle panel
-      ════════════════════════════════════════════════════ */
+      /* Scrollbar */
+      #app *::-webkit-scrollbar { width: 5px; height: 5px; }
+      #app *::-webkit-scrollbar-track { background: transparent; }
+      #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.25); border-radius: 999px; }
+      #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.55); }
 
-      /* Body background */
-      body.dark {
+      /* ══════════════════════════════════════
+         LOGIN PAGE — only background + card shadow
+         No text color overrides
+      ══════════════════════════════════════ */
+
+      #app .flex.flex-col.w-full.h-screen,
+      #app [class*="min-h-screen"] {
         background:
-          radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.10), transparent 58%),
-          radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.07), transparent 60%),
-          linear-gradient(180deg, #0D1829 0%, #0A1420 55%, #0D1829 100%) !important;
+          radial-gradient(800px 600px at 15% 10%, rgba(29,110,245,0.10), transparent 55%),
+          radial-gradient(600px 400px at 88% 88%, rgba(29,110,245,0.07), transparent 55%),
+          #F3F7FF !important;
       }
 
-      /* Main content area — bg-n-surface-1 confirmed from DevTools */
-      body.dark #app main,
-      body.dark #app [class*="bg-n-surface-1"],
+      body.dark #app .flex.flex-col.w-full.h-screen,
+      body.dark #app [class*="min-h-screen"] {
+        background:
+          radial-gradient(800px 600px at 15% 10%, rgba(29,110,245,0.10), transparent 55%),
+          radial-gradient(600px 400px at 88% 88%, rgba(29,110,245,0.07), transparent 55%),
+          #0D1829 !important;
+      }
+
+      /* ══════════════════════════════════════
+         DARK MODE — body.dark confirmed from DevTools
+         RULE: Only override backgrounds here.
+         NEVER override text colors in main content —
+         Chatwoot's own dark vars handle that correctly.
+      ══════════════════════════════════════ */
+
+      /* Main bg */
+      body.dark #app main.bg-n-surface-1,
       body.dark #app .bg-n-surface-1 {
-        background: #0F1D30 !important;
+        background: #111C2D !important;
       }
 
-      /* Conversation list wrap — bg-n-surface-1 confirmed */
-      body.dark #app [class*="conversations-list-wrap"],
-      body.dark #app .conversations-list-wrap {
-        background: #122038 !important;
-        border-right: 1px solid rgba(29,110,245,0.18) !important;
-      }
-
-      /* Cards / panels inside content */
-      body.dark #app [class*="bg-n-surface"],
-      body.dark #app [class*="bg-n-strong"] {
-        background: #182A42 !important;
-        border-color: rgba(29,110,245,0.15) !important;
+      /* Conversation list middle panel */
+      body.dark #app .conversations-list-wrap,
+      body.dark #app [class*="conversations-list-wrap"] {
+        background: #0F1A2B !important;
+        border-right: 1px solid rgba(29,110,245,0.15) !important;
       }
 
       /* Header */
       body.dark #app header,
-      body.dark #app [class*="view-header"],
-      body.dark #app [class*="page-header"] {
-        background: rgba(10,20,36,0.95) !important;
-        border-bottom: 1px solid rgba(29,110,245,0.20) !important;
-        backdrop-filter: blur(12px);
+      body.dark #app [class*="view-header"] {
+        background: rgba(10,18,32,0.96) !important;
+        border-bottom: 1px solid rgba(29,110,245,0.18) !important;
+        backdrop-filter: blur(10px);
       }
 
-      /* Sidebar — keep the same navy gradient in dark mode too */
+      /* Sidebar stays the same gradient in dark mode */
       body.dark #app aside.bg-n-background,
       body.dark #app aside[class*="bg-n-background"] {
-        background:
-          radial-gradient(900px 600px at 15% 0%, rgba(255,255,255,0.08), transparent 55%),
-          linear-gradient(180deg, #17356F 0%, #152E61 45%, #122552 100%) !important;
+        background: linear-gradient(180deg, #1e3f85 0%, #162f6a 100%) !important;
       }
 
-      /* Inputs in dark mode */
-      body.dark #app input,
-      body.dark #app textarea,
-      body.dark #app select {
-        background: #0F1E32 !important;
-        border-color: rgba(29,110,245,0.28) !important;
-        color: #D8EAFF !important;
-      }
-
-      body.dark #app input:focus,
-      body.dark #app textarea:focus,
-      body.dark #app select:focus {
-        border-color: rgba(29,110,245,0.80) !important;
-        box-shadow: 0 0 0 4px rgba(29,110,245,0.18) !important;
-      }
-
-      /* Text colors in dark mode — make ALL text visible */
-      body.dark #app main p,
-      body.dark #app main span,
-      body.dark #app main h1,
-      body.dark #app main h2,
-      body.dark #app main h3,
-      body.dark #app main div,
-      body.dark #app main label,
-      body.dark #app main a {
-        color: #D0E4FF !important;
-      }
-
-      /* Welcome message heading specifically */
-      body.dark #app main [class*="welcome"],
-      body.dark #app main [class*="greeting"],
-      body.dark #app main > section > div {
-        color: #E8F0FF !important;
-      }
-
-      /* Agent status popup — bottom left black panel */
-      body.dark #app [class*="availability"],
-      body.dark #app [class*="status-menu"],
-      body.dark #app [class*="agent-details"],
-      body.dark #app button.rounded-lg,
-      body.dark #app [class*="dropdown-pane"],
-      body.dark #app [class*="popover"],
-      body.dark #app .dropdown-pane,
-      body.dark #app [data-popover],
-      body.dark #app [class*="bg-n-alpha"] {
-        background: #1B2F48 !important;
-        border: 1px solid rgba(29,110,245,0.22) !important;
-        box-shadow: 0 12px 40px rgba(0,0,0,0.35) !important;
-        color: #D0E4FF !important;
-      }
-
-      body.dark #app [class*="availability"] *,
-      body.dark #app [class*="dropdown-pane"] *,
-      body.dark #app [class*="popover"] * {
-        color: #D0E4FF !important;
-      }
-
-      /* Scrollbar in dark mode */
-      body.dark #app *::-webkit-scrollbar-track { background: rgba(8,16,28,0.9); }
-      body.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.30); }
-      body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.58); }
+      /* Dark scrollbar */
+      body.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.22); }
+      body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
 
     </style>
 
+    <!-- Boster Chat — JS white-label engine -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
       const BRAND_OLD       = 'Chatwoot';
