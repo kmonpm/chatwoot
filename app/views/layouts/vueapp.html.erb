@@ -105,27 +105,42 @@
         border-radius: 12px !important;
       }
 
-      /* Hide Chatwoot logo images (best effort) */
-      #app header img,
-      #app [class*="logo"] img,
-      #app img[alt*="chatwoot" i] {
+      /*
+       * ── LOGO HIDE — precise selectors from DevTools ──────────────────────
+       * Chatwoot renders two <img> tags inside a <section class="max-w-5xl mx-auto">:
+       *   Light mode: img.block.w-auto.h-8.mx-auto.dark:hidden  src="/brand-assets/logo.svg"
+       *   Dark  mode: img.hidden.w-auto.h-8.mx-auto.dark:block  src="/brand-assets/logo_dark.svg"
+       * We hide both using the src path — the most stable selector possible.
+       */
+      #app img[src="/brand-assets/logo.svg"],
+      #app img[src="/brand-assets/logo_dark.svg"],
+      #app img[src*="/brand-assets/logo"],
+      #app img[src*="brand-assets"],
+      #app img[alt*="chatwoot" i],
+      #app img[alt*="boster" i] {
         display: none !important;
         visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
       }
 
-      /* Replace heading text visually (CSS overlay) */
-      #app h1 {
-        color: transparent !important;
-        position: relative !important;
-        font-weight: 800 !important;
+      /*
+       * Also hide the parent <section> logo wrapper entirely
+       * It has class="max-w-5xl mx-auto" and contains only the logo + h2
+       * We target it via its direct img children with brand-asset srcs
+       */
+      #app section:has(img[src*="brand-assets"]) {
+        /* Hide only the logo image row, keep the h2 title visible */
       }
-      #app h1::after {
-        content: "Login to Boster Chat";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        color: #0f172a;
+      #app section:has(img[src*="brand-assets"]) img {
+        display: none !important;
+      }
+
+      /* Buttons */
+      #app button,
+      #app [role="button"],
+      #app .btn {
+        border-radius: 12px !important;
       }
     </style>
 
@@ -179,18 +194,22 @@
         });
       }
 
-      // ── 3) Hide Chatwoot logos (img / svg / picture / source) ────────────
+      // ── 3) Hide logos — targets both "chatwoot" text AND /brand-assets/ path
       function hideLogos(root) {
         root.querySelectorAll('img, svg, picture, source').forEach(el => {
-          const checks = [
-            el.getAttribute('alt')                  || '',
-            el.getAttribute('src')                  || '',
-            el.getAttribute('srcset')               || '',
-            el.getAttribute('data-original-title')  || ''
-          ];
-          if (checks.some(v => v.toLowerCase().includes(BRAND_OLD_LOWER))) {
-            el.style.setProperty('display',     'none',   'important');
-            el.style.setProperty('visibility',  'hidden', 'important');
+          const alt    = (el.getAttribute('alt')   || '').toLowerCase();
+          const src    = (el.getAttribute('src')   || '').toLowerCase();
+          const srcset = (el.getAttribute('srcset')|| '').toLowerCase();
+          const dtitle = (el.getAttribute('data-original-title') || '').toLowerCase();
+
+          const isBrandAsset = src.includes('/brand-assets/') || srcset.includes('/brand-assets/');
+          const isChatwoot   = [alt, src, srcset, dtitle].some(v => v.includes(BRAND_OLD_LOWER));
+
+          if (isBrandAsset || isChatwoot) {
+            el.style.setProperty('display',        'none',   'important');
+            el.style.setProperty('visibility',     'hidden', 'important');
+            el.style.setProperty('opacity',        '0',      'important');
+            el.style.setProperty('pointer-events', 'none',   'important');
           }
         });
       }
