@@ -112,6 +112,38 @@
           #f0f4ff !important;
       }
 
+      /* ── SIDEBAR LOGO — hide Chatwoot logo, show "B" badge ── */
+
+      /* Hide the compiled Vue logo component */
+      #app .primary-sidebar img,
+      #app [class*="primary-sidebar"] img,
+      #app .primary-sidebar svg[class*="logo"],
+      #app [class*="primary-sidebar"] svg[class*="logo"],
+      #app .logo,
+      #app [class*="logo--"] {
+        display: none !important;
+        visibility: hidden !important;
+      }
+
+      /* Show a "B" lettermark in place of the logo */
+      #app .primary-sidebar > div:first-child a::after,
+      #app [class*="primary-sidebar"] > div:first-child a::after {
+        content: "B";
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: var(--boster-primary);
+        color: #ffffff;
+        font-size: 18px;
+        font-weight: 800;
+        border-radius: 8px;
+        margin: 0 auto;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        letter-spacing: -0.5px;
+      }
+
       /* ── LOGIN CARD ──────────────────────────────────────── */
       #app .bg-white,
       #app [class*="bg-white"] {
