@@ -79,30 +79,30 @@
     <%= vite_javascript_tag @application_pack %>
 
     <!-- ═══════════════════════════════════════════════════
-         Boster Chat — Cohesive Blue Theme v3
-         Design intent:
-           • Medium blue sidebar — readable, not oppressive
-           • Soft blue-white page background — not stark white
-           • Clean white cards with blue borders
-           • Every area feels part of one unified product
+         Boster Chat — Modern Blue Theme v4
+         CSS selectors verified directly from DevTools:
+           aside.bg-n-background   = sidebar
+           div.size-6              = logo wrapper
+           img.size-4              = logo image
+           main.bg-n-surface-1     = content area
     ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
 
       /* ── Design tokens ───────────────────────────────────── */
       :root {
-        --b-blue:        #1D6EF5;    /* primary brand */
-        --b-blue-dark:   #1450C8;    /* hover */
-        --b-blue-navy:   #1a3a7a;    /* sidebar bg */
-        --b-blue-light:  #EFF6FF;    /* tinted bg */
-        --b-blue-pale:   #F4F7FF;    /* page background */
-        --b-blue-border: #DBEAFE;    /* borders */
-        --b-icon:        #93BBFF;    /* sidebar icons */
-        --b-white:       #FFFFFF;
-        --b-radius:      10px;
+        --b-blue:         #1D6EF5;
+        --b-blue-dark:    #1450C8;
+        --b-blue-navy:    #162F6A;
+        --b-blue-light:   #EFF6FF;
+        --b-blue-pale:    #F3F7FF;
+        --b-blue-border:  #DBEAFE;
+        --b-sidebar-icon: #7FB3FF;
+        --b-white:        #FFFFFF;
+        --b-radius:       10px;
       }
 
       /* ══════════════════════════════════════
-         GLOBAL
+         GLOBAL — font + body background
       ══════════════════════════════════════ */
 
       body, html {
@@ -111,138 +111,153 @@
 
       #app {
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-        background: var(--b-blue-pale) !important;
       }
 
       /* ══════════════════════════════════════
          LOGIN PAGE
       ══════════════════════════════════════ */
 
-      /* Outer background gradient */
+      /* Outer wrapper on login — Chatwoot uses flex min-h-screen */
+      #app .flex.flex-col.w-full.h-screen,
       #app .flex.min-h-screen,
       #app [class*="min-h-screen"] {
         background:
-          radial-gradient(700px 500px at 10% 5%,  rgba(29,110,245,0.10), transparent 60%),
-          radial-gradient(600px 400px at 90% 95%, rgba(29,110,245,0.07), transparent 55%),
+          radial-gradient(ellipse 700px 500px at 15% 10%, rgba(29,110,245,0.12), transparent 60%),
+          radial-gradient(ellipse 500px 400px at 85% 90%, rgba(29,110,245,0.08), transparent 55%),
           var(--b-blue-pale) !important;
       }
 
       /* Login card */
-      #app .bg-white {
-        border-radius: 18px !important;
-        box-shadow: 0 8px 40px rgba(29,110,245,0.10) !important;
+      #app section.bg-white,
+      #app .bg-white.shadow,
+      #app [class*="shadow"][class*="bg-white"] {
+        border-radius: 20px !important;
+        box-shadow: 0 8px 48px rgba(29,110,245,0.13), 0 1px 4px rgba(0,0,0,0.04) !important;
+        border: 1px solid var(--b-blue-border) !important;
       }
 
       /* ══════════════════════════════════════
-         PRIMARY SIDEBAR (narrow icon rail)
+         SIDEBAR — exact class from DevTools:
+         aside.bg-n-background (the left panel)
       ══════════════════════════════════════ */
 
-      #app .primary-sidebar,
-      #app [class*="primary-sidebar"] {
+      #app aside.bg-n-background,
+      #app aside[class*="bg-n-background"] {
         background: var(--b-blue-navy) !important;
-        border-right: 1px solid rgba(255,255,255,0.07) !important;
+        border-right: 1px solid rgba(255,255,255,0.08) !important;
       }
 
-      /* Icons */
-      #app .primary-sidebar svg,
-      #app [class*="primary-sidebar"] svg {
-        color: var(--b-icon) !important;
-        stroke: var(--b-icon) !important;
+      /* All text inside sidebar */
+      #app aside.bg-n-background *,
+      #app aside[class*="bg-n-background"] * {
+        color: #C8DEFF !important;
       }
 
-      /* Active item */
-      #app .primary-sidebar .active,
-      #app [class*="primary-sidebar"] .active,
-      #app .primary-sidebar [aria-current="page"],
-      #app [class*="primary-sidebar"] [aria-current="page"] {
+      /* Icons inside sidebar */
+      #app aside.bg-n-background svg,
+      #app aside[class*="bg-n-background"] svg {
+        color: var(--b-sidebar-icon) !important;
+        stroke: var(--b-sidebar-icon) !important;
+      }
+
+      /* Active nav item */
+      #app aside.bg-n-background .active,
+      #app aside[class*="bg-n-background"] .active,
+      #app aside.bg-n-background [aria-current="page"],
+      #app aside[class*="bg-n-background"] [aria-current="page"] {
         background: rgba(29,110,245,0.35) !important;
         border-radius: var(--b-radius) !important;
       }
 
       /* Hover */
-      #app .primary-sidebar a:hover,
-      #app [class*="primary-sidebar"] a:hover,
-      #app .primary-sidebar button:hover,
-      #app [class*="primary-sidebar"] button:hover {
-        background: rgba(147,187,255,0.12) !important;
+      #app aside.bg-n-background a:hover,
+      #app aside[class*="bg-n-background"] a:hover,
+      #app aside.bg-n-background button:hover,
+      #app aside[class*="bg-n-background"] button:hover {
+        background: rgba(127,179,255,0.15) !important;
         border-radius: var(--b-radius) !important;
       }
 
-      /* Hide Chatwoot compiled logo */
-      #app .primary-sidebar img,
-      #app [class*="primary-sidebar"] img,
-      #app .logo,
-      #app [class*="logo--"] {
+      /* ── LOGO — exact selectors from DevTools ──────────────
+         div.grid.flex-shrink-0.place-content-center.size-6
+         img.size-4 (the actual logo image)
+      ──────────────────────────────────────────────────── */
+
+      /* Hide the logo image precisely */
+      #app img.size-4,
+      #app div.size-6 img,
+      #app div.size-6 > img,
+      #app [class*="place-content-center"] img {
         display: none !important;
+        visibility: hidden !important;
       }
 
-      /* "B" badge in place of logo */
-      #app .primary-sidebar > div:first-child a::after,
-      #app [class*="primary-sidebar"] > div:first-child a::after {
+      /* Show "B" badge in the logo container */
+      #app div.size-6::after,
+      #app [class*="place-content-center"][class*="size-6"]::after {
         content: "B";
         display: flex !important;
         align-items: center;
         justify-content: center;
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
         background: var(--b-blue);
         color: #fff;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 800;
-        border-radius: 8px;
-        margin: 0 auto;
+        border-radius: 7px;
         font-family: 'Segoe UI', system-ui, sans-serif;
-      }
-
-      /* ══════════════════════════════════════
-         SECONDARY SIDEBAR (conversations list)
-      ══════════════════════════════════════ */
-
-      #app .secondary-sidebar,
-      #app [class*="secondary-sidebar"] {
-        background: #F8FAFF !important;
-        border-right: 1px solid var(--b-blue-border) !important;
-      }
-
-      /* Active item in secondary sidebar */
-      #app .secondary-sidebar .active,
-      #app [class*="secondary-sidebar"] .active {
-        background: var(--b-blue-light) !important;
-        color: var(--b-blue) !important;
-        border-radius: 8px !important;
-        font-weight: 600 !important;
+        letter-spacing: -0.3px;
+        flex-shrink: 0;
       }
 
       /* ══════════════════════════════════════
          MAIN CONTENT AREA
+         exact class from DevTools: main.bg-n-surface-1
       ══════════════════════════════════════ */
 
-      #app main,
-      #app [class*="view-box"],
-      #app [class*="conversation-page"],
-      #app [class*="content-box"] {
+      #app main.bg-n-surface-1,
+      #app main[class*="bg-n-surface-1"],
+      #app [class*="bg-n-surface-1"] {
         background: var(--b-blue-pale) !important;
       }
 
+      /* Conversation list panel */
+      #app .flex.flex-col.h-full.bg-n-background,
+      #app [class*="conversations-list"] {
+        background: #F8FAFF !important;
+        border-right: 1px solid var(--b-blue-border) !important;
+      }
+
+      /* Active conversation highlight */
+      #app .active.conversation,
+      #app [class*="conversation-item"].active,
+      #app [class*="active"][class*="conversation"] {
+        background: var(--b-blue-light) !important;
+        border-left: 3px solid var(--b-blue) !important;
+      }
+
       /* ══════════════════════════════════════
-         HEADER BAR
+         HEADER / TOP BAR
       ══════════════════════════════════════ */
 
       #app header,
       #app .view-header,
-      #app [class*="view-header"] {
+      #app [class*="view-header"],
+      #app [class*="page-header"] {
         background: var(--b-white) !important;
         border-bottom: 1px solid var(--b-blue-border) !important;
         box-shadow: 0 1px 6px rgba(29,110,245,0.06) !important;
       }
 
       /* ══════════════════════════════════════
-         BUTTONS
+         BUTTONS — brand blue
       ══════════════════════════════════════ */
 
+      /* Chatwoot uses bg-woot-500 and bg-n-brand for primary buttons */
       #app [class*="bg-woot-500"],
-      #app [class*="bg-brand"],
       #app [class*="bg-n-brand"],
+      #app [class*="bg-brand"],
       #app button[data-testid="submit_button"],
       #app button[type="submit"] {
         background: var(--b-blue) !important;
@@ -251,34 +266,41 @@
       }
 
       #app [class*="bg-woot-500"]:hover,
-      #app [class*="bg-brand"]:hover,
+      #app [class*="bg-n-brand"]:hover,
       #app button[type="submit"]:hover {
         background: var(--b-blue-dark) !important;
         border-color: var(--b-blue-dark) !important;
       }
 
+      /* Outlined / ghost buttons with brand border */
+      #app [class*="border-woot"],
+      #app [class*="border-n-brand"],
+      #app [class*="border-brand"] {
+        border-color: var(--b-blue) !important;
+        color: var(--b-blue) !important;
+      }
+
+      /* All buttons radius */
       #app button,
       #app [role="button"] {
         border-radius: var(--b-radius) !important;
       }
 
       /* ══════════════════════════════════════
-         TEXT & BORDER ACCENTS
+         TEXT ACCENTS
       ══════════════════════════════════════ */
 
       #app [class*="text-woot"],
+      #app [class*="text-n-brand"],
       #app [class*="text-brand"],
       #app a[class*="text-brand"] {
         color: var(--b-blue) !important;
       }
 
-      #app [class*="border-woot"],
-      #app [class*="border-brand"] {
-        border-color: var(--b-blue) !important;
-      }
-
+      /* Active tab indicator line */
       #app [class*="border-b-woot"],
-      #app [class*="border-b-brand"] {
+      #app [class*="border-b-brand"],
+      #app [class*="border-b-n-brand"] {
         border-bottom-color: var(--b-blue) !important;
         color: var(--b-blue) !important;
       }
@@ -300,8 +322,20 @@
       ══════════════════════════════════════ */
 
       #app [class*="badge"],
-      #app .unread-badge {
+      #app .unread-badge,
+      #app [class*="unread-count"] {
         background: var(--b-blue) !important;
+        color: #fff !important;
+      }
+
+      /* ══════════════════════════════════════
+         CARDS / PANELS
+      ══════════════════════════════════════ */
+
+      #app .bg-white.rounded-lg,
+      #app [class*="bg-white"][class*="rounded"] {
+        border: 1px solid var(--b-blue-border) !important;
+        box-shadow: 0 2px 12px rgba(29,110,245,0.06) !important;
       }
 
       /* ══════════════════════════════════════
@@ -317,8 +351,6 @@
 
     <!-- ═══════════════════════════════════════════════════
          Boster Chat — JS white-label engine
-         Replaces all "Chatwoot" text + attributes + title
-         MutationObserver keeps it live across Vue re-renders
     ════════════════════════════════════════════════════ -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
