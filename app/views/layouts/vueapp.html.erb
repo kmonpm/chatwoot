@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0"/>
 
     <% if @global_config['DISPLAY_MANIFEST'] %>
-      <meta name="msapplication-TileColor" content="#1f93ff">
+      <meta name="msapplication-TileColor" content="#1D6EF5">
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
-      <meta name="theme-color" content="#1f93ff">
+      <meta name="theme-color" content="#1D6EF5">
       <meta name="description" content="Boster Chat is a customer support solution that helps companies engage customers over Messenger, Twitter, Telegram, WeChat, Whatsapp. Simply connect your channels and converse with your customers from a single place.">
 
       <% if ENV['IOS_APP_IDENTIFIER'].present? %>
@@ -64,8 +64,8 @@
         helpUrls:         <%= feature_help_urls.to_json.html_safe %>,
         selectedLocale:   '<%= I18n.locale %>'
       }
-      window.globalConfig      = <%= raw @global_config.to_json %>
-      window.browserConfig     = { browser_name: '<%= browser.name %>' }
+      window.globalConfig       = <%= raw @global_config.to_json %>
+      window.browserConfig      = { browser_name: '<%= browser.name %>' }
       window.errorLoggingConfig = '<%= ENV.fetch('SENTRY_FRONTEND_DSN', '') || ENV.fetch('SENTRY_DSN', '') %>'
     </script>
 
@@ -79,258 +79,246 @@
     <%= vite_javascript_tag @application_pack %>
 
     <!-- ═══════════════════════════════════════════════════
-         Boster Chat — UI style overrides (CSP-safe)
-         NOTE: Logo is NOT hidden here. The actual SVG files
-         at /brand-assets/ are replaced via Dockerfile COPY,
-         so Boster logos show natively without any CSS tricks.
+         Boster Chat — Cohesive Blue Theme v3
+         Design intent:
+           • Medium blue sidebar — readable, not oppressive
+           • Soft blue-white page background — not stark white
+           • Clean white cards with blue borders
+           • Every area feels part of one unified product
     ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
 
-      /* ══════════════════════════════════════════════════════
-         BOSTER CHAT — BLUE BRANDED THEME
-         Targets Chatwoot's Tailwind class structure precisely.
-         Uses CSS variables for easy future tweaks.
-      ══════════════════════════════════════════════════════ */
-
+      /* ── Design tokens ───────────────────────────────────── */
       :root {
-        --boster-primary:       #1D6EF5;
-        --boster-primary-dark:  #0F2A6E;
-        --boster-primary-light: #EFF6FF;
-        --boster-accent:        #3B82F6;
-        --boster-hover:         #1558CC;
-        --boster-sidebar-bg:    #0F2A6E;
-        --boster-sidebar-text:  #C8DEFF;
-        --boster-sidebar-icon:  #93BBFF;
-        --boster-sidebar-active:#1D6EF5;
+        --b-blue:        #1D6EF5;    /* primary brand */
+        --b-blue-dark:   #1450C8;    /* hover */
+        --b-blue-navy:   #1a3a7a;    /* sidebar bg */
+        --b-blue-light:  #EFF6FF;    /* tinted bg */
+        --b-blue-pale:   #F4F7FF;    /* page background */
+        --b-blue-border: #DBEAFE;    /* borders */
+        --b-icon:        #93BBFF;    /* sidebar icons */
+        --b-white:       #FFFFFF;
+        --b-radius:      10px;
       }
 
-      /* ── LOGIN PAGE background ───────────────────────────── */
-      body {
+      /* ══════════════════════════════════════
+         GLOBAL
+      ══════════════════════════════════════ */
+
+      body, html {
+        background: var(--b-blue-pale) !important;
+      }
+
+      #app {
+        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+        background: var(--b-blue-pale) !important;
+      }
+
+      /* ══════════════════════════════════════
+         LOGIN PAGE
+      ══════════════════════════════════════ */
+
+      /* Outer background gradient */
+      #app .flex.min-h-screen,
+      #app [class*="min-h-screen"] {
         background:
-          radial-gradient(900px 420px at 15% 0%,  rgba(29, 110, 245, 0.15), transparent 60%),
-          radial-gradient(700px 380px at 85% 10%, rgba(14, 165, 233, 0.10), transparent 55%),
-          #f0f4ff !important;
+          radial-gradient(700px 500px at 10% 5%,  rgba(29,110,245,0.10), transparent 60%),
+          radial-gradient(600px 400px at 90% 95%, rgba(29,110,245,0.07), transparent 55%),
+          var(--b-blue-pale) !important;
       }
 
-      /* ── SIDEBAR LOGO — hide Chatwoot logo, show "B" badge ── */
+      /* Login card */
+      #app .bg-white {
+        border-radius: 18px !important;
+        box-shadow: 0 8px 40px rgba(29,110,245,0.10) !important;
+      }
 
-      /* Hide the compiled Vue logo component */
+      /* ══════════════════════════════════════
+         PRIMARY SIDEBAR (narrow icon rail)
+      ══════════════════════════════════════ */
+
+      #app .primary-sidebar,
+      #app [class*="primary-sidebar"] {
+        background: var(--b-blue-navy) !important;
+        border-right: 1px solid rgba(255,255,255,0.07) !important;
+      }
+
+      /* Icons */
+      #app .primary-sidebar svg,
+      #app [class*="primary-sidebar"] svg {
+        color: var(--b-icon) !important;
+        stroke: var(--b-icon) !important;
+      }
+
+      /* Active item */
+      #app .primary-sidebar .active,
+      #app [class*="primary-sidebar"] .active,
+      #app .primary-sidebar [aria-current="page"],
+      #app [class*="primary-sidebar"] [aria-current="page"] {
+        background: rgba(29,110,245,0.35) !important;
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* Hover */
+      #app .primary-sidebar a:hover,
+      #app [class*="primary-sidebar"] a:hover,
+      #app .primary-sidebar button:hover,
+      #app [class*="primary-sidebar"] button:hover {
+        background: rgba(147,187,255,0.12) !important;
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* Hide Chatwoot compiled logo */
       #app .primary-sidebar img,
       #app [class*="primary-sidebar"] img,
-      #app .primary-sidebar svg[class*="logo"],
-      #app [class*="primary-sidebar"] svg[class*="logo"],
       #app .logo,
       #app [class*="logo--"] {
         display: none !important;
-        visibility: hidden !important;
       }
 
-      /* Show a "B" lettermark in place of the logo */
+      /* "B" badge in place of logo */
       #app .primary-sidebar > div:first-child a::after,
       #app [class*="primary-sidebar"] > div:first-child a::after {
         content: "B";
         display: flex !important;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
-        background: var(--boster-primary);
-        color: #ffffff;
-        font-size: 18px;
+        width: 30px;
+        height: 30px;
+        background: var(--b-blue);
+        color: #fff;
+        font-size: 16px;
         font-weight: 800;
         border-radius: 8px;
         margin: 0 auto;
         font-family: 'Segoe UI', system-ui, sans-serif;
-        letter-spacing: -0.5px;
       }
 
-      /* ── LOGIN CARD ──────────────────────────────────────── */
-      #app .bg-white,
-      #app [class*="bg-white"] {
-        border-radius: 16px !important;
-        box-shadow: 0 18px 45px rgba(15, 42, 110, 0.12) !important;
-      }
+      /* ══════════════════════════════════════
+         SECONDARY SIDEBAR (conversations list)
+      ══════════════════════════════════════ */
 
-      /* ══════════════════════════════════════════════════════
-         DASHBOARD SIDEBAR
-         Chatwoot renders the primary nav as:
-         .flex.h-full + .primary-sidebar / .secondary-sidebar
-      ══════════════════════════════════════════════════════ */
-
-      /* Narrow icon rail (primary sidebar) */
-      #app .primary-sidebar,
-      #app [class*="primary-sidebar"],
-      #app aside:first-of-type,
-      #app .flex.h-full > nav:first-child {
-        background: var(--boster-primary-dark) !important;
-        border-right: 1px solid rgba(255,255,255,0.08) !important;
-      }
-
-      /* Wider secondary sidebar (conversations list) */
       #app .secondary-sidebar,
       #app [class*="secondary-sidebar"] {
-        background: #f8faff !important;
-        border-right: 1px solid #dbeafe !important;
+        background: #F8FAFF !important;
+        border-right: 1px solid var(--b-blue-border) !important;
       }
 
-      /* Sidebar nav icons */
-      #app .primary-sidebar svg,
-      #app [class*="primary-sidebar"] svg {
-        color: var(--boster-sidebar-icon) !important;
-      }
-
-      /* Active sidebar item */
-      #app .primary-sidebar .active,
-      #app [class*="primary-sidebar"] .active,
-      #app .primary-sidebar [aria-current="page"],
-      #app [class*="primary-sidebar"] [aria-current="page"] {
-        background: var(--boster-primary) !important;
-        border-radius: 10px !important;
-      }
-
-      /* Sidebar item hover */
-      #app .primary-sidebar a:hover,
-      #app [class*="primary-sidebar"] a:hover,
-      #app .primary-sidebar button:hover,
-      #app [class*="primary-sidebar"] button:hover {
-        background: rgba(29, 110, 245, 0.25) !important;
-        border-radius: 10px !important;
-      }
-
-      /* Sidebar text links in secondary panel */
-      #app .secondary-sidebar a.active,
-      #app [class*="secondary-sidebar"] a.active {
-        color: var(--boster-primary) !important;
-        background: var(--boster-primary-light) !important;
+      /* Active item in secondary sidebar */
+      #app .secondary-sidebar .active,
+      #app [class*="secondary-sidebar"] .active {
+        background: var(--b-blue-light) !important;
+        color: var(--b-blue) !important;
         border-radius: 8px !important;
         font-weight: 600 !important;
       }
 
-      /* ══════════════════════════════════════════════════════
-         TOP HEADER BAR
-      ══════════════════════════════════════════════════════ */
+      /* ══════════════════════════════════════
+         MAIN CONTENT AREA
+      ══════════════════════════════════════ */
+
+      #app main,
+      #app [class*="view-box"],
+      #app [class*="conversation-page"],
+      #app [class*="content-box"] {
+        background: var(--b-blue-pale) !important;
+      }
+
+      /* ══════════════════════════════════════
+         HEADER BAR
+      ══════════════════════════════════════ */
+
       #app header,
       #app .view-header,
       #app [class*="view-header"] {
-        background: #ffffff !important;
-        border-bottom: 2px solid #dbeafe !important;
+        background: var(--b-white) !important;
+        border-bottom: 1px solid var(--b-blue-border) !important;
+        box-shadow: 0 1px 6px rgba(29,110,245,0.06) !important;
       }
 
-      /* Header title text */
-      #app header h1,
-      #app .view-header h1,
-      #app [class*="view-header"] h1 {
-        color: var(--boster-primary-dark) !important;
-        font-weight: 700 !important;
-      }
+      /* ══════════════════════════════════════
+         BUTTONS
+      ══════════════════════════════════════ */
 
-      /* ══════════════════════════════════════════════════════
-         BUTTONS — Primary accent color
-      ══════════════════════════════════════════════════════ */
-
-      /* Primary buttons (bg-brand, bg-woot-500 etc) */
-      #app .bg-woot-500,
       #app [class*="bg-woot-500"],
       #app [class*="bg-brand"],
       #app [class*="bg-n-brand"],
       #app button[data-testid="submit_button"],
       #app button[type="submit"] {
-        background: var(--boster-primary) !important;
-        border-color: var(--boster-primary) !important;
+        background: var(--b-blue) !important;
+        border-color: var(--b-blue) !important;
+        color: #fff !important;
       }
 
-      #app .bg-woot-500:hover,
       #app [class*="bg-woot-500"]:hover,
       #app [class*="bg-brand"]:hover,
       #app button[type="submit"]:hover {
-        background: var(--boster-hover) !important;
-        border-color: var(--boster-hover) !important;
+        background: var(--b-blue-dark) !important;
+        border-color: var(--b-blue-dark) !important;
       }
 
-      /* Text accent colors */
-      #app .text-woot-500,
-      #app [class*="text-woot-500"],
+      #app button,
+      #app [role="button"] {
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* ══════════════════════════════════════
+         TEXT & BORDER ACCENTS
+      ══════════════════════════════════════ */
+
+      #app [class*="text-woot"],
       #app [class*="text-brand"],
       #app a[class*="text-brand"] {
-        color: var(--boster-primary) !important;
+        color: var(--b-blue) !important;
       }
 
-      /* Border accent */
-      #app .border-woot-500,
-      #app [class*="border-woot-500"],
+      #app [class*="border-woot"],
       #app [class*="border-brand"] {
-        border-color: var(--boster-primary) !important;
+        border-color: var(--b-blue) !important;
       }
 
-      /* Active tab underline / indicator */
       #app [class*="border-b-woot"],
-      #app [class*="border-b-brand"],
-      #app .active-tab {
-        border-bottom-color: var(--boster-primary) !important;
-        color: var(--boster-primary) !important;
+      #app [class*="border-b-brand"] {
+        border-bottom-color: var(--b-blue) !important;
+        color: var(--b-blue) !important;
       }
 
-      /* All buttons — consistent border radius */
-      #app button,
-      #app [role="button"],
-      #app .btn {
-        border-radius: 10px !important;
-      }
+      /* ══════════════════════════════════════
+         INPUTS
+      ══════════════════════════════════════ */
 
-      /* ══════════════════════════════════════════════════════
-         INPUTS & FOCUS RINGS
-      ══════════════════════════════════════════════════════ */
       #app input:focus,
       #app textarea:focus,
       #app select:focus {
-        border-color: var(--boster-primary) !important;
-        box-shadow: 0 0 0 3px rgba(29, 110, 245, 0.15) !important;
+        border-color: var(--b-blue) !important;
+        box-shadow: 0 0 0 3px rgba(29,110,245,0.10) !important;
         outline: none !important;
       }
 
-      /* ══════════════════════════════════════════════════════
-         BADGES / NOTIFICATION COUNTS
-      ══════════════════════════════════════════════════════ */
-      #app .badge,
+      /* ══════════════════════════════════════
+         NOTIFICATION BADGES
+      ══════════════════════════════════════ */
+
       #app [class*="badge"],
       #app .unread-badge {
-        background: var(--boster-primary) !important;
+        background: var(--b-blue) !important;
       }
 
-      /* ══════════════════════════════════════════════════════
-         FONT — cleaner, more modern feel
-      ══════════════════════════════════════════════════════ */
-      #app {
-        font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
-      }
+      /* ══════════════════════════════════════
+         SCROLLBARS
+      ══════════════════════════════════════ */
 
-      /* ══════════════════════════════════════════════════════
-         SCROLLBAR — subtle blue tint
-      ══════════════════════════════════════════════════════ */
-      #app *::-webkit-scrollbar {
-        width: 5px;
-        height: 5px;
-      }
-      #app *::-webkit-scrollbar-track {
-        background: #f0f4ff;
-      }
-      #app *::-webkit-scrollbar-thumb {
-        background: #bfdbfe;
-        border-radius: 99px;
-      }
-      #app *::-webkit-scrollbar-thumb:hover {
-        background: var(--boster-primary);
-      }
+      #app *::-webkit-scrollbar       { width: 5px; height: 5px; }
+      #app *::-webkit-scrollbar-track { background: #EEF3FF; }
+      #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 99px; }
+      #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
 
     </style>
 
     <!-- ═══════════════════════════════════════════════════
          Boster Chat — JS white-label engine
-         - Replaces all "Chatwoot" text via TreeWalker
-         - Replaces attributes (alt, title, placeholder…)
-         - Replaces page title + meta tags
-         - MutationObserver keeps it live across Vue re-renders
-         - Does NOT hide /brand-assets/ images (replaced on disk)
+         Replaces all "Chatwoot" text + attributes + title
+         MutationObserver keeps it live across Vue re-renders
     ════════════════════════════════════════════════════ -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
@@ -338,7 +326,6 @@
       const BRAND_NEW       = 'Boster Chat';
       const BRAND_OLD_LOWER = 'chatwoot';
 
-      // ── Util: replace all case variants of the brand name ────────────────
       function replaceBrandText(text) {
         if (!text) return text;
         return text
@@ -347,16 +334,8 @@
           .replace(/CHATWOOT/g,  BRAND_NEW.toUpperCase());
       }
 
-      // ── 1) Deep text-node walk ────────────────────────────────────────────
-      //    Uses TreeWalker so it catches every text node Vue renders,
-      //    regardless of nesting depth or extra whitespace.
       function replaceTextNodes(root) {
-        const walker = document.createTreeWalker(
-          root,
-          NodeFilter.SHOW_TEXT,
-          null,
-          false
-        );
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
         let node;
         while ((node = walker.nextNode())) {
           if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
@@ -365,9 +344,6 @@
         }
       }
 
-      // ── 2) Attribute replacement ──────────────────────────────────────────
-      //    Patches alt, title, placeholder, aria-label, content, value
-      //    so screen readers and tooltips don't leak the old brand name.
       function replaceAttributes(root) {
         const attrs = ['title', 'alt', 'placeholder', 'aria-label', 'content', 'value'];
         root.querySelectorAll('*').forEach(el => {
@@ -377,26 +353,20 @@
               el.setAttribute(attr, replaceBrandText(val));
             }
           });
-          // Live input / textarea values
-          if (
-            (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') &&
-            el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER)
-          ) {
+          if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') &&
+              el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER)) {
             el.value = replaceBrandText(el.value);
           }
         });
       }
 
-      // ── 3) Page <title> + meta tags ──────────────────────────────────────
       function replaceMetaTags() {
         if (document.title.toLowerCase().includes(BRAND_OLD_LOWER)) {
           document.title = replaceBrandText(document.title);
         }
-        document.querySelectorAll([
-          'meta[name="application-name"]',
-          'meta[property="og:site_name"]',
-          'meta[name="description"]'
-        ].join(',')).forEach(meta => {
+        document.querySelectorAll(
+          'meta[name="application-name"], meta[property="og:site_name"], meta[name="description"]'
+        ).forEach(meta => {
           const content = meta.getAttribute('content') || '';
           if (content.toLowerCase().includes(BRAND_OLD_LOWER)) {
             meta.setAttribute('content', replaceBrandText(content));
@@ -404,9 +374,6 @@
         });
       }
 
-      // ── 4) MutationObserver — survives Vue dynamic re-renders ─────────────
-      //    Watches for any new nodes or text changes and re-applies
-      //    replacement immediately, so Vue can never flash old brand name.
       function observeChanges(root) {
         const observer = new MutationObserver(mutations => {
           for (const mutation of mutations) {
@@ -422,24 +389,16 @@
                 }
               });
             } else if (mutation.type === 'characterData') {
-              if (
-                mutation.target.nodeValue &&
-                mutation.target.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)
-              ) {
+              if (mutation.target.nodeValue &&
+                  mutation.target.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
                 mutation.target.nodeValue = replaceBrandText(mutation.target.nodeValue);
               }
             }
           }
         });
-
-        observer.observe(root, {
-          childList:     true,
-          subtree:       true,
-          characterData: true
-        });
+        observer.observe(root, { childList: true, subtree: true, characterData: true });
       }
 
-      // ── Bootstrap ─────────────────────────────────────────────────────────
       function runAll() {
         const root = document.getElementById('app') || document.body;
         replaceTextNodes(root);
@@ -448,7 +407,6 @@
         observeChanges(root);
       }
 
-      // Run immediately if DOM is ready, otherwise wait for DOMContentLoaded
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', runAll);
       } else {
