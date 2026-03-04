@@ -384,124 +384,90 @@
       #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
 
       /* ════════════════════════════════════════════════════
-         DARK MODE — targets BOTH mechanisms Chatwoot uses:
-         1. @media prefers-color-scheme: dark  (OS setting)
-         2. html.dark class  (manual toggle in app)
-         Overrides Chatwoot's near-black defaults with
-         deep blue-grey palette that matches our brand.
+         DARK MODE — DevTools confirmed:
+         Chatwoot puts class="dark" on <body>, NOT <html>!
+         Selector: body.dark
+         Also confirmed class names:
+           bg-n-surface-1  = main content area
+           bg-n-background = sidebar + conversation list
+           conversations-list-wrap = middle panel
       ════════════════════════════════════════════════════ */
 
-      /* Shared dark mode rules — applied via both selectors */
-      @media (prefers-color-scheme: dark) {
-        body, html {
-          background:
-            radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.10), transparent 58%),
-            radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.07), transparent 60%),
-            linear-gradient(180deg, #0D1829 0%, #0A1420 55%, #0D1829 100%) !important;
-        }
-
-        /* Override Chatwoot's CSS custom properties for dark mode */
-        #app {
-          --n-background: #0F1E34 !important;
-          --n-surface-1: #182A42 !important;
-          --n-surface-2: #1B2F48 !important;
-          --n-surface-3: #1F3452 !important;
-        }
-
-        /* Surface/card backgrounds */
-        #app [class*="bg-n-surface"],
-        #app [class*="bg-n-background"]:not(aside),
-        #app [class*="bg-n-strong"] {
-          background: #182A42 !important;
-          border-color: rgba(29,110,245,0.15) !important;
-        }
-
-        /* Header */
-        #app header,
-        #app [class*="view-header"],
-        #app [class*="page-header"] {
-          background: rgba(10,20,36,0.94) !important;
-          border-bottom-color: rgba(29,110,245,0.18) !important;
-        }
-
-        /* Conversation list panel */
-        #app .flex.flex-col.h-full.bg-n-background {
-          background: rgba(12,22,38,0.90) !important;
-        }
-
-        /* Main content */
-        #app main { background: #0D1829 !important; }
-
-        /* Inputs */
-        #app input, #app textarea, #app select {
-          background: #0F1E32 !important;
-          border-color: rgba(29,110,245,0.28) !important;
-          color: #D8EAFF !important;
-        }
-        #app input:focus, #app textarea:focus {
-          border-color: rgba(29,110,245,0.80) !important;
-          box-shadow: 0 0 0 4px rgba(29,110,245,0.18) !important;
-        }
-
-        /* Scrollbar */
-        #app *::-webkit-scrollbar-track { background: rgba(8,16,28,0.9); }
-        #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.28); }
-        #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.55); }
-      }
-
-      /* Same rules again for html.dark class toggle */
-      html.dark body,
-      html.dark html {
+      /* Body background */
+      body.dark {
         background:
           radial-gradient(900px 650px at 18% 8%, rgba(29,110,245,0.10), transparent 58%),
           radial-gradient(700px 520px at 86% 92%, rgba(29,110,245,0.07), transparent 60%),
           linear-gradient(180deg, #0D1829 0%, #0A1420 55%, #0D1829 100%) !important;
       }
 
-      html.dark #app {
-        --n-background: #0F1E34 !important;
-        --n-surface-1: #182A42 !important;
-        --n-surface-2: #1B2F48 !important;
-        --n-surface-3: #1F3452 !important;
+      /* Main content area — bg-n-surface-1 confirmed from DevTools */
+      body.dark #app main,
+      body.dark #app [class*="bg-n-surface-1"],
+      body.dark #app .bg-n-surface-1 {
+        background: #0F1D30 !important;
       }
 
-      html.dark #app [class*="bg-n-surface"],
-      html.dark #app [class*="bg-n-background"]:not(aside),
-      html.dark #app [class*="bg-n-strong"] {
+      /* Conversation list wrap — bg-n-surface-1 confirmed */
+      body.dark #app [class*="conversations-list-wrap"],
+      body.dark #app .conversations-list-wrap {
+        background: #122038 !important;
+        border-right: 1px solid rgba(29,110,245,0.18) !important;
+      }
+
+      /* Cards / panels inside content */
+      body.dark #app [class*="bg-n-surface"],
+      body.dark #app [class*="bg-n-strong"] {
         background: #182A42 !important;
         border-color: rgba(29,110,245,0.15) !important;
       }
 
-      html.dark #app header,
-      html.dark #app [class*="view-header"],
-      html.dark #app [class*="page-header"] {
-        background: rgba(10,20,36,0.94) !important;
-        border-bottom-color: rgba(29,110,245,0.18) !important;
+      /* Header */
+      body.dark #app header,
+      body.dark #app [class*="view-header"],
+      body.dark #app [class*="page-header"] {
+        background: rgba(10,20,36,0.95) !important;
+        border-bottom: 1px solid rgba(29,110,245,0.20) !important;
+        backdrop-filter: blur(12px);
       }
 
-      html.dark #app .flex.flex-col.h-full.bg-n-background {
-        background: rgba(12,22,38,0.90) !important;
+      /* Sidebar — keep the same navy gradient in dark mode too */
+      body.dark #app aside.bg-n-background,
+      body.dark #app aside[class*="bg-n-background"] {
+        background:
+          radial-gradient(900px 600px at 15% 0%, rgba(255,255,255,0.08), transparent 55%),
+          linear-gradient(180deg, #17356F 0%, #152E61 45%, #122552 100%) !important;
       }
 
-      html.dark #app main { background: #0D1829 !important; }
-
-      html.dark #app input,
-      html.dark #app textarea,
-      html.dark #app select {
+      /* Inputs in dark mode */
+      body.dark #app input,
+      body.dark #app textarea,
+      body.dark #app select {
         background: #0F1E32 !important;
         border-color: rgba(29,110,245,0.28) !important;
         color: #D8EAFF !important;
       }
 
-      html.dark #app input:focus,
-      html.dark #app textarea:focus {
+      body.dark #app input:focus,
+      body.dark #app textarea:focus,
+      body.dark #app select:focus {
         border-color: rgba(29,110,245,0.80) !important;
         box-shadow: 0 0 0 4px rgba(29,110,245,0.18) !important;
       }
 
-      html.dark #app *::-webkit-scrollbar-track { background: rgba(8,16,28,0.9); }
-      html.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.28); }
-      html.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.55); }
+      /* Text colors in dark mode */
+      body.dark #app main p,
+      body.dark #app main span,
+      body.dark #app main h1,
+      body.dark #app main h2,
+      body.dark #app main h3 {
+        color: #D0E4FF !important;
+      }
+
+      /* Scrollbar in dark mode */
+      body.dark #app *::-webkit-scrollbar-track { background: rgba(8,16,28,0.9); }
+      body.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.30); }
+      body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.58); }
 
     </style>
 
