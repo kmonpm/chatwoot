@@ -140,34 +140,55 @@
       }
 
       /* ══════════════════════════════════════
-         LOGIN PAGE — soft gradient background
+         LOGIN PAGE — target body directly
+         Chatwoot sets bg on html/body, so we
+         must override at that level too.
       ══════════════════════════════════════ */
 
-      /* Light mode login */
-      #app .flex.flex-col.w-full.h-screen,
-      #app [class*="min-h-screen"] {
+      /* Light mode — soft blue-white gradient */
+      html:not(.dark) body:not(.dark),
+      body:not(.dark) {
         background:
-          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(29,110,245,0.18), transparent 60%),
-          radial-gradient(ellipse 60% 50% at 85% 85%, rgba(99,155,255,0.15), transparent 55%),
-          linear-gradient(135deg, #e8f0ff 0%, #f0f5ff 40%, #e4eeff 100%) !important;
+          radial-gradient(ellipse 90% 70% at 15% 10%, rgba(99,155,255,0.35), transparent 55%),
+          radial-gradient(ellipse 70% 60% at 88% 88%, rgba(59,120,240,0.25), transparent 55%),
+          linear-gradient(160deg, #1a5cd8 0%, #2563EB 35%, #1D6EF5 65%, #3b82f6 100%) !important;
       }
 
-      /* Login card */
-      #app section.bg-white,
-      #app .bg-white.shadow,
-      #app [class*="shadow"][class*="bg-white"] {
+      /* Light mode login card */
+      body:not(.dark) #app section.bg-white,
+      body:not(.dark) #app [class*="auth"] [class*="bg-white"],
+      body:not(.dark) #app .flex.min-h-screen > div > div {
+        background: rgba(255,255,255,0.97) !important;
         border-radius: 20px !important;
-        box-shadow: 0 8px 40px rgba(29,110,245,0.14), 0 2px 8px rgba(0,0,0,0.06) !important;
-        border: 1px solid rgba(219,234,254,0.80) !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.08) !important;
+        border: 1px solid rgba(255,255,255,0.60) !important;
+      }
+
+      /* Login title + labels — white text on blue bg */
+      body:not(.dark) #app .flex.flex-col.w-full.h-screen h2,
+      body:not(.dark) #app .flex.flex-col.w-full.h-screen h1,
+      body:not(.dark) #app [class*="min-h-screen"] > h2,
+      body:not(.dark) #app [class*="min-h-screen"] > h1 {
+        color: #FFFFFF !important;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.15);
       }
 
       /* Dark mode login */
-      body.dark #app .flex.flex-col.w-full.h-screen,
-      body.dark #app [class*="min-h-screen"] {
+      body.dark {
         background:
-          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(29,110,245,0.12), transparent 60%),
-          radial-gradient(ellipse 60% 50% at 85% 85%, rgba(29,110,245,0.08), transparent 55%),
-          linear-gradient(135deg, #0a1628 0%, #0d1e38 50%, #0a1628 100%) !important;
+          radial-gradient(ellipse 90% 70% at 15% 10%, rgba(29,110,245,0.20), transparent 55%),
+          radial-gradient(ellipse 70% 60% at 88% 88%, rgba(29,110,245,0.12), transparent 55%),
+          linear-gradient(160deg, #060d1a 0%, #0a1628 40%, #0d1e38 100%) !important;
+      }
+
+      /* Dark mode login card — lighter dark, not pitch black */
+      body.dark #app section,
+      body.dark #app [class*="auth"] section,
+      body.dark #app .flex.min-h-screen section {
+        background: #1a2744 !important;
+        border: 1px solid rgba(29,110,245,0.25) !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.40) !important;
       }
 
       /* ══════════════════════════════════════
