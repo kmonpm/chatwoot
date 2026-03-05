@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 36" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 36" fill="none">
   <!-- Chat bubble icon -->
   <rect x="0" y="4" width="28" height="22" rx="6" fill="#1F6FEB"/>
   <circle cx="8"  cy="15" r="2.2" fill="white"/>
@@ -7,6 +7,11 @@
   <path d="M4 26 L8 22 H4 V26Z" fill="#1F6FEB"/>
 
   <!-- Wordmark -->
-  <text x="36" y="25" font-family="'Segoe UI', system-ui, sans-serif" font-weight="700" font-size="18" fill="#0f172a" letter-spacing="-0.3">Boster</text>
-  <text x="100" y="25" font-family="'Segoe UI', system-ui, sans-serif" font-weight="400" font-size="18" fill="#1F6FEB" letter-spacing="-0.3">Chat</text>
+  <text x="36" y="25" font-family="Segoe UI, system-ui, sans-serif" font-weight="800" font-size="18" fill="#0F172A" letter-spacing="-0.3">Boster</text>
+
+  <!-- Chat pill -->
+  <rect x="108" y="9" width="58" height="20" rx="10" fill="#1F6FEB" opacity="0.14"/>
+  <text x="137" y="24" text-anchor="middle"
+        font-family="Segoe UI, system-ui, sans-serif"
+        font-weight="800" font-size="13" fill="#1F6FEB" letter-spacing="1.2">CHAT</text>
 </svg>
