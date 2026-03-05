@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Boster Chat</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0"/>
 
     <% if @global_config['DISPLAY_MANIFEST'] %>
@@ -9,9 +10,11 @@
       <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
       <meta name="theme-color" content="#1D6EF5">
       <meta name="description" content="Boster Chat — customer support made simple.">
+
       <% if ENV['IOS_APP_IDENTIFIER'].present? %>
         <meta name="apple-itunes-app" content='app-id=<%= ENV['IOS_APP_IDENTIFIER'] %>'>
       <% end %>
+
       <link rel="apple-touch-icon" sizes="57x57"   href="/apple-icon-57x57.png">
       <link rel="apple-touch-icon" sizes="60x60"   href="/apple-icon-60x60.png">
       <link rel="apple-touch-icon" sizes="72x72"   href="/apple-icon-72x72.png">
@@ -72,95 +75,509 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
 
+    <!-- ═══════════════════════════════════════════════════
+         BOSTER CHAT — Smart Theme v6
+         Strategy: SURGICAL overrides only.
+         - Never override text color globally (breaks dark mode)
+         - Only override backgrounds, borders, shadows, accents
+         - Let Chatwoot's own CSS variables handle text in dark mode
+         - Use body.dark (confirmed from DevTools) for dark overrides
+    ════════════════════════════════════════════════════ -->
     <style nonce="<%= content_security_policy_nonce %>">
+
       :root {
         --b-blue:       #1D6EF5;
         --b-blue-dark:  #1450C8;
-        --b-bg-light:   #F8FAFC;
-        --b-bg-dark:    #0F172A;
+        --b-blue-light: #EFF6FF;
+        --b-blue-pale:  #F3F7FF;
+        --b-border:     #DBEAFE;
+        --b-radius:     12px;
+        --b-radius-lg:  20px;
       }
 
-      /* 1. Reset Body Backgrounds to Solid Colors */
-      html, body {
-        background: var(--b-bg-light) !important;
-      }
-      body.dark {
-        background: var(--b-bg-dark) !important;
+      /* ── Font only — safe in both modes ─────────────────── */
+      #app {
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* 2. Login Card Styling */
-      #app section, 
-      [class*="auth-wrapper"] section {
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
-      }
-      body.dark #app section {
-        background: #1E293B !important;
-        border-color: #334155 !important;
-      }
+      /* ══════════════════════════════════════
+         CONVERSATION LIST — search + tabs
+         Exact classes confirmed from DevTools:
+         - .conversations-list-wrap = outer wrap
+         - .is-compact = tab bar container
+         - .conversations-list = list div
+      ══════════════════════════════════════ */
 
-      /* 3. Input Fields - Remove Gray Boxes */
-      #app input {
-        background: #FFFFFF !important;
-        border: 1px solid #CBD5E1 !important;
+      /* Search input — force dark text + visible bg */
+      #app .conversations-list-wrap input {
         color: #1E293B !important;
+        background: #F1F5FF !important;
+        border-radius: 10px !important;
       }
-      body.dark #app input {
-        background: #0F172A !important;
-        border-color: #334155 !important;
-        color: #F8FAFC !important;
+      #app .conversations-list-wrap input::placeholder {
+        color: #94A3B8 !important;
+        opacity: 1 !important;
       }
 
-      /* 4. Login Button */
-      #app button[type="submit"] {
+      /* Search area SVG icons */
+      #app .conversations-list-wrap .flex.items-center svg {
+        color: #64748B !important;
+        stroke: #64748B !important;
+      }
+
+      /* Tab bar items — pill shape */
+      #app .conversations-list-wrap .is-compact li,
+      #app .conversations-list-wrap .is-compact a,
+      #app .conversations-list-wrap li a,
+      #app .conversations-list-wrap [class*="tabs"] li {
+        border-radius: 20px !important;
+        transition: background 130ms ease !important;
+      }
+
+      /* Tab text color in light mode */
+      #app .conversations-list-wrap .is-compact li a,
+      #app .conversations-list-wrap li a {
+        color: #475569 !important;
+        font-weight: 500 !important;
+        padding: 4px 12px !important;
+        border-radius: 20px !important;
+        display: inline-block !important;
+      }
+
+      /* Active tab — blue pill */
+      #app .conversations-list-wrap .is-compact li.is-active a,
+      #app .conversations-list-wrap li.active a,
+      #app .conversations-list-wrap [class*="active"] a {
         background: var(--b-blue) !important;
         color: #FFFFFF !important;
-        font-weight: 600 !important;
-        border-radius: 8px !important;
+        border-radius: 20px !important;
+        box-shadow: 0 2px 10px rgba(29,110,245,0.25) !important;
       }
 
-      /* 5. Clean up Branding */
-      #app aside.bg-n-background {
-        background: #FFFFFF !important;
-        border-right: 1px solid #E2E8F0 !important;
+      /* Also target span-based tabs (Vue router-link) */
+      #app .conversations-list-wrap button[class*="active"],
+      #app .conversations-list-wrap button.active {
+        background: var(--b-blue) !important;
+        color: #FFFFFF !important;
+        border-radius: 20px !important;
       }
-      body.dark #app aside.bg-n-background {
-        background: #1E293B !important;
+
+      /* ── Bottom-left popup — bg-n-alpha-1 confirmed ─────── */
+      /* Light mode: text was invisible (near-white on white) */
+      #app button.bg-n-alpha-1,
+      #app [class*="bg-n-alpha-1"] {
+        color: #1E293B !important;
       }
+      #app button.bg-n-alpha-1 *,
+      #app [class*="bg-n-alpha-1"] * {
+        color: #1E293B !important;
+      }
+      /* Dark mode popup text */
+      body.dark #app button.bg-n-alpha-1,
+      body.dark #app [class*="bg-n-alpha-1"],
+      body.dark #app button.bg-n-alpha-1 *,
+      body.dark #app [class*="bg-n-alpha-1"] * {
+        color: #D0E4FF !important;
+      }
+
+      /* ══════════════════════════════════════
+         SIDEBAR — only background + active pill
+         NO text/color overrides → Chatwoot handles
+         text color correctly in both light + dark
+      ══════════════════════════════════════ */
+
+      /* Sidebar background — medium blue */
+      #app aside.bg-n-background,
+      #app aside[class*="bg-n-background"] {
+        background: linear-gradient(180deg, #1e3f85 0%, #162f6a 100%) !important;
+        border-right: 1px solid rgba(255,255,255,0.08) !important;
+      }
+
+      /* Force all sidebar text/icons white since bg is dark blue */
+      #app aside.bg-n-background,
+      #app aside[class*="bg-n-background"],
+      #app aside.bg-n-background *:not(.active):not([aria-current="page"]) {
+        color: rgba(220, 235, 255, 0.90) !important;
+      }
+
+      #app aside.bg-n-background svg,
+      #app aside[class*="bg-n-background"] svg {
+        color: rgba(180, 210, 255, 0.85) !important;
+        stroke: rgba(180, 210, 255, 0.85) !important;
+      }
+
+      /* Hover */
+      #app aside.bg-n-background a:hover,
+      #app aside[class*="bg-n-background"] a:hover,
+      #app aside.bg-n-background button:hover,
+      #app aside[class*="bg-n-background"] button:hover {
+        background: rgba(255,255,255,0.10) !important;
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* Active nav item */
+      #app aside.bg-n-background .active,
+      #app aside[class*="bg-n-background"] .active,
+      #app aside.bg-n-background [aria-current="page"],
+      #app aside[class*="bg-n-background"] [aria-current="page"] {
+        background: var(--b-blue) !important;
+        border-radius: var(--b-radius) !important;
+        box-shadow: 0 4px 16px rgba(29,110,245,0.30) !important;
+      }
+
+      /* Active item — white text + icons */
+      #app aside.bg-n-background .active *,
+      #app aside[class*="bg-n-background"] .active *,
+      #app aside.bg-n-background [aria-current="page"] *,
+      #app aside[class*="bg-n-background"] [aria-current="page"] * {
+        color: #FFFFFF !important;
+      }
+
+      #app aside.bg-n-background .active svg,
+      #app aside[class*="bg-n-background"] .active svg,
+      #app aside.bg-n-background [aria-current="page"] svg,
+      #app aside[class*="bg-n-background"] [aria-current="page"] svg {
+        color: #FFFFFF !important;
+        stroke: #FFFFFF !important;
+        opacity: 1 !important;
+      }
+
+      /* ── Logo: hide img, show "B" badge ─────────────────── */
+      #app img.size-4,
+      #app div.size-6 img,
+      #app div.size-6 > img,
+      #app [class*="place-content-center"] img {
+        display: none !important;
+      }
+
+      #app div.size-6::after,
+      #app [class*="place-content-center"][class*="size-6"]::after {
+        content: "B";
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #2979FF 0%, #1450C8 100%);
+        color: #fff !important;
+        font-size: 15px;
+        font-weight: 900;
+        border-radius: 9px;
+        box-shadow: 0 4px 14px rgba(29,110,245,0.40);
+        font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+        letter-spacing: -0.4px;
+        flex-shrink: 0;
+      }
+
+      /* ══════════════════════════════════════
+         ACCENT COLORS — brand blue replaces woot
+         Only color/border overrides, not text
+      ══════════════════════════════════════ */
+
+      #app [class*="bg-woot-500"],
+      #app [class*="bg-n-brand"],
+      #app [class*="bg-brand"],
+      #app button[data-testid="submit_button"],
+      #app button[type="submit"] {
+        background: linear-gradient(135deg, var(--b-blue) 0%, var(--b-blue-dark) 100%) !important;
+        border-color: rgba(29,110,245,0.60) !important;
+        color: #fff !important;
+        box-shadow: 0 4px 14px rgba(29,110,245,0.22) !important;
+        transition: transform 130ms ease, box-shadow 130ms ease;
+      }
+
+      #app [class*="bg-woot-500"]:hover,
+      #app [class*="bg-n-brand"]:hover,
+      #app button[type="submit"]:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(29,110,245,0.30) !important;
+      }
+
+      #app button, #app [role="button"] {
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* Brand text */
+      #app [class*="text-woot"],
+      #app [class*="text-n-brand"],
+      #app [class*="text-brand"] {
+        color: var(--b-blue) !important;
+      }
+
+      /* Brand borders */
+      #app [class*="border-woot"],
+      #app [class*="border-n-brand"],
+      #app [class*="border-brand"] {
+        border-color: var(--b-blue) !important;
+      }
+
+      #app [class*="border-b-woot"],
+      #app [class*="border-b-brand"],
+      #app [class*="border-b-n-brand"] {
+        border-bottom-color: var(--b-blue) !important;
+      }
+
+      /* Badges */
+      #app [class*="badge"],
+      #app .unread-badge,
+      #app [class*="unread-count"] {
+        background: var(--b-blue) !important;
+        color: #fff !important;
+      }
+
+      /* Input focus ring */
+      #app input:focus,
+      #app textarea:focus,
+      #app select:focus {
+        border-color: var(--b-blue) !important;
+        box-shadow: 0 0 0 3px rgba(29,110,245,0.15) !important;
+        outline: none !important;
+      }
+
+      /* Scrollbar */
+      #app *::-webkit-scrollbar { width: 5px; height: 5px; }
+      #app *::-webkit-scrollbar-track { background: transparent; }
+      #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.25); border-radius: 999px; }
+      #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.55); }
+
+      /* ══════════════════════════════════════
+         LOGIN PAGE — only background + card shadow
+         No text color overrides
+      ══════════════════════════════════════ */
+
+      #app .flex.flex-col.w-full.h-screen,
+      #app [class*="min-h-screen"] {
+        background:
+          radial-gradient(800px 600px at 15% 10%, rgba(29,110,245,0.10), transparent 55%),
+          radial-gradient(600px 400px at 88% 88%, rgba(29,110,245,0.07), transparent 55%),
+          #F3F7FF !important;
+      }
+
+      body.dark #app .flex.flex-col.w-full.h-screen,
+      body.dark #app [class*="min-h-screen"] {
+        background:
+          radial-gradient(800px 600px at 15% 10%, rgba(29,110,245,0.10), transparent 55%),
+          radial-gradient(600px 400px at 88% 88%, rgba(29,110,245,0.07), transparent 55%),
+          #0D1829 !important;
+      }
+
+      /* ══════════════════════════════════════
+         DARK MODE — body.dark confirmed from DevTools
+         RULE: Only override backgrounds here.
+         NEVER override text colors in main content —
+         Chatwoot's own dark vars handle that correctly.
+      ══════════════════════════════════════ */
+
+      /* Main bg */
+      body.dark #app main.bg-n-surface-1,
+      body.dark #app .bg-n-surface-1 {
+        background: #111C2D !important;
+      }
+
+      /* Conversation list middle panel */
+      body.dark #app .conversations-list-wrap,
+      body.dark #app [class*="conversations-list-wrap"] {
+        background: #0F1A2B !important;
+        border-right: 1px solid rgba(29,110,245,0.15) !important;
+      }
+
+      /* Header */
+      body.dark #app header,
+      body.dark #app [class*="view-header"] {
+        background: rgba(10,18,32,0.96) !important;
+        border-bottom: 1px solid rgba(29,110,245,0.18) !important;
+        backdrop-filter: blur(10px);
+      }
+
+      /* Sidebar stays the same gradient in dark mode */
+      body.dark #app aside.bg-n-background,
+      body.dark #app aside[class*="bg-n-background"] {
+        background: linear-gradient(180deg, #1e3f85 0%, #162f6a 100%) !important;
+      }
+
+      /* Dark scrollbar */
+      body.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.22); }
+      body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
+
     </style>
 
+    <!-- Boster Chat — JS white-label engine + dynamic UI fixes -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
-      const BRAND_OLD = 'Chatwoot';
-      const BRAND_NEW = 'Boster Chat';
+      const BRAND_OLD       = 'Chatwoot';
+      const BRAND_NEW       = 'Boster Chat';
+      const BRAND_OLD_LOWER = 'chatwoot';
 
-      function replaceBrandText(root) {
+      /* ── Brand text replacement ──────────────────────────── */
+      function replaceBrandText(text) {
+        if (!text) return text;
+        return text
+          .replace(/Chatwoot/g,  BRAND_NEW)
+          .replace(/chatwoot/g,  'bosterchat')
+          .replace(/CHATWOOT/g,  BRAND_NEW.toUpperCase());
+      }
+
+      function replaceTextNodes(root) {
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
         let node;
         while ((node = walker.nextNode())) {
-          if (node.nodeValue && node.nodeValue.includes(BRAND_OLD)) {
-            node.nodeValue = node.nodeValue.replace(/Chatwoot/g, BRAND_NEW);
+          if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+            node.nodeValue = replaceBrandText(node.nodeValue);
           }
         }
       }
 
-      function runBranding() {
-        const root = document.getElementById('app') || document.body;
-        replaceBrandText(root);
-        if (document.title.includes(BRAND_OLD)) {
-          document.title = document.title.replace(BRAND_OLD, BRAND_NEW);
+      function replaceAttributes(root) {
+        const attrs = ['title', 'alt', 'placeholder', 'aria-label', 'content', 'value'];
+        root.querySelectorAll('*').forEach(el => {
+          attrs.forEach(attr => {
+            const val = el.getAttribute(attr);
+            if (val && val.toLowerCase().includes(BRAND_OLD_LOWER)) {
+              el.setAttribute(attr, replaceBrandText(val));
+            }
+          });
+          if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') &&
+              el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER)) {
+            el.value = replaceBrandText(el.value);
+          }
+        });
+      }
+
+      function replaceMetaTags() {
+        if (document.title.toLowerCase().includes(BRAND_OLD_LOWER)) {
+          document.title = replaceBrandText(document.title);
+        }
+        document.querySelectorAll(
+          'meta[name="application-name"], meta[property="og:site_name"], meta[name="description"]'
+        ).forEach(meta => {
+          const content = meta.getAttribute('content') || '';
+          if (content.toLowerCase().includes(BRAND_OLD_LOWER)) {
+            meta.setAttribute('content', replaceBrandText(content));
+          }
+        });
+      }
+
+      /* ── Dynamic UI fixes — runs after Vue renders ───────── */
+      function applyUIFixes() {
+        const isDark = document.body.classList.contains('dark');
+
+        // ── Fix Mine/Unassigned/All tabs ─────────────────────
+        // Target both <button> and <a> elements
+        document.querySelectorAll('button, [role="tab"], .conversations-list-wrap a, .conversations-list-wrap li a').forEach(btn => {
+          const text = btn.textContent.trim();
+          if (/^(Mine|Unassigned|All)\b/.test(text)) {
+            // Apply pill style
+            btn.style.borderRadius = '20px';
+            btn.style.padding = '3px 14px';
+            btn.style.fontSize = '13px';
+            btn.style.fontWeight = '500';
+            btn.style.transition = 'background 130ms ease, color 130ms ease';
+            btn.style.border = 'none';
+            btn.style.cursor = 'pointer';
+
+            const isActive =
+              btn.classList.contains('active') ||
+              btn.getAttribute('aria-selected') === 'true' ||
+              btn.classList.contains('is-active') ||
+              // check for blue/brand background already applied
+              getComputedStyle(btn).backgroundColor.includes('29, 110, 245');
+
+            if (isActive) {
+              btn.style.background = '#1D6EF5';
+              btn.style.color = '#FFFFFF';
+              btn.style.boxShadow = '0 2px 10px rgba(29,110,245,0.28)';
+            } else {
+              btn.style.background = 'transparent';
+              btn.style.color = isDark ? '#94AFCF' : '#475569';
+              btn.style.boxShadow = 'none';
+            }
+
+            // Hover effect
+            btn.onmouseenter = function() {
+              if (!this.style.background.includes('29, 110, 245') && this.style.background !== 'rgb(29, 110, 245)') {
+                this.style.background = isDark ? 'rgba(29,110,245,0.15)' : '#EFF6FF';
+                this.style.color = '#1D6EF5';
+              }
+            };
+            btn.onmouseleave = function() {
+              // re-run fix to restore correct state
+              applyUIFixes();
+            };
+          }
+        });
+
+        // ── Fix search bar in conversation list ──────────────
+        document.querySelectorAll('input[placeholder*="Search"], input[placeholder*="search"]').forEach(input => {
+          if (!isDark) {
+            input.style.color = '#1E293B';
+            input.style.caretColor = '#1D6EF5';
+          }
+        });
+
+        // ── Fix any white-on-white text in light mode ────────
+        if (!isDark) {
+          // Conversation list header area (contains search + tabs)
+          document.querySelectorAll('[class*="conversations-list-wrap"] > div, [class*="conversation-header"]').forEach(el => {
+            const bg = getComputedStyle(el).backgroundColor;
+            // If background is white or very light, ensure text is dark
+            if (bg === 'rgba(0, 0, 0, 0)' || bg === 'rgb(255, 255, 255)' || bg.includes('248') || bg.includes('249')) {
+              el.style.color = '#1E293B';
+            }
+          });
         }
       }
 
+      /* ── MutationObserver — survives Vue re-renders ─────── */
+      function observeChanges(root) {
+        const observer = new MutationObserver(mutations => {
+          let needsUIFix = false;
+          for (const mutation of mutations) {
+            if (mutation.type === 'childList') {
+              mutation.addedNodes.forEach(node => {
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                  replaceTextNodes(node);
+                  replaceAttributes(node);
+                  needsUIFix = true;
+                } else if (node.nodeType === Node.TEXT_NODE) {
+                  if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+                    node.nodeValue = replaceBrandText(node.nodeValue);
+                  }
+                }
+              });
+            } else if (mutation.type === 'characterData') {
+              if (mutation.target.nodeValue &&
+                  mutation.target.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+                mutation.target.nodeValue = replaceBrandText(mutation.target.nodeValue);
+              }
+            }
+          }
+          if (needsUIFix) {
+            // Debounce UI fixes to avoid thrashing
+            clearTimeout(window._bosterUITimer);
+            window._bosterUITimer = setTimeout(applyUIFixes, 80);
+          }
+        });
+        observer.observe(root, { childList: true, subtree: true, characterData: true });
+      }
+
+      function runAll() {
+        const root = document.getElementById('app') || document.body;
+        replaceTextNodes(root);
+        replaceAttributes(root);
+        replaceMetaTags();
+        applyUIFixes();
+        observeChanges(root);
+      }
+
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', runBranding);
+        document.addEventListener('DOMContentLoaded', runAll);
       } else {
-        runBranding();
+        runAll();
       }
     })();
     </script>
+
   </head>
 
   <body class="text-slate-600">
