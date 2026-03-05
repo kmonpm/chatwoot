@@ -145,14 +145,13 @@
          must override at that level too.
       ══════════════════════════════════════ */
 
-      /* Light mode — UPDATED modern blue gradient (ONLY CHANGE HERE) */
+      /* Light mode — soft blue-white gradient */
       html:not(.dark) body:not(.dark),
       body:not(.dark) {
         background:
-          radial-gradient(ellipse 1200px 800px at 18% 12%, rgba(255,255,255,0.20), transparent 60%),
-          radial-gradient(ellipse 900px 700px at 82% 88%, rgba(255,255,255,0.12), transparent 58%),
-          radial-gradient(ellipse 700px 520px at 55% 40%, rgba(29,110,245,0.35), transparent 62%),
-          linear-gradient(145deg, #0B4FD6 0%, #1D6EF5 38%, #2E7BFF 72%, #1B63F0 100%) !important;
+          radial-gradient(ellipse 90% 70% at 15% 10%, rgba(99,155,255,0.35), transparent 55%),
+          radial-gradient(ellipse 70% 60% at 88% 88%, rgba(59,120,240,0.25), transparent 55%),
+          linear-gradient(160deg, #1a5cd8 0%, #2563EB 35%, #1D6EF5 65%, #3b82f6 100%) !important;
       }
 
       /* Light mode login card */
@@ -369,6 +368,76 @@
       body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
 
     </style>
+
+    <!-- Boster Chat — Late-inject login background override -->
+    <!-- This runs AFTER Chatwoot's CSS so it always wins -->
+    <script nonce="<%= content_security_policy_nonce %>">
+    (function() {
+      function injectLoginStyles() {
+        const isDark = document.body.classList.contains('dark');
+        const id = 'boster-login-bg';
+        let el = document.getElementById(id);
+        if (!el) {
+          el = document.createElement('style');
+          el.id = id;
+          document.head.appendChild(el);
+        }
+
+        if (isDark) {
+          el.textContent = `
+            html, body {
+              background:
+                radial-gradient(ellipse 80% 60% at 15% 15%, rgba(29,110,245,0.20) 0%, transparent 55%),
+                radial-gradient(ellipse 60% 50% at 85% 85%, rgba(29,110,245,0.12) 0%, transparent 55%),
+                linear-gradient(160deg, #060e1f 0%, #0a1628 40%, #0d1e38 100%) !important;
+            }
+            /* Dark login card — deep navy not black */
+            #app section {
+              background: #182740 !important;
+              border: 1px solid rgba(29,110,245,0.22) !important;
+              border-radius: 20px !important;
+              box-shadow: 0 24px 64px rgba(0,0,0,0.45) !important;
+            }
+          `;
+        } else {
+          el.textContent = `
+            html, body {
+              background:
+                radial-gradient(ellipse 100% 80% at 10% 5%,  rgba(255,255,255,0.18) 0%, transparent 50%),
+                radial-gradient(ellipse 80%  60% at 90% 90%, rgba(255,255,255,0.10) 0%, transparent 50%),
+                linear-gradient(145deg, #f0f6ff 0%, #e6f0ff 30%, #dbeafe 60%, #e8f2ff 100%) !important;
+            }
+            /* Light login card */
+            #app section {
+              background: #ffffff !important;
+              border: 1px solid rgba(219,234,254,0.80) !important;
+              border-radius: 20px !important;
+              box-shadow: 0 20px 60px rgba(29,110,245,0.12), 0 4px 16px rgba(0,0,0,0.06) !important;
+            }
+            /* Login title — dark text on light bg */
+            #app h2 {
+              color: #0f172a !important;
+            }
+          `;
+        }
+      }
+
+      // Run immediately and after DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectLoginStyles);
+      } else {
+        injectLoginStyles();
+      }
+
+      // Re-run after a short delay to beat Chatwoot's CSS
+      setTimeout(injectLoginStyles, 100);
+      setTimeout(injectLoginStyles, 500);
+
+      // Watch for dark mode toggle
+      const obs = new MutationObserver(() => injectLoginStyles());
+      obs.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    })();
+    </script>
 
     <!-- Boster Chat — JS white-label engine + dynamic tab pills -->
     <script nonce="<%= content_security_policy_nonce %>">
