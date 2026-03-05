@@ -2,7 +2,6 @@
 <html>
   <head>
     <title>Boster Chat</title>
-
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=0"/>
 
     <% if @global_config['DISPLAY_MANIFEST'] %>
@@ -73,78 +72,88 @@
     <%= vite_client_tag %>
     <%= vite_javascript_tag @application_pack %>
 
-    <!-- ORIGINAL WORKING THEME — restored from working version -->
     <style nonce="<%= content_security_policy_nonce %>">
 
+      /* ═══════════════════════════════════════════
+         BOSTER CHAT THEME
+         Key insight: Chatwoot reads --n-background
+         CSS variable for ALL backgrounds including
+         the login page. Override it here = fix login.
+         Sidebar uses <aside> tag = easy to target.
+      ═══════════════════════════════════════════ */
+
+      /* ── DESIGN TOKENS ─────────────────────── */
       :root {
-        --b-blue:         #1D6EF5;
-        --b-blue-dark:    #1450C8;
-        --b-blue-navy:    #162F6A;
-        --b-blue-light:   #EFF6FF;
-        --b-blue-pale:    #F3F7FF;
-        --b-blue-border:  #DBEAFE;
-        --b-sidebar-icon: #7FB3FF;
-        --b-white:        #FFFFFF;
-        --b-radius:       10px;
+        --b-blue:        #1D6EF5;
+        --b-blue-dark:   #1450C8;
+        --b-blue-pale:   #F3F7FF;
+        --b-blue-border: #DBEAFE;
+        --b-radius:      10px;
+
+        /* Override Chatwoot's own background variable.
+           This changes the login page blue to light grey. */
+        --n-background:  #F3F7FF;
+        --n-bg:          #F3F7FF;
       }
 
-      /* This was working before dark mode changes broke it */
-      body, html {
-        background: var(--b-blue-pale) !important;
+      /* Also set body/html as fallback */
+      html, body {
+        background: #F3F7FF !important;
       }
 
+      /* Dark mode — restore dark background */
+      body.dark {
+        --n-background: #0D1829;
+        --n-bg:         #0D1829;
+        background:     #0D1829 !important;
+      }
+
+      /* ── FONT ───────────────────────────────── */
       #app {
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
       }
 
-      /* ── SIDEBAR ─────────────────────────────────────────── */
-      #app aside.bg-n-background,
-      #app aside[class*="bg-n-background"] {
+      /* ── SIDEBAR ────────────────────────────────────────────
+         Target <aside> directly — works regardless of class names.
+         Sidebar is the ONLY <aside> element in Chatwoot.
+      ────────────────────────────────────────────────────── */
+      #app aside {
         background: #1a3a7a !important;
         border-right: 1px solid rgba(255,255,255,0.10) !important;
       }
 
-      #app aside.bg-n-background *,
-      #app aside[class*="bg-n-background"] * {
+      /* All text/icons in sidebar — white */
+      #app aside * {
         color: #FFFFFF !important;
       }
-
-      #app aside.bg-n-background svg,
-      #app aside[class*="bg-n-background"] svg {
+      #app aside svg {
         color: #FFFFFF !important;
         stroke: #FFFFFF !important;
-        opacity: 0.9;
       }
 
-      #app aside.bg-n-background .active,
-      #app aside[class*="bg-n-background"] .active,
-      #app aside.bg-n-background [aria-current="page"],
-      #app aside[class*="bg-n-background"] [aria-current="page"] {
+      /* Active item — blue pill */
+      #app aside .active,
+      #app aside [aria-current="page"] {
         background: var(--b-blue) !important;
         border-radius: var(--b-radius) !important;
       }
-
-      #app aside.bg-n-background .active *,
-      #app aside[class*="bg-n-background"] .active * {
+      #app aside .active * {
         color: #FFFFFF !important;
-        opacity: 1 !important;
       }
 
-      #app aside.bg-n-background a:hover,
-      #app aside[class*="bg-n-background"] a:hover,
-      #app aside.bg-n-background button:hover,
-      #app aside[class*="bg-n-background"] button:hover {
+      /* Hover */
+      #app aside a:hover,
+      #app aside button:hover {
         background: rgba(255,255,255,0.12) !important;
         border-radius: var(--b-radius) !important;
       }
 
-      /* ── LOGO ───────────────────────────────────────────── */
+      /* ── LOGO ───────────────────────────────── */
       #app img.size-4,
       #app div.size-6 img,
       #app div.size-6 > img,
       #app [class*="place-content-center"] img {
         display: none !important;
-        visibility: hidden !important;
       }
 
       #app div.size-6::after,
@@ -161,34 +170,30 @@
         font-weight: 800;
         border-radius: 7px;
         font-family: 'Segoe UI', system-ui, sans-serif;
-        letter-spacing: -0.3px;
         flex-shrink: 0;
       }
 
-      /* ── MAIN CONTENT ───────────────────────────────────── */
+      /* ── MAIN CONTENT AREA ──────────────────── */
       #app main.bg-n-surface-1,
-      #app main[class*="bg-n-surface-1"],
       #app [class*="bg-n-surface-1"] {
         background: var(--b-blue-pale) !important;
       }
 
-      #app .flex.flex-col.h-full.bg-n-background,
-      #app [class*="conversations-list"] {
+      /* Conversation list panel */
+      #app .conversations-list-wrap {
         background: #F8FAFF !important;
         border-right: 1px solid var(--b-blue-border) !important;
       }
 
-      /* ── HEADER ─────────────────────────────────────────── */
+      /* ── HEADER ─────────────────────────────── */
       #app header,
-      #app .view-header,
-      #app [class*="view-header"],
-      #app [class*="page-header"] {
-        background: var(--b-white) !important;
+      #app [class*="view-header"] {
+        background: #FFFFFF !important;
         border-bottom: 1px solid var(--b-blue-border) !important;
         box-shadow: 0 1px 6px rgba(29,110,245,0.06) !important;
       }
 
-      /* ── BUTTONS ────────────────────────────────────────── */
+      /* ── BUTTONS ────────────────────────────── */
       #app [class*="bg-woot-500"],
       #app [class*="bg-n-brand"],
       #app [class*="bg-brand"],
@@ -198,117 +203,78 @@
         border-color: var(--b-blue) !important;
         color: #fff !important;
       }
-
       #app [class*="bg-woot-500"]:hover,
       #app [class*="bg-n-brand"]:hover,
       #app button[type="submit"]:hover {
         background: var(--b-blue-dark) !important;
-        border-color: var(--b-blue-dark) !important;
       }
+      #app button, #app [role="button"] {
+        border-radius: var(--b-radius) !important;
+      }
+
+      /* ── TEXT / BORDER ACCENTS ──────────────── */
+      #app [class*="text-woot"],
+      #app [class*="text-n-brand"],
+      #app [class*="text-brand"] { color: var(--b-blue) !important; }
 
       #app [class*="border-woot"],
       #app [class*="border-n-brand"],
-      #app [class*="border-brand"] {
-        border-color: var(--b-blue) !important;
+      #app [class*="border-brand"] { border-color: var(--b-blue) !important; }
+
+      #app [class*="border-b-woot"],
+      #app [class*="border-b-brand"],
+      #app [class*="border-b-n-brand"] {
+        border-bottom-color: var(--b-blue) !important;
         color: var(--b-blue) !important;
       }
 
-      #app button, #app [role="button"] { border-radius: var(--b-radius) !important; }
-
-      /* ── TEXT / BORDERS ─────────────────────────────────── */
-      #app [class*="text-woot"], #app [class*="text-n-brand"], #app [class*="text-brand"] { color: var(--b-blue) !important; }
-      #app [class*="border-b-woot"], #app [class*="border-b-brand"], #app [class*="border-b-n-brand"] { border-bottom-color: var(--b-blue) !important; color: var(--b-blue) !important; }
-
-      /* ── INPUTS ─────────────────────────────────────────── */
+      /* ── INPUTS ─────────────────────────────── */
       #app input:focus, #app textarea:focus, #app select:focus {
         border-color: var(--b-blue) !important;
         box-shadow: 0 0 0 3px rgba(29,110,245,0.10) !important;
         outline: none !important;
       }
 
-      /* ── BADGES ─────────────────────────────────────────── */
-      #app [class*="badge"], #app .unread-badge, #app [class*="unread-count"] {
+      /* ── BADGES ─────────────────────────────── */
+      #app [class*="badge"],
+      #app .unread-badge,
+      #app [class*="unread-count"] {
         background: var(--b-blue) !important;
         color: #fff !important;
       }
 
-      /* ── CARDS ──────────────────────────────────────────── */
-      #app .bg-white.rounded-lg, #app [class*="bg-white"][class*="rounded"] {
-        border: 1px solid var(--b-blue-border) !important;
-        box-shadow: 0 2px 12px rgba(29,110,245,0.06) !important;
-      }
-
-      /* ── SCROLLBARS ─────────────────────────────────────── */
+      /* ── SCROLLBARS ─────────────────────────── */
       #app *::-webkit-scrollbar { width: 5px; height: 5px; }
-      #app *::-webkit-scrollbar-track { background: #EEF3FF; }
+      #app *::-webkit-scrollbar-track { background: transparent; }
       #app *::-webkit-scrollbar-thumb { background: #BFDBFE; border-radius: 99px; }
       #app *::-webkit-scrollbar-thumb:hover { background: var(--b-blue); }
 
-      /* ── DARK MODE ──────────────────────────────────────── */
+      /* ── DARK MODE OVERRIDES ─────────────────── */
       body.dark #app main.bg-n-surface-1,
-      body.dark #app .bg-n-surface-1 { background: #111C2D !important; }
-      body.dark #app .conversations-list-wrap { background: #0F1A2B !important; border-right: 1px solid rgba(29,110,245,0.15) !important; }
-      body.dark #app header, body.dark #app [class*="view-header"] { background: rgba(10,18,32,0.96) !important; border-bottom: 1px solid rgba(29,110,245,0.18) !important; }
+      body.dark #app [class*="bg-n-surface-1"] { background: #111C2D !important; }
+
+      body.dark #app .conversations-list-wrap {
+        background: #0F1A2B !important;
+        border-right: 1px solid rgba(29,110,245,0.15) !important;
+      }
+
+      body.dark #app header,
+      body.dark #app [class*="view-header"] {
+        background: rgba(10,18,32,0.96) !important;
+        border-bottom: 1px solid rgba(29,110,245,0.18) !important;
+      }
 
     </style>
-
-    <!-- LOGIN BACKGROUND FIX — exact script provided by user, confirmed working logic -->
-    <script nonce="<%= content_security_policy_nonce %>">
-    (function() {
-      var LIGHT_BG = '#F3F7FF';
-      var DARK_BG  = '#0a1628';
-
-      function fixLoginBg() {
-        var app = document.getElementById('app');
-        if (!app) return;
-
-        var isDark      = document.body.classList.contains('dark');
-        var isLogin     = !app.querySelector('aside');
-        var isDashboard = !!app.querySelector('aside');
-
-        if (isLogin && app.children.length > 0) {
-          app.style.setProperty('background', isDark ? DARK_BG : LIGHT_BG, 'important');
-        } else if (isDashboard) {
-          app.style.removeProperty('background');
-        }
-      }
-
-      var appEl = document.getElementById('app');
-      if (appEl) {
-        new MutationObserver(fixLoginBg).observe(appEl, { childList: true, subtree: true });
-      } else {
-        var bodyObs = new MutationObserver(function() {
-          var app = document.getElementById('app');
-          if (app) {
-            bodyObs.disconnect();
-            new MutationObserver(fixLoginBg).observe(app, { childList: true, subtree: true });
-            fixLoginBg();
-          }
-        });
-        bodyObs.observe(document.body, { childList: true });
-      }
-
-      new MutationObserver(fixLoginBg).observe(document.body, {
-        attributes: true, attributeFilter: ['class']
-      });
-
-      setTimeout(fixLoginBg, 0);
-      setTimeout(fixLoginBg, 100);
-      setTimeout(fixLoginBg, 400);
-      setTimeout(fixLoginBg, 1000);
-    })();
-    </script>
 
     <!-- WHITE-LABEL + TAB PILLS -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
-      var BRAND_OLD       = 'Chatwoot';
-      var BRAND_NEW       = 'Boster Chat';
       var BRAND_OLD_LOWER = 'chatwoot';
+      var BRAND_NEW = 'Boster Chat';
 
       function replaceBrandText(text) {
         if (!text) return text;
-        return text.replace(/Chatwoot/g, BRAND_NEW).replace(/chatwoot/g, 'bosterchat').replace(/CHATWOOT/g, BRAND_NEW.toUpperCase());
+        return text.replace(/Chatwoot/g, BRAND_NEW).replace(/chatwoot/g, 'bosterchat').replace(/CHATWOOT/g, 'BOSTER CHAT');
       }
 
       function replaceTextNodes(root) {
@@ -327,7 +293,7 @@
             if (val && val.toLowerCase().includes(BRAND_OLD_LOWER))
               el.setAttribute(attr, replaceBrandText(val));
           });
-          if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER))
+          if ((el.tagName==='INPUT'||el.tagName==='TEXTAREA') && el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER))
             el.value = replaceBrandText(el.value);
         });
       }
@@ -347,7 +313,15 @@
           var text = ((el.childNodes[0] && el.childNodes[0].textContent) || el.textContent || '').trim();
           if (!/^(Mine|Unassigned|All)\b/.test(text)) return;
           var isActive = el.classList.contains('active') || el.getAttribute('aria-selected') === 'true' || el.classList.contains('is-active');
-          el.style.cssText += 'border-radius:20px;padding:3px 14px;font-size:13px;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;white-space:nowrap;transition:background 130ms ease;';
+          el.style.borderRadius = '20px';
+          el.style.padding = '3px 14px';
+          el.style.fontSize = '13px';
+          el.style.fontWeight = '500';
+          el.style.cursor = 'pointer';
+          el.style.display = 'inline-flex';
+          el.style.alignItems = 'center';
+          el.style.whiteSpace = 'nowrap';
+          el.style.transition = 'background 130ms ease';
           if (isActive) {
             el.style.background = '#1D6EF5';
             el.style.color = '#FFFFFF';
@@ -364,7 +338,7 @@
         new MutationObserver(function(mutations) {
           var hasNew = false;
           mutations.forEach(function(m) {
-            m.addedNodes && m.addedNodes.forEach(function(node) {
+            (m.addedNodes || []).forEach(function(node) {
               if (node.nodeType === 1) { replaceTextNodes(node); replaceAttributes(node); hasNew = true; }
               else if (node.nodeType === 3 && node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER))
                 node.nodeValue = replaceBrandText(node.nodeValue);
