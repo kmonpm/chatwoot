@@ -139,7 +139,57 @@
         border-radius: var(--b-radius) !important;
       }
 
-      /* ── Logo: hide img, show "B" badge ─────────────────── */
+      /* ══════════════════════════════════════
+         LOGIN PAGE — soft gradient background
+      ══════════════════════════════════════ */
+
+      /* Light mode login */
+      #app .flex.flex-col.w-full.h-screen,
+      #app [class*="min-h-screen"] {
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(29,110,245,0.18), transparent 60%),
+          radial-gradient(ellipse 60% 50% at 85% 85%, rgba(99,155,255,0.15), transparent 55%),
+          linear-gradient(135deg, #e8f0ff 0%, #f0f5ff 40%, #e4eeff 100%) !important;
+      }
+
+      /* Login card */
+      #app section.bg-white,
+      #app .bg-white.shadow,
+      #app [class*="shadow"][class*="bg-white"] {
+        border-radius: 20px !important;
+        box-shadow: 0 8px 40px rgba(29,110,245,0.14), 0 2px 8px rgba(0,0,0,0.06) !important;
+        border: 1px solid rgba(219,234,254,0.80) !important;
+      }
+
+      /* Dark mode login */
+      body.dark #app .flex.flex-col.w-full.h-screen,
+      body.dark #app [class*="min-h-screen"] {
+        background:
+          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(29,110,245,0.12), transparent 60%),
+          radial-gradient(ellipse 60% 50% at 85% 85%, rgba(29,110,245,0.08), transparent 55%),
+          linear-gradient(135deg, #0a1628 0%, #0d1e38 50%, #0a1628 100%) !important;
+      }
+
+      /* ══════════════════════════════════════
+         CONVERSATION TABS — fix overflow/scroll
+      ══════════════════════════════════════ */
+
+      /* Tab bar container — allow horizontal scroll if needed */
+      #app .conversations-list-wrap .is-compact,
+      #app .conversations-list-wrap [class*="tabs"] {
+        overflow-x: auto !important;
+        scrollbar-width: none !important;
+        -ms-overflow-style: none !important;
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        gap: 4px !important;
+        padding: 4px 0 !important;
+      }
+
+      #app .conversations-list-wrap .is-compact::-webkit-scrollbar,
+      #app .conversations-list-wrap [class*="tabs"]::-webkit-scrollbar {
+        display: none !important;
+      }
       #app img.size-4,
       #app div.size-6 img,
       #app div.size-6 > img,
