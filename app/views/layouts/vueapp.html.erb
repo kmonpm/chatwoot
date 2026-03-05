@@ -208,42 +208,31 @@
 
     </style>
 
-    <!-- ═══════════════════════════════════════════════
-         LOGIN BACKGROUND FIX
-         Strategy: Watch #app via MutationObserver.
-         The moment Vue mounts and adds bg-n-background,
-         we check if this is the login page (no <aside>).
-         If login → set inline style directly on #app.
-         Inline style beats ALL CSS classes always.
-    ════════════════════════════════════════════════ -->
+    <!-- LOGIN BACKGROUND FIX — user-confirmed working approach -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function() {
-      var LIGHT_BG = 'linear-gradient(145deg, #dbeafe 0%, #eff6ff 40%, #e8f2ff 100%)';
-      var DARK_BG  = 'linear-gradient(145deg, #0a1628 0%, #0d1e38 100%)';
+      var LIGHT_BG = 'linear-gradient(145deg, #dbeafe 0%, #eff6ff 50%, #e8f2ff 100%)';
+      var DARK_BG  = '#0a1628';
 
       function fixLoginBg() {
         var app = document.getElementById('app');
         if (!app) return;
 
-        var isDark     = document.body.classList.contains('dark');
-        var isLogin    = !app.querySelector('aside'); // no sidebar = login page
+        var isDark      = document.body.classList.contains('dark');
+        var isLogin     = !app.querySelector('aside');
         var isDashboard = !!app.querySelector('aside');
 
         if (isLogin && app.children.length > 0) {
-          // Login page — force light/dark gradient
           app.style.setProperty('background', isDark ? DARK_BG : LIGHT_BG, 'important');
         } else if (isDashboard) {
-          // Dashboard — remove our override, let CSS handle it
           app.style.removeProperty('background');
         }
       }
 
-      // Watch #app for Vue rendering content into it
       var appEl = document.getElementById('app');
       if (appEl) {
         new MutationObserver(fixLoginBg).observe(appEl, { childList: true, subtree: true });
       } else {
-        // #app not ready yet — watch body until it appears
         var bodyObs = new MutationObserver(function() {
           var app = document.getElementById('app');
           if (app) {
@@ -255,12 +244,10 @@
         bodyObs.observe(document.body, { childList: true });
       }
 
-      // Watch dark mode toggle
       new MutationObserver(fixLoginBg).observe(document.body, {
         attributes: true, attributeFilter: ['class']
       });
 
-      // Fallback timers
       setTimeout(fixLoginBg, 0);
       setTimeout(fixLoginBg, 100);
       setTimeout(fixLoginBg, 400);
