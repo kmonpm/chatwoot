@@ -74,19 +74,6 @@
 
     <style nonce="<%= content_security_policy_nonce %>">
 
-      /* ════════════════════════════════════════════════════════
-         BOSTER CHAT — ADAPTIVE THEME v7
-         Philosophy:
-           LIGHT MODE: Clean white sidebar (like Notion/Linear)
-             → No dark-on-light bleed, all text naturally visible
-             → Blue accent for active items only
-           DARK MODE:  Deep navy sidebar
-             → Chatwoot handles all text colors natively
-             → We only set backgrounds
-         We NEVER set text colors on containers — only on
-         explicitly branded elements (active pills, buttons).
-      ════════════════════════════════════════════════════════ */
-
       :root {
         --b-blue:       #1D6EF5;
         --b-blue-dark:  #1450C8;
@@ -95,25 +82,18 @@
         --b-radius:     10px;
       }
 
-      /* Font */
       #app {
         font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
         -webkit-font-smoothing: antialiased;
       }
 
-      /* ══════════════════════════════════════
-         LIGHT MODE SIDEBAR
-         White background — text is naturally
-         dark because Chatwoot's CSS vars handle
-         it. Zero bleed risk.
-      ══════════════════════════════════════ */
+      /* ── SIDEBAR LIGHT MODE ─────────────────────────────── */
       #app aside.bg-n-background {
         background: #FFFFFF !important;
         border-right: 1px solid #E2E8F0 !important;
         box-shadow: 2px 0 8px rgba(0,0,0,0.04) !important;
       }
 
-      /* Active nav pill — blue */
       #app aside.bg-n-background .active,
       #app aside.bg-n-background [aria-current="page"] {
         background: var(--b-blue) !important;
@@ -121,7 +101,6 @@
         box-shadow: 0 2px 12px rgba(29,110,245,0.22) !important;
       }
 
-      /* Active item text + icons — white */
       #app aside.bg-n-background .active *,
       #app aside.bg-n-background [aria-current="page"] * {
         color: #FFFFFF !important;
@@ -132,64 +111,13 @@
         stroke: #FFFFFF !important;
       }
 
-      /* Hover — subtle blue tint */
       #app aside.bg-n-background a:hover,
       #app aside.bg-n-background button:hover {
         background: #EFF6FF !important;
         border-radius: var(--b-radius) !important;
       }
 
-      /* ══════════════════════════════════════
-         LOGIN PAGE — soft gradient background
-      ══════════════════════════════════════ */
-
-      /* Light mode login */
-      #app .flex.flex-col.w-full.h-screen,
-      #app [class*="min-h-screen"] {
-        background:
-          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(29,110,245,0.18), transparent 60%),
-          radial-gradient(ellipse 60% 50% at 85% 85%, rgba(99,155,255,0.15), transparent 55%),
-          linear-gradient(135deg, #e8f0ff 0%, #f0f5ff 40%, #e4eeff 100%) !important;
-      }
-
-      /* Login card */
-      #app section.bg-white,
-      #app .bg-white.shadow,
-      #app [class*="shadow"][class*="bg-white"] {
-        border-radius: 20px !important;
-        box-shadow: 0 8px 40px rgba(29,110,245,0.14), 0 2px 8px rgba(0,0,0,0.06) !important;
-        border: 1px solid rgba(219,234,254,0.80) !important;
-      }
-
-      /* Dark mode login */
-      body.dark #app .flex.flex-col.w-full.h-screen,
-      body.dark #app [class*="min-h-screen"] {
-        background:
-          radial-gradient(ellipse 80% 60% at 20% 10%, rgba(29,110,245,0.12), transparent 60%),
-          radial-gradient(ellipse 60% 50% at 85% 85%, rgba(29,110,245,0.08), transparent 55%),
-          linear-gradient(135deg, #0a1628 0%, #0d1e38 50%, #0a1628 100%) !important;
-      }
-
-      /* ══════════════════════════════════════
-         CONVERSATION TABS — fix overflow/scroll
-      ══════════════════════════════════════ */
-
-      /* Tab bar container — allow horizontal scroll if needed */
-      #app .conversations-list-wrap .is-compact,
-      #app .conversations-list-wrap [class*="tabs"] {
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        gap: 4px !important;
-        padding: 4px 0 !important;
-      }
-
-      #app .conversations-list-wrap .is-compact::-webkit-scrollbar,
-      #app .conversations-list-wrap [class*="tabs"]::-webkit-scrollbar {
-        display: none !important;
-      }
+      /* ── LOGO ───────────────────────────────────────────── */
       #app img.size-4,
       #app div.size-6 img,
       #app div.size-6 > img,
@@ -216,10 +144,7 @@
         flex-shrink: 0;
       }
 
-      /* ══════════════════════════════════════
-         BRAND ACCENT — buttons + text + borders
-      ══════════════════════════════════════ */
-
+      /* ── BRAND BUTTONS / ACCENTS ────────────────────────── */
       #app [class*="bg-woot-500"],
       #app [class*="bg-n-brand"],
       #app [class*="bg-brand"],
@@ -237,68 +162,32 @@
         transform: translateY(-1px);
         box-shadow: 0 8px 24px rgba(29,110,245,0.30) !important;
       }
-      #app button, #app [role="button"] {
-        border-radius: var(--b-radius) !important;
-      }
-      #app [class*="text-woot"],
-      #app [class*="text-n-brand"],
-      #app [class*="text-brand"] {
-        color: var(--b-blue) !important;
-      }
-      #app [class*="border-woot"],
-      #app [class*="border-n-brand"],
-      #app [class*="border-brand"] {
-        border-color: var(--b-blue) !important;
-      }
-      #app [class*="border-b-woot"],
-      #app [class*="border-b-brand"],
-      #app [class*="border-b-n-brand"] {
-        border-bottom-color: var(--b-blue) !important;
-      }
-      #app [class*="badge"],
-      #app .unread-badge,
-      #app [class*="unread-count"] {
-        background: var(--b-blue) !important;
-        color: #fff !important;
-      }
-      #app input:focus,
-      #app textarea:focus,
-      #app select:focus {
+      #app button, #app [role="button"] { border-radius: var(--b-radius) !important; }
+      #app [class*="text-woot"], #app [class*="text-n-brand"], #app [class*="text-brand"] { color: var(--b-blue) !important; }
+      #app [class*="border-woot"], #app [class*="border-n-brand"], #app [class*="border-brand"] { border-color: var(--b-blue) !important; }
+      #app [class*="border-b-woot"], #app [class*="border-b-brand"], #app [class*="border-b-n-brand"] { border-bottom-color: var(--b-blue) !important; }
+      #app [class*="badge"], #app .unread-badge, #app [class*="unread-count"] { background: var(--b-blue) !important; color: #fff !important; }
+      #app input:focus, #app textarea:focus, #app select:focus {
         border-color: var(--b-blue) !important;
         box-shadow: 0 0 0 3px rgba(29,110,245,0.15) !important;
         outline: none !important;
       }
 
-      /* Scrollbar */
+      /* ── SCROLLBAR ──────────────────────────────────────── */
       #app *::-webkit-scrollbar { width: 5px; height: 5px; }
       #app *::-webkit-scrollbar-track { background: transparent; }
       #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.20); border-radius: 999px; }
       #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
 
-      /* ══════════════════════════════════════
-         DARK MODE — body.dark confirmed
-         Only set backgrounds. Let Chatwoot's
-         native CSS vars handle ALL text colors.
-      ══════════════════════════════════════ */
-
-      /* Dark sidebar — navy gradient */
+      /* ── DARK MODE ──────────────────────────────────────── */
       body.dark #app aside.bg-n-background {
         background: linear-gradient(180deg, #1e3f85 0%, #152e61 100%) !important;
         border-right: 1px solid rgba(255,255,255,0.07) !important;
         box-shadow: none !important;
       }
-
-      /* Dark sidebar: all text + icons white */
       body.dark #app aside.bg-n-background,
-      body.dark #app aside.bg-n-background * {
-        color: rgba(220,235,255,0.90) !important;
-      }
-      body.dark #app aside.bg-n-background svg {
-        color: rgba(180,210,255,0.85) !important;
-        stroke: rgba(180,210,255,0.85) !important;
-      }
-
-      /* Dark sidebar active */
+      body.dark #app aside.bg-n-background * { color: rgba(220,235,255,0.90) !important; }
+      body.dark #app aside.bg-n-background svg { color: rgba(180,210,255,0.85) !important; stroke: rgba(180,210,255,0.85) !important; }
       body.dark #app aside.bg-n-background .active,
       body.dark #app aside.bg-n-background [aria-current="page"] {
         background: var(--b-blue) !important;
@@ -306,54 +195,87 @@
         box-shadow: 0 2px 12px rgba(29,110,245,0.28) !important;
       }
       body.dark #app aside.bg-n-background .active *,
-      body.dark #app aside.bg-n-background [aria-current="page"] * {
-        color: #FFFFFF !important;
-      }
+      body.dark #app aside.bg-n-background [aria-current="page"] * { color: #FFFFFF !important; }
       body.dark #app aside.bg-n-background .active svg,
-      body.dark #app aside.bg-n-background [aria-current="page"] svg {
-        color: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-      }
-
-      /* Dark sidebar hover */
+      body.dark #app aside.bg-n-background [aria-current="page"] svg { color: #FFFFFF !important; stroke: #FFFFFF !important; }
       body.dark #app aside.bg-n-background a:hover,
-      body.dark #app aside.bg-n-background button:hover {
-        background: rgba(255,255,255,0.10) !important;
-        border-radius: var(--b-radius) !important;
-      }
-
-      /* Dark main content */
-      body.dark #app main.bg-n-surface-1,
-      body.dark #app .bg-n-surface-1 {
-        background: #111C2D !important;
-      }
-
-      /* Dark conversation list panel */
-      body.dark #app .conversations-list-wrap {
-        background: #0F1A2B !important;
-        border-right: 1px solid rgba(29,110,245,0.15) !important;
-      }
-
-      /* Dark header */
-      body.dark #app header,
-      body.dark #app [class*="view-header"] {
-        background: rgba(10,18,32,0.96) !important;
-        border-bottom: 1px solid rgba(29,110,245,0.18) !important;
-        backdrop-filter: blur(10px);
-      }
-
-      /* Dark scrollbar */
+      body.dark #app aside.bg-n-background button:hover { background: rgba(255,255,255,0.10) !important; border-radius: var(--b-radius) !important; }
+      body.dark #app main.bg-n-surface-1, body.dark #app .bg-n-surface-1 { background: #111C2D !important; }
+      body.dark #app .conversations-list-wrap { background: #0F1A2B !important; border-right: 1px solid rgba(29,110,245,0.15) !important; }
+      body.dark #app header, body.dark #app [class*="view-header"] { background: rgba(10,18,32,0.96) !important; border-bottom: 1px solid rgba(29,110,245,0.18) !important; backdrop-filter: blur(10px); }
       body.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.22); }
       body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
 
     </style>
 
-    <!-- Boster Chat — JS white-label engine + dynamic tab pills -->
+    <!-- ═══════════════════════════════════════════════
+         LOGIN BACKGROUND FIX
+         Strategy: Watch #app via MutationObserver.
+         The moment Vue mounts and adds bg-n-background,
+         we check if this is the login page (no <aside>).
+         If login → set inline style directly on #app.
+         Inline style beats ALL CSS classes always.
+    ════════════════════════════════════════════════ -->
+    <script nonce="<%= content_security_policy_nonce %>">
+    (function() {
+      var LIGHT_BG = 'linear-gradient(145deg, #dbeafe 0%, #eff6ff 40%, #e8f2ff 100%)';
+      var DARK_BG  = 'linear-gradient(145deg, #0a1628 0%, #0d1e38 100%)';
+
+      function fixLoginBg() {
+        var app = document.getElementById('app');
+        if (!app) return;
+
+        var isDark     = document.body.classList.contains('dark');
+        var isLogin    = !app.querySelector('aside'); // no sidebar = login page
+        var isDashboard = !!app.querySelector('aside');
+
+        if (isLogin && app.children.length > 0) {
+          // Login page — force light/dark gradient
+          app.style.setProperty('background', isDark ? DARK_BG : LIGHT_BG, 'important');
+        } else if (isDashboard) {
+          // Dashboard — remove our override, let CSS handle it
+          app.style.removeProperty('background');
+        }
+      }
+
+      // Watch #app for Vue rendering content into it
+      var appEl = document.getElementById('app');
+      if (appEl) {
+        new MutationObserver(fixLoginBg).observe(appEl, { childList: true, subtree: true });
+      } else {
+        // #app not ready yet — watch body until it appears
+        var bodyObs = new MutationObserver(function() {
+          var app = document.getElementById('app');
+          if (app) {
+            bodyObs.disconnect();
+            new MutationObserver(fixLoginBg).observe(app, { childList: true, subtree: true });
+            fixLoginBg();
+          }
+        });
+        bodyObs.observe(document.body, { childList: true });
+      }
+
+      // Watch dark mode toggle
+      new MutationObserver(fixLoginBg).observe(document.body, {
+        attributes: true, attributeFilter: ['class']
+      });
+
+      // Fallback timers
+      setTimeout(fixLoginBg, 0);
+      setTimeout(fixLoginBg, 100);
+      setTimeout(fixLoginBg, 400);
+      setTimeout(fixLoginBg, 1000);
+    })();
+    </script>
+
+    <!-- ═══════════════════════════════════════════════
+         WHITE-LABEL ENGINE + TAB PILLS
+    ════════════════════════════════════════════════ -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
-      const BRAND_OLD       = 'Chatwoot';
-      const BRAND_NEW       = 'Boster Chat';
-      const BRAND_OLD_LOWER = 'chatwoot';
+      var BRAND_OLD       = 'Chatwoot';
+      var BRAND_NEW       = 'Boster Chat';
+      var BRAND_OLD_LOWER = 'chatwoot';
 
       function replaceBrandText(text) {
         if (!text) return text;
@@ -364,8 +286,8 @@
       }
 
       function replaceTextNodes(root) {
-        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
-        let node;
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var node;
         while ((node = walker.nextNode())) {
           if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
             node.nodeValue = replaceBrandText(node.nodeValue);
@@ -374,10 +296,10 @@
       }
 
       function replaceAttributes(root) {
-        const attrs = ['title', 'alt', 'placeholder', 'aria-label', 'content', 'value'];
-        root.querySelectorAll('*').forEach(el => {
-          attrs.forEach(attr => {
-            const val = el.getAttribute(attr);
+        var attrs = ['title', 'alt', 'placeholder', 'aria-label', 'content', 'value'];
+        root.querySelectorAll('*').forEach(function(el) {
+          attrs.forEach(function(attr) {
+            var val = el.getAttribute(attr);
             if (val && val.toLowerCase().includes(BRAND_OLD_LOWER)) {
               el.setAttribute(attr, replaceBrandText(val));
             }
@@ -395,92 +317,72 @@
         }
         document.querySelectorAll(
           'meta[name="application-name"], meta[property="og:site_name"], meta[name="description"]'
-        ).forEach(meta => {
-          const content = meta.getAttribute('content') || '';
+        ).forEach(function(meta) {
+          var content = meta.getAttribute('content') || '';
           if (content.toLowerCase().includes(BRAND_OLD_LOWER)) {
             meta.setAttribute('content', replaceBrandText(content));
           }
         });
       }
 
-      /* ── Tab pill styling via JS (class-name agnostic) ───── */
       function applyTabPills() {
-        const isDark = document.body.classList.contains('dark');
-
-        // Walk every element, find tabs by text content
+        var isDark = document.body.classList.contains('dark');
         document.querySelectorAll(
           '.conversations-list-wrap button, .conversations-list-wrap a, .conversations-list-wrap li'
-        ).forEach(el => {
-          const rawText = (el.childNodes[0]?.textContent || el.textContent || '').trim();
+        ).forEach(function(el) {
+          var rawText = ((el.childNodes[0] && el.childNodes[0].textContent) || el.textContent || '').trim();
           if (!/^(Mine|Unassigned|All)\b/.test(rawText)) return;
 
-          // Is it active? Check multiple possible signals
-          const isActive =
+          var isActive =
             el.classList.contains('active') ||
             el.getAttribute('aria-selected') === 'true' ||
-            el.classList.contains('is-active') ||
-            el.querySelector('.active') !== null;
+            el.classList.contains('is-active');
 
-          // Reset
-          el.style.borderRadius    = '20px';
-          el.style.padding         = '3px 14px';
-          el.style.fontSize        = '13px';
-          el.style.fontWeight      = '500';
-          el.style.transition      = 'background 130ms ease, color 130ms ease';
-          el.style.cursor          = 'pointer';
-          el.style.display         = 'inline-flex';
-          el.style.alignItems      = 'center';
-          el.style.gap             = '4px';
-          el.style.whiteSpace      = 'nowrap';
+          el.style.borderRadius = '20px';
+          el.style.padding      = '3px 14px';
+          el.style.fontSize     = '13px';
+          el.style.fontWeight   = '500';
+          el.style.transition   = 'background 130ms ease, color 130ms ease';
+          el.style.cursor       = 'pointer';
+          el.style.display      = 'inline-flex';
+          el.style.alignItems   = 'center';
+          el.style.gap          = '4px';
+          el.style.whiteSpace   = 'nowrap';
 
           if (isActive) {
-            el.style.background  = '#1D6EF5';
-            el.style.color       = '#FFFFFF';
-            el.style.boxShadow   = '0 2px 10px rgba(29,110,245,0.28)';
-            // Also fix children
-            el.querySelectorAll('*').forEach(c => c.style.color = '#FFFFFF');
+            el.style.background = '#1D6EF5';
+            el.style.color      = '#FFFFFF';
+            el.style.boxShadow  = '0 2px 10px rgba(29,110,245,0.28)';
+            el.querySelectorAll('*').forEach(function(c) { c.style.color = '#FFFFFF'; });
           } else {
-            el.style.background  = 'transparent';
-            el.style.color       = isDark ? '#94AFCF' : '#475569';
-            el.style.boxShadow   = 'none';
-            el.querySelectorAll('*').forEach(c => {
-              c.style.color = isDark ? '#94AFCF' : '#475569';
-            });
-
-            el.onmouseenter = () => {
-              el.style.background = isDark ? 'rgba(29,110,245,0.15)' : '#EFF6FF';
-              el.style.color      = '#1D6EF5';
-            };
-            el.onmouseleave = () => {
-              el.style.background = 'transparent';
-              el.style.color      = isDark ? '#94AFCF' : '#475569';
-            };
+            el.style.background = 'transparent';
+            el.style.color      = isDark ? '#94AFCF' : '#475569';
+            el.style.boxShadow  = 'none';
+            el.querySelectorAll('*').forEach(function(c) { c.style.color = isDark ? '#94AFCF' : '#475569'; });
+            el.onmouseenter = function() { el.style.background = isDark ? 'rgba(29,110,245,0.15)' : '#EFF6FF'; el.style.color = '#1D6EF5'; };
+            el.onmouseleave = function() { el.style.background = 'transparent'; el.style.color = isDark ? '#94AFCF' : '#475569'; };
           }
         });
       }
 
       function observeChanges(root) {
-        const observer = new MutationObserver(mutations => {
-          let hasNew = false;
-          for (const m of mutations) {
+        var observer = new MutationObserver(function(mutations) {
+          var hasNew = false;
+          mutations.forEach(function(m) {
             if (m.type === 'childList') {
-              m.addedNodes.forEach(node => {
+              m.addedNodes.forEach(function(node) {
                 if (node.nodeType === Node.ELEMENT_NODE) {
                   replaceTextNodes(node);
                   replaceAttributes(node);
                   hasNew = true;
-                } else if (node.nodeType === Node.TEXT_NODE) {
-                  if (node.nodeValue?.toLowerCase().includes(BRAND_OLD_LOWER)) {
-                    node.nodeValue = replaceBrandText(node.nodeValue);
-                  }
+                } else if (node.nodeType === Node.TEXT_NODE && node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+                  node.nodeValue = replaceBrandText(node.nodeValue);
                 }
               });
-            } else if (m.type === 'characterData') {
-              if (m.target.nodeValue?.toLowerCase().includes(BRAND_OLD_LOWER)) {
-                m.target.nodeValue = replaceBrandText(m.target.nodeValue);
-              }
+            } else if (m.type === 'characterData' && m.target.nodeValue && m.target.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
+              m.target.nodeValue = replaceBrandText(m.target.nodeValue);
             }
-          }
+          });
           if (hasNew) {
             clearTimeout(window._bTabTimer);
             window._bTabTimer = setTimeout(applyTabPills, 120);
@@ -490,13 +392,12 @@
       }
 
       function runAll() {
-        const root = document.getElementById('app') || document.body;
+        var root = document.getElementById('app') || document.body;
         replaceTextNodes(root);
         replaceAttributes(root);
         replaceMetaTags();
         applyTabPills();
         observeChanges(root);
-        // Re-run tabs a couple more times to catch late Vue renders
         setTimeout(applyTabPills, 500);
         setTimeout(applyTabPills, 1500);
       }
