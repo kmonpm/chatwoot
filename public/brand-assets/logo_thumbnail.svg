@@ -1,21 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg"
-     viewBox="0 0 64 64"
-     width="24" height="24"
-     fill="none">
-  <!-- Background rounded square -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="24" height="24" fill="none">
+  <!-- Background -->
   <rect width="64" height="64" rx="14" fill="#1F6FEB"/>
 
-  <!-- Chat bubble dots -->
-  <rect x="8" y="10" width="48" height="36" rx="10" fill="white" opacity="0.15"/>
-  <rect x="10" y="12" width="44" height="33" rx="9" fill="white"/>
+  <!-- Bubble -->
+  <rect x="10" y="12" width="44" height="31" rx="10" fill="white" opacity="0.93"/>
+  <circle cx="24" cy="28" r="3.6" fill="#1F6FEB"/>
+  <circle cx="32" cy="28" r="3.6" fill="#1F6FEB"/>
+  <circle cx="40" cy="28" r="3.6" fill="#1F6FEB"/>
+  <path d="M18 45 L26 39 H18 V45Z" fill="white" opacity="0.93"/>
 
-  <circle cx="22" cy="28" r="4" fill="#1F6FEB"/>
-  <circle cx="32" cy="28" r="4" fill="#1F6FEB"/>
-  <circle cx="42" cy="28" r="4" fill="#1F6FEB"/>
-
-  <!-- Tail -->
-  <path d="M14 45 L22 37 H14 V45Z" fill="white"/>
-
-  <!-- Small "B" lettermark at bottom-right -->
-  <text x="36" y="58" font-family="'Segoe UI', system-ui, sans-serif" font-weight="800" font-size="13" fill="white" letter-spacing="-0.5">BC</text>
+  <!-- Corner badge -->
+  <rect x="41" y="44" width="15" height="15" rx="7.5" fill="white" opacity="0.20"/>
+  <text x="48.5" y="55" text-anchor="middle"
+        font-family="Segoe UI, system-ui, sans-serif" font-weight="950" font-size="12"
+        fill="white" letter-spacing="-0.4">B</text>
 </svg>
