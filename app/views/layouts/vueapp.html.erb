@@ -73,544 +73,94 @@
     <%= vite_javascript_tag @application_pack %>
 
     <style nonce="<%= content_security_policy_nonce %>">
-
-      /* ════════════════════════════════════════════════════════
-         BOSTER CHAT — ADAPTIVE THEME v7
-         Philosophy:
-           LIGHT MODE: Clean white sidebar (like Notion/Linear)
-             → No dark-on-light bleed, all text naturally visible
-             → Blue accent for active items only
-           DARK MODE:  Deep navy sidebar
-             → Chatwoot handles all text colors natively
-             → We only set backgrounds
-         We NEVER set text colors on containers — only on
-         explicitly branded elements (active pills, buttons).
-      ════════════════════════════════════════════════════════ */
-
       :root {
         --b-blue:       #1D6EF5;
         --b-blue-dark:  #1450C8;
-        --b-blue-light: #EFF6FF;
-        --b-border:     #E2E8F0;
-        --b-radius:     10px;
+        --b-bg-light:   #F8FAFC;
+        --b-bg-dark:    #0F172A;
       }
 
-      /* Font */
-      #app {
-        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
-        -webkit-font-smoothing: antialiased;
+      /* 1. Reset Body Backgrounds to Solid Colors */
+      html, body {
+        background: var(--b-bg-light) !important;
+      }
+      body.dark {
+        background: var(--b-bg-dark) !important;
       }
 
-      /* ══════════════════════════════════════
-         LIGHT MODE SIDEBAR
-         White background — text is naturally
-         dark because Chatwoot's CSS vars handle
-         it. Zero bleed risk.
-      ══════════════════════════════════════ */
+      /* 2. Login Card Styling */
+      #app section, 
+      [class*="auth-wrapper"] section {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 16px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+      }
+      body.dark #app section {
+        background: #1E293B !important;
+        border-color: #334155 !important;
+      }
+
+      /* 3. Input Fields - Remove Gray Boxes */
+      #app input {
+        background: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        color: #1E293B !important;
+      }
+      body.dark #app input {
+        background: #0F172A !important;
+        border-color: #334155 !important;
+        color: #F8FAFC !important;
+      }
+
+      /* 4. Login Button */
+      #app button[type="submit"] {
+        background: var(--b-blue) !important;
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+        border-radius: 8px !important;
+      }
+
+      /* 5. Clean up Branding */
       #app aside.bg-n-background {
         background: #FFFFFF !important;
         border-right: 1px solid #E2E8F0 !important;
-        box-shadow: 2px 0 8px rgba(0,0,0,0.04) !important;
       }
-
-      /* Active nav pill — blue */
-      #app aside.bg-n-background .active,
-      #app aside.bg-n-background [aria-current="page"] {
-        background: var(--b-blue) !important;
-        border-radius: var(--b-radius) !important;
-        box-shadow: 0 2px 12px rgba(29,110,245,0.22) !important;
-      }
-
-      /* Active item text + icons — white */
-      #app aside.bg-n-background .active *,
-      #app aside.bg-n-background [aria-current="page"] * {
-        color: #FFFFFF !important;
-      }
-      #app aside.bg-n-background .active svg,
-      #app aside.bg-n-background [aria-current="page"] svg {
-        color: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-      }
-
-      /* Hover — subtle blue tint */
-      #app aside.bg-n-background a:hover,
-      #app aside.bg-n-background button:hover {
-        background: #EFF6FF !important;
-        border-radius: var(--b-radius) !important;
-      }
-
-      /* ══════════════════════════════════════
-         LOGIN PAGE — target body directly
-         Chatwoot sets bg on html/body, so we
-         must override at that level too.
-      ══════════════════════════════════════ */
-
-      /* Light mode — soft blue-white gradient */
-      html:not(.dark) body:not(.dark),
-      body:not(.dark) {
-        background:
-          radial-gradient(ellipse 90% 70% at 15% 10%, rgba(99,155,255,0.35), transparent 55%),
-          radial-gradient(ellipse 70% 60% at 88% 88%, rgba(59,120,240,0.25), transparent 55%),
-          linear-gradient(160deg, #1a5cd8 0%, #2563EB 35%, #1D6EF5 65%, #3b82f6 100%) !important;
-      }
-
-      /* Light mode login card */
-      body:not(.dark) #app section.bg-white,
-      body:not(.dark) #app [class*="auth"] [class*="bg-white"],
-      body:not(.dark) #app .flex.min-h-screen > div > div {
-        background: rgba(255,255,255,0.97) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.15), 0 4px 16px rgba(0,0,0,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.60) !important;
-      }
-
-      /* Login title + labels — white text on blue bg */
-      body:not(.dark) #app .flex.flex-col.w-full.h-screen h2,
-      body:not(.dark) #app .flex.flex-col.w-full.h-screen h1,
-      body:not(.dark) #app [class*="min-h-screen"] > h2,
-      body:not(.dark) #app [class*="min-h-screen"] > h1 {
-        color: #FFFFFF !important;
-        text-shadow: 0 1px 4px rgba(0,0,0,0.15);
-      }
-
-      /* Dark mode login */
-      body.dark {
-        background:
-          radial-gradient(ellipse 90% 70% at 15% 10%, rgba(29,110,245,0.20), transparent 55%),
-          radial-gradient(ellipse 70% 60% at 88% 88%, rgba(29,110,245,0.12), transparent 55%),
-          linear-gradient(160deg, #060d1a 0%, #0a1628 40%, #0d1e38 100%) !important;
-      }
-
-      /* Dark mode login card — lighter dark, not pitch black */
-      body.dark #app section,
-      body.dark #app [class*="auth"] section,
-      body.dark #app .flex.min-h-screen section {
-        background: #1a2744 !important;
-        border: 1px solid rgba(29,110,245,0.25) !important;
-        border-radius: 20px !important;
-        box-shadow: 0 20px 60px rgba(0,0,0,0.40) !important;
-      }
-
-      /* ══════════════════════════════════════
-         CONVERSATION TABS — fix overflow/scroll
-      ══════════════════════════════════════ */
-
-      /* Tab bar container — allow horizontal scroll if needed */
-      #app .conversations-list-wrap .is-compact,
-      #app .conversations-list-wrap [class*="tabs"] {
-        overflow-x: auto !important;
-        scrollbar-width: none !important;
-        -ms-overflow-style: none !important;
-        display: flex !important;
-        flex-wrap: nowrap !important;
-        gap: 4px !important;
-        padding: 4px 0 !important;
-      }
-
-      #app .conversations-list-wrap .is-compact::-webkit-scrollbar,
-      #app .conversations-list-wrap [class*="tabs"]::-webkit-scrollbar {
-        display: none !important;
-      }
-      #app img.size-4,
-      #app div.size-6 img,
-      #app div.size-6 > img,
-      #app [class*="place-content-center"] img {
-        display: none !important;
-      }
-
-      #app div.size-6::after,
-      #app [class*="place-content-center"][class*="size-6"]::after {
-        content: "B";
-        display: flex !important;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        background: linear-gradient(135deg, #2979FF 0%, #1450C8 100%);
-        color: #fff !important;
-        font-size: 15px;
-        font-weight: 900;
-        border-radius: 9px;
-        box-shadow: 0 4px 14px rgba(29,110,245,0.35);
-        font-family: ui-sans-serif, system-ui, "Segoe UI", sans-serif;
-        letter-spacing: -0.4px;
-        flex-shrink: 0;
-      }
-
-      /* ══════════════════════════════════════
-         BRAND ACCENT — buttons + text + borders
-      ══════════════════════════════════════ */
-
-      #app [class*="bg-woot-500"],
-      #app [class*="bg-n-brand"],
-      #app [class*="bg-brand"],
-      #app button[data-testid="submit_button"],
-      #app button[type="submit"] {
-        background: linear-gradient(135deg, var(--b-blue) 0%, var(--b-blue-dark) 100%) !important;
-        border-color: rgba(29,110,245,0.60) !important;
-        color: #fff !important;
-        box-shadow: 0 4px 14px rgba(29,110,245,0.22) !important;
-        transition: transform 130ms ease, box-shadow 130ms ease;
-      }
-      #app [class*="bg-woot-500"]:hover,
-      #app [class*="bg-n-brand"]:hover,
-      #app button[type="submit"]:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 8px 24px rgba(29,110,245,0.30) !important;
-      }
-      #app button, #app [role="button"] {
-        border-radius: var(--b-radius) !important;
-      }
-      #app [class*="text-woot"],
-      #app [class*="text-n-brand"],
-      #app [class*="text-brand"] {
-        color: var(--b-blue) !important;
-      }
-      #app [class*="border-woot"],
-      #app [class*="border-n-brand"],
-      #app [class*="border-brand"] {
-        border-color: var(--b-blue) !important;
-      }
-      #app [class*="border-b-woot"],
-      #app [class*="border-b-brand"],
-      #app [class*="border-b-n-brand"] {
-        border-bottom-color: var(--b-blue) !important;
-      }
-      #app [class*="badge"],
-      #app .unread-badge,
-      #app [class*="unread-count"] {
-        background: var(--b-blue) !important;
-        color: #fff !important;
-      }
-      #app input:focus,
-      #app textarea:focus,
-      #app select:focus {
-        border-color: var(--b-blue) !important;
-        box-shadow: 0 0 0 3px rgba(29,110,245,0.15) !important;
-        outline: none !important;
-      }
-
-      /* Scrollbar */
-      #app *::-webkit-scrollbar { width: 5px; height: 5px; }
-      #app *::-webkit-scrollbar-track { background: transparent; }
-      #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.20); border-radius: 999px; }
-      #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
-
-      /* ══════════════════════════════════════
-         DARK MODE — body.dark confirmed
-         Only set backgrounds. Let Chatwoot's
-         native CSS vars handle ALL text colors.
-      ══════════════════════════════════════ */
-
-      /* Dark sidebar — navy gradient */
       body.dark #app aside.bg-n-background {
-        background: linear-gradient(180deg, #1e3f85 0%, #152e61 100%) !important;
-        border-right: 1px solid rgba(255,255,255,0.07) !important;
-        box-shadow: none !important;
+        background: #1E293B !important;
       }
-
-      /* Dark sidebar: all text + icons white */
-      body.dark #app aside.bg-n-background,
-      body.dark #app aside.bg-n-background * {
-        color: rgba(220,235,255,0.90) !important;
-      }
-      body.dark #app aside.bg-n-background svg {
-        color: rgba(180,210,255,0.85) !important;
-        stroke: rgba(180,210,255,0.85) !important;
-      }
-
-      /* Dark sidebar active */
-      body.dark #app aside.bg-n-background .active,
-      body.dark #app aside.bg-n-background [aria-current="page"] {
-        background: var(--b-blue) !important;
-        border-radius: var(--b-radius) !important;
-        box-shadow: 0 2px 12px rgba(29,110,245,0.28) !important;
-      }
-      body.dark #app aside.bg-n-background .active *,
-      body.dark #app aside.bg-n-background [aria-current="page"] * {
-        color: #FFFFFF !important;
-      }
-      body.dark #app aside.bg-n-background .active svg,
-      body.dark #app aside.bg-n-background [aria-current="page"] svg {
-        color: #FFFFFF !important;
-        stroke: #FFFFFF !important;
-      }
-
-      /* Dark sidebar hover */
-      body.dark #app aside.bg-n-background a:hover,
-      body.dark #app aside.bg-n-background button:hover {
-        background: rgba(255,255,255,0.10) !important;
-        border-radius: var(--b-radius) !important;
-      }
-
-      /* Dark main content */
-      body.dark #app main.bg-n-surface-1,
-      body.dark #app .bg-n-surface-1 {
-        background: #111C2D !important;
-      }
-
-      /* Dark conversation list panel */
-      body.dark #app .conversations-list-wrap {
-        background: #0F1A2B !important;
-        border-right: 1px solid rgba(29,110,245,0.15) !important;
-      }
-
-      /* Dark header */
-      body.dark #app header,
-      body.dark #app [class*="view-header"] {
-        background: rgba(10,18,32,0.96) !important;
-        border-bottom: 1px solid rgba(29,110,245,0.18) !important;
-        backdrop-filter: blur(10px);
-      }
-
-      /* Dark scrollbar */
-      body.dark #app *::-webkit-scrollbar-thumb { background: rgba(29,110,245,0.22); }
-      body.dark #app *::-webkit-scrollbar-thumb:hover { background: rgba(29,110,245,0.50); }
-
     </style>
 
-    <!-- Boster Chat — Late-inject login background override -->
-    <script nonce="<%= content_security_policy_nonce %>">
-    (function() {
-      function injectLoginStyles() {
-        const isDark = document.body.classList.contains('dark');
-        const id = 'boster-login-bg';
-        let el = document.getElementById(id);
-        if (!el) {
-          el = document.createElement('style');
-          el.id = id;
-          document.head.appendChild(el);
-        }
-
-        if (isDark) {
-          el.textContent = `
-            /* Target the exact element: div#app.bg-n-background (confirmed DevTools) */
-            #app.bg-n-background,
-            #app.flex.flex-col.w-full.h-screen.min-h-0.bg-n-background {
-              background: linear-gradient(145deg, #0a1628 0%, #0d1e38 50%, #0f2040 100%) !important;
-            }
-            /* Dark login card */
-            #app section {
-              background: #182740 !important;
-              border: 1px solid rgba(29,110,245,0.25) !important;
-              border-radius: 20px !important;
-              box-shadow: 0 24px 64px rgba(0,0,0,0.50) !important;
-            }
-          `;
-        } else {
-          el.textContent = `
-            /* Target the exact element: div#app.bg-n-background (confirmed DevTools) */
-            #app.bg-n-background,
-            #app.flex.flex-col.w-full.h-screen.min-h-0.bg-n-background {
-              background: linear-gradient(145deg, #dbeafe 0%, #eff6ff 40%, #e0eeff 70%, #dbeafe 100%) !important;
-            }
-            /* Light login card */
-            #app section {
-              background: #ffffff !important;
-              border: 1px solid rgba(219,234,254,0.90) !important;
-              border-radius: 20px !important;
-              box-shadow: 0 20px 60px rgba(29,110,245,0.12), 0 4px 16px rgba(0,0,0,0.06) !important;
-            }
-            /* Login title */
-            #app.bg-n-background > h2,
-            #app.bg-n-background h2 {
-              color: #1e3a6e !important;
-            }
-          `;
-        }
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', injectLoginStyles);
-      } else {
-        injectLoginStyles();
-      }
-
-      setTimeout(injectLoginStyles, 50);
-      setTimeout(injectLoginStyles, 300);
-      setTimeout(injectLoginStyles, 800);
-
-      // Watch for dark mode toggle on body
-      new MutationObserver(injectLoginStyles).observe(document.body, {
-        attributes: true, attributeFilter: ['class']
-      });
-
-      // Also watch #app for class changes (Vue may update it)
-      function watchApp() {
-        const app = document.getElementById('app');
-        if (app) {
-          new MutationObserver(injectLoginStyles).observe(app, {
-            attributes: true, attributeFilter: ['class']
-          });
-        } else {
-          setTimeout(watchApp, 100);
-        }
-      }
-      watchApp();
-    })();
-    </script>
-
-    <!-- Boster Chat — JS white-label engine + dynamic tab pills -->
     <script nonce="<%= content_security_policy_nonce %>">
     (function () {
-      const BRAND_OLD       = 'Chatwoot';
-      const BRAND_NEW       = 'Boster Chat';
-      const BRAND_OLD_LOWER = 'chatwoot';
+      const BRAND_OLD = 'Chatwoot';
+      const BRAND_NEW = 'Boster Chat';
 
-      function replaceBrandText(text) {
-        if (!text) return text;
-        return text
-          .replace(/Chatwoot/g,  BRAND_NEW)
-          .replace(/chatwoot/g,  'bosterchat')
-          .replace(/CHATWOOT/g,  BRAND_NEW.toUpperCase());
-      }
-
-      function replaceTextNodes(root) {
+      function replaceBrandText(root) {
         const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
         let node;
         while ((node = walker.nextNode())) {
-          if (node.nodeValue && node.nodeValue.toLowerCase().includes(BRAND_OLD_LOWER)) {
-            node.nodeValue = replaceBrandText(node.nodeValue);
+          if (node.nodeValue && node.nodeValue.includes(BRAND_OLD)) {
+            node.nodeValue = node.nodeValue.replace(/Chatwoot/g, BRAND_NEW);
           }
         }
       }
 
-      function replaceAttributes(root) {
-        const attrs = ['title', 'alt', 'placeholder', 'aria-label', 'content', 'value'];
-        root.querySelectorAll('*').forEach(el => {
-          attrs.forEach(attr => {
-            const val = el.getAttribute(attr);
-            if (val && val.toLowerCase().includes(BRAND_OLD_LOWER)) {
-              el.setAttribute(attr, replaceBrandText(val));
-            }
-          });
-          if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') &&
-              el.value && el.value.toLowerCase().includes(BRAND_OLD_LOWER)) {
-            el.value = replaceBrandText(el.value);
-          }
-        });
-      }
-
-      function replaceMetaTags() {
-        if (document.title.toLowerCase().includes(BRAND_OLD_LOWER)) {
-          document.title = replaceBrandText(document.title);
-        }
-        document.querySelectorAll(
-          'meta[name="application-name"], meta[property="og:site_name"], meta[name="description"]'
-        ).forEach(meta => {
-          const content = meta.getAttribute('content') || '';
-          if (content.toLowerCase().includes(BRAND_OLD_LOWER)) {
-            meta.setAttribute('content', replaceBrandText(content));
-          }
-        });
-      }
-
-      /* ── Tab pill styling via JS (class-name agnostic) ───── */
-      function applyTabPills() {
-        const isDark = document.body.classList.contains('dark');
-
-        // Walk every element, find tabs by text content
-        document.querySelectorAll(
-          '.conversations-list-wrap button, .conversations-list-wrap a, .conversations-list-wrap li'
-        ).forEach(el => {
-          const rawText = (el.childNodes[0]?.textContent || el.textContent || '').trim();
-          if (!/^(Mine|Unassigned|All)\b/.test(rawText)) return;
-
-          // Is it active? Check multiple possible signals
-          const isActive =
-            el.classList.contains('active') ||
-            el.getAttribute('aria-selected') === 'true' ||
-            el.classList.contains('is-active') ||
-            el.querySelector('.active') !== null;
-
-          // Reset
-          el.style.borderRadius    = '20px';
-          el.style.padding         = '3px 14px';
-          el.style.fontSize        = '13px';
-          el.style.fontWeight      = '500';
-          el.style.transition      = 'background 130ms ease, color 130ms ease';
-          el.style.cursor          = 'pointer';
-          el.style.display         = 'inline-flex';
-          el.style.alignItems      = 'center';
-          el.style.gap             = '4px';
-          el.style.whiteSpace      = 'nowrap';
-
-          if (isActive) {
-            el.style.background  = '#1D6EF5';
-            el.style.color       = '#FFFFFF';
-            el.style.boxShadow   = '0 2px 10px rgba(29,110,245,0.28)';
-            // Also fix children
-            el.querySelectorAll('*').forEach(c => c.style.color = '#FFFFFF');
-          } else {
-            el.style.background  = 'transparent';
-            el.style.color       = isDark ? '#94AFCF' : '#475569';
-            el.style.boxShadow   = 'none';
-            el.querySelectorAll('*').forEach(c => {
-              c.style.color = isDark ? '#94AFCF' : '#475569';
-            });
-
-            el.onmouseenter = () => {
-              el.style.background = isDark ? 'rgba(29,110,245,0.15)' : '#EFF6FF';
-              el.style.color      = '#1D6EF5';
-            };
-            el.onmouseleave = () => {
-              el.style.background = 'transparent';
-              el.style.color      = isDark ? '#94AFCF' : '#475569';
-            };
-          }
-        });
-      }
-
-      function observeChanges(root) {
-        const observer = new MutationObserver(mutations => {
-          let hasNew = false;
-          for (const m of mutations) {
-            if (m.type === 'childList') {
-              m.addedNodes.forEach(node => {
-                if (node.nodeType === Node.ELEMENT_NODE) {
-                  replaceTextNodes(node);
-                  replaceAttributes(node);
-                  hasNew = true;
-                } else if (node.nodeType === Node.TEXT_NODE) {
-                  if (node.nodeValue?.toLowerCase().includes(BRAND_OLD_LOWER)) {
-                    node.nodeValue = replaceBrandText(node.nodeValue);
-                  }
-                }
-              });
-            } else if (m.type === 'characterData') {
-              if (m.target.nodeValue?.toLowerCase().includes(BRAND_OLD_LOWER)) {
-                m.target.nodeValue = replaceBrandText(m.target.nodeValue);
-              }
-            }
-          }
-          if (hasNew) {
-            clearTimeout(window._bTabTimer);
-            window._bTabTimer = setTimeout(applyTabPills, 120);
-          }
-        });
-        observer.observe(root, { childList: true, subtree: true, characterData: true });
-      }
-
-      function runAll() {
+      function runBranding() {
         const root = document.getElementById('app') || document.body;
-        replaceTextNodes(root);
-        replaceAttributes(root);
-        replaceMetaTags();
-        applyTabPills();
-        observeChanges(root);
-        // Re-run tabs a couple more times to catch late Vue renders
-        setTimeout(applyTabPills, 500);
-        setTimeout(applyTabPills, 1500);
+        replaceBrandText(root);
+        if (document.title.includes(BRAND_OLD)) {
+          document.title = document.title.replace(BRAND_OLD, BRAND_NEW);
+        }
       }
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', runAll);
+        document.addEventListener('DOMContentLoaded', runBranding);
       } else {
-        runAll();
+        runBranding();
       }
     })();
     </script>
-
   </head>
 
   <body class="text-slate-600">
